@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tiaash | Move-In Essential Kits</title>
+  <meta name="description" content="Three thoughtfully curated move-in kits by Tiaash. Designed to quietly complete a home with the right essentials." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --g1:#f5f3ef; --g2:#e8f0ee; --g3:#f1e9f4;
+      --text:#1c1c1c; --muted:#5f6368; --accent:#1f3d3a;
+      --glass:rgba(255,255,255,0.7); --border:rgba(0,0,0,0.08);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    body{
+      font-family:'Inter',sans-serif;
+      color:var(--text);
+      line-height:1.65;
+      background:radial-gradient(circle at 20% 20%,#f1ebe3 0%,transparent 40%),
+                 radial-gradient(circle at 80% 30%,#e2f0ee 0%,transparent 45%),
+                 radial-gradient(circle at 50% 80%,#efe6f4 0%,transparent 50%),
+                 linear-gradient(120deg,var(--g1),var(--g2),var(--g3));
+      background-size:120% 120%,140% 140%,160% 160%,300% 300%;
+      animation:gradientShift 20s ease infinite;
+    }
+
+    @keyframes gradientShift{
+      0%{background-position:0% 50%,20% 30%,60% 80%,0% 50%}
+      50%{background-position:100% 50%,80% 20%,40% 60%,100% 50%}
+      100%{background-position:0% 50%,20% 30%,60% 80%,0% 50%}
+    }
+
+    h1,h2,h3{font-family:'Playfair Display',serif;font-weight:600;letter-spacing:-0.02em}
+
+    .container{max-width:1100px;margin:0 auto;padding:96px 20px}
+    .center{text-align:center}
+
+    .hero h1{font-size:3.2rem;max-width:760px;margin:0 auto 24px}
+    .hero p{max-width:720px;margin:0 auto;font-size:1.15rem;color:var(--muted)}
+
+    .kits{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:32px;margin-top:72px}
+
+    /* WHAT WE HANDLE GRID */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px;margin-top:48px}
+    .card{
+      background:var(--glass);
+      backdrop-filter:blur(14px);
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:36px 30px;
+      box-shadow:0 24px 60px rgba(0,0,0,0.10);
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+    .card:hover{transform:translateY(-4px);box-shadow:0 32px 80px rgba(0,0,0,0.14)}
+    .card h3{margin-bottom:10px}
+    .card p{color:var(--muted);font-size:0.95rem}
+
+    .kit{
+      background:var(--glass);
+      backdrop-filter:blur(14px);
+      border:1px solid var(--border);
+      border-radius:28px;
+      padding:44px 36px;
+      box-shadow:0 30px 70px rgba(0,0,0,0.12);
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+
+    .kit:hover{transform:translateY(-6px);box-shadow:0 40px 90px rgba(0,0,0,0.16)}
+
+    .kit h3{font-size:1.6rem;margin-bottom:14px}
+    .kit span{display:block;font-size:0.85rem;color:var(--muted);margin-bottom:18px}
+    .kit p{font-size:1.05rem;color:var(--muted);margin-bottom:28px}
+
+    .kit ul{list-style:none;padding-left:0;margin-bottom:32px}
+    .kit li{padding:6px 0;font-size:0.95rem;color:#333}
+
+    .cta{
+      display:inline-block;
+      padding:14px 34px;
+      border-radius:999px;
+      background:var(--accent);
+      color:#fff;
+      font-weight:500;
+      box-shadow:0 10px 30px rgba(31,61,58,0.25);
+    }
+
+    footer{background:rgba(15,15,15,0.95);color:#ccc;padding:70px 20px;text-align:center}
+    footer p{max-width:640px;margin:0 auto 14px;font-size:0.9rem;color:#aaa}
+
+    @media(max-width:640px){
+      .hero h1{font-size:2.3rem}
+      .container{padding:72px 16px}
+    }
+  </style>
+</head>
+<body>
+
+  <section class="container hero center">
+    <h1>Move-in essentials, thoughtfully curated.</h1>
+    <p>
+      Tiaash Move-In Essential Kits are designed to quietly complete a home.
+      Balanced, practical, and considered — without overdoing anything.
+    </p>
+
+    <div class="kits">
+
+      <div class="kit">
+        <h3>Essential Setup</h3>
+        <span>A complete starting point</span>
+        <p>Core elements that make a home immediately functional, comfortable, and ready for daily living.</p>
+        <ul>
+          <li>Key furniture & lighting</li>
+          <li>Basic electrical readiness</li>
+          <li>Everyday fittings</li>
+        </ul>
+      </div>
+
+      <div class="kit">
+        <h3>Comfort Setup</h3>
+        <span>A more settled home</span>
+        <p>Builds on the essentials with additions that improve comfort, usability, and visual completeness.</p>
+        <ul>
+          <li>Everything in Essential Setup</li>
+          <li>Additional functional elements</li>
+          <li>Improved overall balance</li>
+        </ul>
+      </div>
+
+      <div class="kit">
+        <h3>Complete Setup</h3>
+        <span>Nothing feels missing</span>
+        <p>A fully considered setup that feels finished, without excess or unnecessary upgrades.</p>
+        <ul>
+          <li>Everything in Comfort Setup</li>
+          <li>Durable, long-term additions</li>
+          <li>Refined everyday experience</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WHAT WE HANDLE -->
+  <section class="container">
+    <h2 class="center">What we take care of</h2>
+    <p class="center" style="max-width:720px; margin:16px auto 0; font-size:1.05rem; color:var(--muted);">
+      Tiaash operates as a quiet, reliable layer between you and everything a home needs — from the first day you move in, to long after you settle.
+    </p>
+    <div class="grid">
+      <div class="card">
+        <h3>Move‑In Essentials</h3>
+        <p>Thoughtfully curated kits and setup support that make a new home livable from day one.</p>
+      </div>
+      <div class="card">
+        <h3>Setup & Installations</h3>
+        <p>Electricals, appliances, fittings — coordinated and executed to a clear standard.</p>
+      </div>
+      <div class="card">
+        <h3>Repairs & Maintenance</h3>
+        <p>Ongoing fixes, adjustments, and care without vendor chasing or uncertainty.</p>
+      </div>
+      <div class="card">
+        <h3>Property Support</h3>
+        <p>Guidance and assistance when you want to rent out, sell, or purchase property.</p>
+      </div>
+    </div>
+  </section>
+
+
+
+    
+    <!-- GET IN TOUCH -->
+  <section class="container center">
+    <h2>Get in touch</h2>
+    <p style="max-width:680px;margin:16px auto 32px;font-size:1.05rem;color:var(--muted);">
+      If you’d like to discuss your home, understand which setup fits best, or explore next steps,
+      reach out directly. We’ll take it from there.
+    </p>
+    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+      <a href="https://wa.me/918796446427" class="cta">Chat on WhatsApp</a>
+      <a href="tel:+918796446427" class="cta" style="background:#2c2c2c;">Call us</a>
+      <a href="mailto:ssb@tiaash.com" class="cta" style="background:#555;">Email us</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>These kits are starting points. Final setup is adjusted based on home size and use.</p>
+    <p>© 2026 Tiaash Home Concierge</p>
+  </footer>
+
+</body>
+</html>

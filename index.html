@@ -1,199 +1,1204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tiaash | Move-In Essential Kits</title>
-  <meta name="description" content="Three thoughtfully curated move-in kits by Tiaash. Designed to quietly complete a home with the right essentials." />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>PropertyMate Manesar | Property Management & Move-In Services</title>
+    <meta name="description" content="Local property services in Sector 81, Manesar Gurgaon. Property assistance, move-in setup, electrician, plumber, and maintenance services from your trusted local team.">
+    <meta name="keywords" content="Manesar, Sector 81, Gurgaon, property management, move-in services, electrician, plumber, property assistance">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏠</text></svg>">
+    
+    <!-- Analytics -->
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BCDPTPRHK7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  <style>
-    :root {
-      --g1:#f5f3ef; --g2:#e8f0ee; --g3:#f1e9f4;
-      --text:#1c1c1c; --muted:#5f6368; --accent:#1f3d3a;
-      --glass:rgba(255,255,255,0.7); --border:rgba(0,0,0,0.08);
-    }
-
-    *{box-sizing:border-box;margin:0;padding:0}
-
-    body{
-      font-family:'Inter',sans-serif;
-      color:var(--text);
-      line-height:1.65;
-      background:radial-gradient(circle at 20% 20%,#f1ebe3 0%,transparent 40%),
-                 radial-gradient(circle at 80% 30%,#e2f0ee 0%,transparent 45%),
-                 radial-gradient(circle at 50% 80%,#efe6f4 0%,transparent 50%),
-                 linear-gradient(120deg,var(--g1),var(--g2),var(--g3));
-      background-size:120% 120%,140% 140%,160% 160%,300% 300%;
-      animation:gradientShift 20s ease infinite;
-    }
-
-    @keyframes gradientShift{
-      0%{background-position:0% 50%,20% 30%,60% 80%,0% 50%}
-      50%{background-position:100% 50%,80% 20%,40% 60%,100% 50%}
-      100%{background-position:0% 50%,20% 30%,60% 80%,0% 50%}
-    }
-
-    h1,h2,h3{font-family:'Playfair Display',serif;font-weight:600;letter-spacing:-0.02em}
-
-    .container{max-width:1100px;margin:0 auto;padding:96px 20px}
-    .center{text-align:center}
-
-    .hero h1{font-size:3.2rem;max-width:760px;margin:0 auto 24px}
-    .hero p{max-width:720px;margin:0 auto;font-size:1.15rem;color:var(--muted)}
-
-    .kits{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:32px;margin-top:72px}
-
-    /* WHAT WE HANDLE GRID */
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px;margin-top:48px}
-    .card{
-      background:var(--glass);
-      backdrop-filter:blur(14px);
-      border:1px solid var(--border);
-      border-radius:24px;
-      padding:36px 30px;
-      box-shadow:0 24px 60px rgba(0,0,0,0.10);
-      transition:transform .25s ease, box-shadow .25s ease;
-    }
-    .card:hover{transform:translateY(-4px);box-shadow:0 32px 80px rgba(0,0,0,0.14)}
-    .card h3{margin-bottom:10px}
-    .card p{color:var(--muted);font-size:0.95rem}
-
-    .kit{
-      background:var(--glass);
-      backdrop-filter:blur(14px);
-      border:1px solid var(--border);
-      border-radius:28px;
-      padding:44px 36px;
-      box-shadow:0 30px 70px rgba(0,0,0,0.12);
-      transition:transform .25s ease, box-shadow .25s ease;
-    }
-
-    .kit:hover{transform:translateY(-6px);box-shadow:0 40px 90px rgba(0,0,0,0.16)}
-
-    .kit h3{font-size:1.6rem;margin-bottom:14px}
-    .kit span{display:block;font-size:0.85rem;color:var(--muted);margin-bottom:18px}
-    .kit p{font-size:1.05rem;color:var(--muted);margin-bottom:28px}
-
-    .kit ul{list-style:none;padding-left:0;margin-bottom:32px}
-    .kit li{padding:6px 0;font-size:0.95rem;color:#333}
-
-    .cta{
-      display:inline-block;
-      padding:14px 34px;
-      border-radius:999px;
-      background:var(--accent);
-      color:#fff;
-      font-weight:500;
-      box-shadow:0 10px 30px rgba(31,61,58,0.25);
-    }
-
-    footer{background:rgba(15,15,15,0.95);color:#ccc;padding:70px 20px;text-align:center}
-    footer p{max-width:640px;margin:0 auto 14px;font-size:0.9rem;color:#aaa}
-
-    @media(max-width:640px){
-      .hero h1{font-size:2.3rem}
-      .container{padding:72px 16px}
-    }
-  </style>
-</head>
-<body>
-
-  <section class="container hero center">
-    <h1>Move-in essentials, thoughtfully curated.</h1>
-    <p>
-      Tiaash Move-In Essential Kits are designed to quietly complete a home.
-      Balanced, practical, and considered — without overdoing anything.
-    </p>
-
-    <div class="kits">
-
-      <div class="kit">
-        <h3>Essential Setup</h3>
-        <span>A complete starting point</span>
-        <p>Core elements that make a home immediately functional, comfortable, and ready for daily living.</p>
-        <ul>
-          <li>Key furniture & lighting</li>
-          <li>Basic electrical readiness</li>
-          <li>Everyday fittings</li>
-        </ul>
-      </div>
-
-      <div class="kit">
-        <h3>Comfort Setup</h3>
-        <span>A more settled home</span>
-        <p>Builds on the essentials with additions that improve comfort, usability, and visual completeness.</p>
-        <ul>
-          <li>Everything in Essential Setup</li>
-          <li>Additional functional elements</li>
-          <li>Improved overall balance</li>
-        </ul>
-      </div>
-
-      <div class="kit">
-        <h3>Complete Setup</h3>
-        <span>Nothing feels missing</span>
-        <p>A fully considered setup that feels finished, without excess or unnecessary upgrades.</p>
-        <ul>
-          <li>Everything in Comfort Setup</li>
-          <li>Durable, long-term additions</li>
-          <li>Refined everyday experience</li>
-        </ul>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- WHAT WE HANDLE -->
-  <section class="container">
-    <h2 class="center">What we take care of</h2>
-    <p class="center" style="max-width:720px; margin:16px auto 0; font-size:1.05rem; color:var(--muted);">
-      Tiaash operates as a quiet, reliable layer between you and everything a home needs — from the first day you move in, to long after you settle.
-    </p>
-    <div class="grid">
-      <div class="card">
-        <h3>Move‑In Essentials</h3>
-        <p>Thoughtfully curated kits and setup support that make a new home livable from day one.</p>
-      </div>
-      <div class="card">
-        <h3>Setup & Installations</h3>
-        <p>Electricals, appliances, fittings — coordinated and executed to a clear standard.</p>
-      </div>
-      <div class="card">
-        <h3>Repairs & Maintenance</h3>
-        <p>Ongoing fixes, adjustments, and care without vendor chasing or uncertainty.</p>
-      </div>
-      <div class="card">
-        <h3>Property Support</h3>
-        <p>Guidance and assistance when you want to rent out, sell, or purchase property.</p>
-      </div>
-    </div>
-  </section>
-
-
+  gtag('config', 'G-BCDPTPRHK7');
+</script>
 
     
-    <!-- GET IN TOUCH -->
-  <section class="container center">
-    <h2>Get in touch</h2>
-    <p style="max-width:680px;margin:16px auto 32px;font-size:1.05rem;color:var(--muted);">
-      If you’d like to discuss your home, understand which setup fits best, or explore next steps,
-      reach out directly. We’ll take it from there.
-    </p>
-    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
-      <a href="https://wa.me/918796446427" class="cta">Chat on WhatsApp</a>
-      <a href="tel:+918796446427" class="cta" style="background:#2c2c2c;">Call us</a>
-      <a href="mailto:ssb@tiaash.com" class="cta" style="background:#555;">Email us</a>
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "your-token-here"}'></script>
+    
+    <!-- Icons (Lucide CDN) -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        },
+                        secondary: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 4px 20px rgba(0, 0, 0, 0.08)',
+                        'card-hover': '0 12px 32px rgba(0, 0, 0, 0.12)',
+                        'modal': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                    },
+                    borderRadius: {
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+/* ===== Animated Gradient Background ===== */
+body::before {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    z-index: -2;
+    background: conic-gradient(
+        from 0deg,
+        #3b82f6,
+        #8b5cf6,
+        #22c55e,
+        #06b6d4,
+        #3b82f6
+    );
+    animation: rotateGradient 5s linear infinite;
+    filter: blur(120px);
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(6px);
+}
+
+/* Smooth rotation */
+@keyframes rotateGradient {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+</style>
+
+    
+    <style>
+        /* Custom styles to complement Tailwind */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        .honeypot {
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 0;
+            width: 0;
+            z-index: -1;
+        }
+        
+        /* Smooth transitions */
+        .service-card, .option-button, .btn {
+            transition: all 0.3s ease;
+        }
+        
+        /* Custom scrollbar */
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .modal-content::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-white">
+    <!-- Header -->
+    <header class="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50 py-4 px-4 md:px-8 lg:px-16">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                <i data-lucide="home" class="w-6 h-6 text-primary-500"></i>
+                <span>PropertyMate by Tiaash</span>
+            </a>
+            <div class="flex items-center gap-4 md:gap-6">
+                <a href="tel:+918796446427" class="text-gray-700 font-medium flex items-center gap-2 hover:text-primary-600 transition-colors">
+                    <i data-lucide="phone" class="w-5 h-5"></i>
+                    <span class="hidden md:inline">+91 8796 446427</span>
+                </a>
+                <a href="https://wa.me/918796446427" target="_blank" class="bg-green-500 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-green-600 transition-colors shadow-sm">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    <span class="hidden md:inline">WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-20">
+        <!-- Hero Section -->
+        <section class="py-12 md:py-20 px-4 md:px-8 lg:px-16">
+            <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                        Everything your property needs — before and after you move in.
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+                        For renters, owners, and buyers. Property help, move-in setup, and daily services — handled by one local team in Manesar ,Gurgaon & NCR.
+                    </p>
+                    <div class="pt-4">
+                        <a href="https://wa.me/918796446427?text=Hi%20PropertyMate,%20I%20need%20help%20with%20my%20property%20in%20Manesar" 
+                           target="_blank" 
+                           class="inline-flex items-center gap-3 bg-primary-500 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-primary-600 transition-colors shadow-lg hover:shadow-xl">
+                            <i data-lucide="message-circle" class="w-6 h-6"></i>
+                            Talk to us on WhatsApp
+                        </a>
+                        <p class="mt-3 text-sm text-gray-500">Typically reply within 15 minutes</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <!-- Modern apartment building in Manesar, clean professional photography, Indian urban residential area -->
+                    <img src="./1.png" alt="Modern apartment building in Manesar, Sector 81 - Clean professional photography of Indian urban residential area" class="w-full rounded-2xl shadow-2xl object-cover aspect-[4/3]">
+                    <div class="absolute -bottom-4 -left-4 bg-white p-4 rounded-xl shadow-card">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-primary-100 p-3 rounded-lg">
+                                <i data-lucide="shield-check" class="w-6 h-6 text-primary-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Trusted Local Team</p>
+                                <p class="text-sm text-gray-600">Serving Manesar since 2022</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="py-16 px-4 md:px-8 lg:px-16 bg-gray-50" style="background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Services in Manesar</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">Complete property solutions for residents of Sector 81 and surrounding areas</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Card 1: Property Assistance -->
+                    <article class="bg-white rounded-2xl shadow-card hover:shadow-card-hover overflow-hidden border border-gray-100 transition-all duration-300">
+                        <!-- Professional Indian real estate agent showing property to clients, modern apartment interior -->
+                        <img src="./2.png" alt="Professional property assistance in Manesar - Real estate agent showing modern apartment to clients" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="bg-blue-100 p-3 rounded-lg">
+                                    <i data-lucide="building" class="w-6 h-6 text-blue-600"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900">Property Assistance</h3>
+                            </div>
+                            <p class="text-gray-600 mb-4">
+                                <b>Buy · Rent · Sell · Manage</b><br>
+                                Listings, site visits, paperwork, coordination for properties in Manesar and Gurgaon.
+                            </p>
+                            
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-700">For property owners & seekers</span>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-700">End-to-end paperwork handling</span>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-700">Verified listings only</span>
+                                </div>
+                            </div>
+                            
+                            <button onclick="openModal('property-modal')" class="w-full bg-gray-50 text-gray-900 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
+                                <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+                                Get started
+                            </button>
+                            <p class="text-center text-xs text-gray-500 mt-2">Quick 3-step process</p>
+                        </div>
+                    </article>
+
+                    <!-- Card 2: Move-In & Setup -->
+                    <article class="bg-white rounded-2xl shadow-card hover:shadow-card-hover overflow-hidden border border-gray-100 transition-all duration-300">
+                        <!-- Modern Indian apartment interior setup, furniture arrangement, move-in ready home -->
+                        <img src="./3.png" alt="Move-in setup service in Manesar - Modern Indian apartment interior with furniture arrangement" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="bg-purple-100 p-3 rounded-lg">
+                                    <i data-lucide="package" class="w-6 h-6 text-purple-600"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900">Move-In & Setup</h3>
+                            </div>
+                            <p class="text-gray-600 mb-4">
+                                Essentials · Décor · Smart upgrades<br>
+                                From empty house to live-ready in Sector 81, Manesar.
+                            </p>
+                            
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-700">For new residents & renters</span>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-700">Complete home setup packages</span>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-700">Smart home upgrades available</span>
+                                </div>
+                            </div>
+                            
+                            <button onclick="openModal('movein-modal')" class="w-full bg-gray-50 text-gray-900 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
+                                <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                                View setup options
+                            </button>
+                            <p class="text-center text-xs text-gray-500 mt-2">Custom packages available</p>
+                        </div>
+                    </article>
+
+                    <!-- Card 3: Daily Services -->
+                    <article class="bg-white rounded-2xl shadow-card hover:shadow-card-hover overflow-hidden border border-gray-100 transition-all duration-300">
+                        <!-- Indian electrician and plumber working in modern apartment, professional service personnel -->
+                        <img src="./4.png" alt="Daily maintenance services in Manesar - Professional electrician and plumber working in modern apartment" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="bg-green-100 p-3 rounded-lg">
+                                    <i data-lucide="wrench" class="w-6 h-6 text-green-600"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900">Daily Services</h3>
+                            </div>
+                            <p class="text-gray-600 mb-4">
+                                Electrician · Plumber · Maintenance<br>
+                                Reliable help when things break. Available throughout Manesar Gurgaon.
+                            </p>
+                            
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-700">For existing residents</span>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-700">Same-day service available</span>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-700">Verified service professionals</span>
+                                </div>
+                            </div>
+                            
+                            <button onclick="openModal('services-modal')" class="w-full bg-gray-50 text-gray-900 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
+                                <i data-lucide="calendar-clock" class="w-5 h-5"></i>
+                                Book service now
+                            </button>
+                            <p class="text-center text-xs text-gray-500 mt-2">Quick booking · Same-day available</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Section -->
+        <section class="py-16 px-4 md:px-8 lg:px-16">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Choose PropertyMate?</h2>
+                    <p class="text-gray-600 max-w-3xl mx-auto">Local expertise meets professional service delivery</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center p-6">
+                        <div class="bg-blue-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="map-pin" class="w-8 h-8 text-blue-600"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Local Experts</h3>
+                        <p class="text-gray-600 text-sm">Deep knowledge of Gurgram NCR properties and market</p>
+                    </div>
+                    
+                    <div class="text-center p-6">
+                        <div class="bg-green-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="clock" class="w-8 h-8 text-green-600"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Quick Response</h3>
+                        <p class="text-gray-600 text-sm">Typically respond within 15 minutes on WhatsApp</p>
+                    </div>
+                    
+                    <div class="text-center p-6">
+                        <div class="bg-purple-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="shield-check" class="w-8 h-8 text-purple-600"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Verified Partners</h3>
+                        <p class="text-gray-600 text-sm">All service professionals background-checked</p>
+                    </div>
+                    
+                    <div class="text-center p-6">
+                        <div class="bg-orange-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="phone-call" class="w-8 h-8 text-orange-600"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Single Point Contact</h3>
+                        <p class="text-gray-600 text-sm">One team handles all your property needs</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-12 pb-8 px-4 md:px-8 lg:px-16">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <i data-lucide="home" class="w-6 h-6 text-white"></i>
+                        <h3 class="text-xl font-bold">PropertyMate Manesar</h3>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Your local property partner in Sector 81, Manesar Gurgaon.</p>
+                    <div class="flex gap-4">
+                        <a href="tel:+918796446427" class="text-gray-300 hover:text-white transition-colors">
+                            <i data-lucide="phone" class="w-5 h-5"></i>
+                        </a>
+                        <a href="https://wa.me/918796446427" target="_blank" class="text-gray-300 hover:text-white transition-colors">
+                            <i data-lucide="message-circle" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Contact Us</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="phone" class="w-4 h-4 text-gray-400"></i>
+                            <a href="tel:+918796446427" class="text-gray-300 hover:text-white transition-colors">+91 87964 46427</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="message-circle" class="w-4 h-4 text-gray-400"></i>
+                            <a href="https://wa.me/918796446427" target="_blank" class="text-gray-300 hover:text-white transition-colors">WhatsApp Chat</a>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-gray-400 mt-1"></i>
+                            <a href="https://www.google.com/maps/@28.3878039,76.9422016,20.49z?authuser=0&entry=ttu&g_ep=EgoyMDI2MDEyOC4wIKXMDSoASAFQAw%3D%3D" 
+   target="_blank" 
+   class="text-gray-300 hover:text-white transition-colors underline">
+   open in Google Maps
+</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Services</h4>
+                    <ul class="space-y-3">
+                        <li><button onclick="openModal('property-modal')" class="text-gray-300 hover:text-white transition-colors text-left">Property Assistance</button></li>
+                        <li><button onclick="openModal('movein-modal')" class="text-gray-300 hover:text-white transition-colors text-left">Move-In Setup</button></li>
+                        <li><button onclick="openModal('services-modal')" class="text-gray-300 hover:text-white transition-colors text-left">Daily Services</button></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Service Areas</h4>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i>
+                             Manesar
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i>
+                            Gurgaon
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i>
+                            Nearby residential areas
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center">
+                <p class="text-gray-400 text-sm">© 2024 PropertyMate Manesar. Local property services in Sector 81, Manesar Gurgaon.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <!-- Property Assistance Modal -->
+    <div id="property-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="property-modal-title">
+        <div class="modal-content bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-modal">
+            <div class="sticky top-0 bg-white border-b border-gray-200 p-6 z-10">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 id="property-modal-title" class="text-2xl font-bold text-gray-900">Property Assistance</h3>
+                        <p class="text-gray-600 text-sm mt-1">Complete property solutions for Manesar</p>
+                    </div>
+                    <button onclick="closeModal('property-modal')" class="text-gray-400 hover:text-gray-600 p-2 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Close modal">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                
+                <!-- Progress Steps -->
+                <div class="flex items-center gap-2 mt-6">
+                    <div class="flex-1">
+                        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div id="property-progress" class="h-full bg-primary-500 rounded-full transition-all duration-300" style="width: 33%"></div>
+                        </div>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700"><span id="property-step-current">1</span>/3</span>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <form id="property-form">
+                    <!-- Step 1 -->
+                    <div class="form-step active" data-step="1">
+                        <div class="mb-8">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-3">
+                                <div class="bg-blue-100 p-2 rounded-lg">
+                                    <i data-lucide="user" class="w-5 h-5 text-blue-600"></i>
+                                </div>
+                                Tell us about yourself
+                            </h4>
+                            <div class="grid gap-4">
+                                <button type="button" class="option-button p-5 text-left border-2 border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all" onclick="selectOption(this, 'owner')">
+                                    <div class="flex items-start gap-4">
+                                        <div class="bg-blue-100 p-3 rounded-lg">
+                                            <i data-lucide="home" class="w-6 h-6 text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-semibold text-gray-900">Property Owner</div>
+                                            <p class="text-sm text-gray-600 mt-1">I own a property in Manesar</p>
+                                        </div>
+                                    </div>
+                                </button>
+                                
+                                <button type="button" class="option-button p-5 text-left border-2 border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all" onclick="selectOption(this, 'renter')">
+                                    <div class="flex items-start gap-4">
+                                        <div class="bg-green-100 p-3 rounded-lg">
+                                            <i data-lucide="key" class="w-6 h-6 text-green-600"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-semibold text-gray-900">Looking to Rent</div>
+                                            <p class="text-sm text-gray-600 mt-1">I want to rent a flat in Sector 81</p>
+                                        </div>
+                                    </div>
+                                </button>
+                                
+                                <button type="button" class="option-button p-5 text-left border-2 border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all" onclick="selectOption(this, 'buyer')">
+                                    <div class="flex items-start gap-4">
+                                        <div class="bg-purple-100 p-3 rounded-lg">
+                                            <i data-lucide="trending-up" class="w-6 h-6 text-purple-600"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-semibold text-gray-900">Buy or Sell</div>
+                                            <p class="text-sm text-gray-600 mt-1">I want to buy or sell property</p>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button type="button" class="btn-primary px-8 py-3 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-colors flex items-center gap-3" onclick="nextStep('property-form', 2)">
+                                Next
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2 -->
+                    <div class="form-step" data-step="2">
+                        <div class="mb-8">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-3">
+                                <div class="bg-blue-100 p-2 rounded-lg">
+                                    <i data-lucide="help-circle" class="w-5 h-5 text-blue-600"></i>
+                                </div>
+                                What do you need help with?
+                            </h4>
+                            <div class="grid gap-4" id="property-step2-options">
+                                <!-- Options populated by JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button type="button" class="btn-secondary px-8 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors flex items-center gap-3" onclick="prevStep('property-form', 1)">
+                                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                                Back
+                            </button>
+                            <button type="button" class="btn-primary px-8 py-3 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-colors flex items-center gap-3" onclick="nextStep('property-form', 3)">
+                                Next
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3 -->
+                    <div class="form-step" data-step="3">
+                        <div class="mb-8">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-3">
+                                <div class="bg-blue-100 p-2 rounded-lg">
+                                    <i data-lucide="contact" class="w-5 h-5 text-blue-600"></i>
+                                </div>
+                                Your contact details
+                            </h4>
+                            <div class="space-y-5">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
+                                    <input type="text" id="property-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" required placeholder="Enter your full name">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                                    <input type="tel" id="property-phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" required placeholder="+91 12345 67890">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Honeypot field -->
+                        <input type="text" class="honeypot" name="website" autocomplete="off">
+                        
+                        <!-- Cloudflare Turnstile placeholder -->
+                        <div id="cf-turnstile" style="display: none;"></div>
+                        
+                        <div class="flex justify-between">
+                            <button type="button" class="btn-secondary px-8 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors flex items-center gap-3" onclick="prevStep('property-form', 2)">
+                                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                                Back
+                            </button>
+                            <button type="button" class="btn-primary px-8 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center gap-3" onclick="submitPropertyForm()">
+                                <i data-lucide="message-circle" class="w-5 h-5"></i>
+                                Continue on WhatsApp
+                            </button>
+                        </div>
+                        
+                        <p class="text-sm text-gray-500 text-center mt-6">We'll connect you directly with our property expert</p>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-  </section>
 
-  <footer>
-    <p>These kits are starting points. Final setup is adjusted based on home size and use.</p>
-    <p>© 2026 Tiaash Home Concierge</p>
-  </footer>
+    <!-- Move-In Modal -->
+    <div id="movein-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="movein-modal-title">
+        <div class="modal-content bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-modal">
+            <div class="sticky top-0 bg-white border-b border-gray-200 p-6 z-10">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 id="movein-modal-title" class="text-2xl font-bold text-gray-900">Move-In & Setup</h3>
+                        <p class="text-gray-600 text-sm mt-1">From empty house to home in Sector 81</p>
+                    </div>
+                    <button onclick="closeModal('movein-modal')" class="text-gray-400 hover:text-gray-600 p-2 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Close modal">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <form id="movein-form">
+                    <!-- Step 1 -->
+                    <div class="form-step active" data-step="1">
+                        <div class="mb-8">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-3">
+                                <div class="bg-purple-100 p-2 rounded-lg">
+                                    <i data-lucide="package" class="w-5 h-5 text-purple-600"></i>
+                                </div>
+                                Choose your setup type
+                            </h4>
+                            <div class="grid gap-4">
+                                <button type="button" class="option-button p-5 text-left border-2 border-gray-200 rounded-xl hover:border-purple-300 hover:bg-purple-50 transition-all" onclick="selectOption(this, 'quick')">
+                                    <div class="flex items-start gap-4">
+                                        <div class="bg-blue-100 p-3 rounded-lg">
+                                            <i data-lucide="zap" class="w-6 h-6 text-blue-600"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="font-semibold text-gray-900">Quick Move-In</div>
+                                            <p class="text-sm text-gray-600 mt-1">Essentials package for immediate move-in</p>
+                                            <div class="mt-3 flex items-center gap-4 text-xs">
+                                                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">3-5 days</span>
+                                                <span class="text-gray-500">Basic furniture + appliances</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+                                
+                                <button type="button" class="option-button p-5 text-left border-2 border-gray-200 rounded-xl hover:border-purple-300 hover:bg-purple-50 transition-all" onclick="selectOption(this, 'comfort')">
+                                    <div class="flex items-start gap-4">
+                                        <div class="bg-green-100 p-3 rounded-lg">
+                                            <i data-lucide="sparkles" class="w-6 h-6 text-green-600"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="font-semibold text-gray-900">Comfort Setup</div>
+                                            <p class="text-sm text-gray-600 mt-1">Essentials + selected upgrades</p>
+                                            <div class="mt-3 flex items-center gap-4 text-xs">
+                                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full">5-7 days</span>
+                                                <span class="text-gray-500">Upgrades + smart features</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+                                
+                                <button type="button" class="option-button p-5 text-left border-2 border-gray-200 rounded-xl hover:border-purple-300 hover:bg-purple-50 transition-all" onclick="selectOption(this, 'custom')">
+                                    <div class="flex items-start gap-4">
+                                        <div class="bg-purple-100 p-3 rounded-lg">
+                                            <i data-lucide="palette" class="w-6 h-6 text-purple-600"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="font-semibold text-gray-900">Fully Custom</div>
+                                            <p class="text-sm text-gray-600 mt-1">Complete interior design consultation</p>
+                                            <div class="mt-3 flex items-center gap-4 text-xs">
+                                                <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">7-14 days</span>
+                                                <span class="text-gray-500">Full customization + design</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button type="button" class="btn-primary px-8 py-3 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-colors flex items-center gap-3" onclick="nextStep('movein-form', 2)">
+                                Next
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2 -->
+                    <div class="form-step" data-step="2">
+                        <div class="mb-8">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-3">
+                                <div class="bg-purple-100 p-2 rounded-lg">
+                                    <i data-lucide="contact" class="w-5 h-5 text-purple-600"></i>
+                                </div>
+                                Your details
+                            </h4>
+                            
+                            <div id="movein-addons" class="mb-8 p-5 bg-purple-50 rounded-xl border border-purple-100" style="display: none;">
+                                <h5 class="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                    <i data-lucide="plus-circle" class="w-5 h-5 text-purple-600"></i>
+                                    Available Add-ons
+                                </h5>
+                                <div class="grid gap-3">
+                                    <label class="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-purple-300 transition-colors cursor-pointer">
+                                        <input type="checkbox" name="addons" value="smart-lights" class="w-5 h-5 text-purple-600 rounded">
+                                        <div class="flex-1">
+                                            <div class="font-medium text-gray-900">Smart lighting setup</div>
+                                            <p class="text-sm text-gray-600">Automated lights with app control</p>
+                                        </div>
+                                    </label>
+                                    <label class="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-purple-300 transition-colors cursor-pointer">
+                                        <input type="checkbox" name="addons" value="modular-kitchen" class="w-5 h-5 text-purple-600 rounded">
+                                        <div class="flex-1">
+                                            <div class="font-medium text-gray-900">Modular kitchen essentials</div>
+                                            <p class="text-sm text-gray-600">Modern kitchen setup with storage</p>
+                                        </div>
+                                    </label>
+                                    <label class="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-purple-300 transition-colors cursor-pointer">
+                                        <input type="checkbox" name="addons" value="wardrobe" class="w-5 h-5 text-purple-600 rounded">
+                                        <div class="flex-1">
+                                            <div class="font-medium text-gray-900">Built-in wardrobe</div>
+                                            <p class="text-sm text-gray-600">Custom wardrobe with sliding doors</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-5">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
+                                    <input type="text" id="movein-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" required placeholder="Enter your full name">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                                    <input type="tel" id="movein-phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" required placeholder="+91 12345 67890">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Honeypot field -->
+                        <input type="text" class="honeypot" name="website" autocomplete="off">
+                        
+                        <!-- Cloudflare Turnstile placeholder -->
+                        <div id="cf-turnstile" style="display: none;"></div>
+                        
+                        <div class="flex justify-between">
+                            <button type="button" class="btn-secondary px-8 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors flex items-center gap-3" onclick="prevStep('movein-form', 1)">
+                                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                                Back
+                            </button>
+                            <button type="button" class="btn-primary px-8 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center gap-3" onclick="submitMoveinForm()">
+                                <i data-lucide="message-circle" class="w-5 h-5"></i>
+                                Get details on WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+    <!-- Daily Services Modal -->
+    <div id="services-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="services-modal-title">
+        <div class="modal-content bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-modal">
+            <div class="sticky top-0 bg-white border-b border-gray-200 p-6 z-10">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 id="services-modal-title" class="text-2xl font-bold text-gray-900">Daily Services</h3>
+                        <p class="text-gray-600 text-sm mt-1">Reliable help for your home in Manesar</p>
+                    </div>
+                    <button onclick="closeModal('services-modal')" class="text-gray-400 hover:text-gray-600 p-2 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Close modal">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <form id="services-form">
+                    <div class="mb-8">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-3">
+                            <div class="bg-green-100 p-2 rounded-lg">
+                                <i data-lucide="wrench" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                            What service do you need?
+                        </h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button type="button" class="option-button p-5 text-left border-2 border-gray-200 rounded-xl hover:border-green-300 hover:bg-green-50 transition-all" onclick="selectOption(this, 'electrician')">
+                                <div class="flex flex-col items-center text-center gap-3">
+                                    <div class="bg-yellow-100 p-4 rounded-xl">
+                                        <i data-lucide="zap" class="w-8 h-8 text-yellow-600"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-gray-900">Electrician</div>
+                                        <p class="text-sm text-gray-600 mt-1">Wiring, fixtures, repairs</p>
+                                    </div>
+                                </div>
+                            </button>
+                            
+                            <button type="button" class="option-button p-5 text-left border-2 border-gray-200 rounded-xl hover:border-green-300 hover:bg-green-50 transition-all" onclick="selectOption(this, 'plumber')">
+                                <div class="flex flex-col items-center text-center gap-3">
+                                    <div class="bg-blue-100 p-4 rounded-xl">
+                                        <i data-lucide="droplet" class="w-8 h-8 text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-gray-900">Plumber</div>
+                                        <p class="text-sm text-gray-600 mt-1">Leaks, installation, repairs</p>
+                                    </div>
+                                </div>
+                            </button>
+                            
+                            <button type="button" class="option-button p-5 text-left border-2 border-gray-200 rounded-xl hover:border-green-300 hover:bg-green-50 transition-all" onclick="selectOption(this, 'maid')">
+                                <div class="flex flex-col items-center text-center gap-3">
+                                    <div class="bg-pink-100 p-4 rounded-xl">
+                                        <i data-lucide="sparkles" class="w-8 h-8 text-pink-600"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-gray-900">House Maid</div>
+                                        <p class="text-sm text-gray-600 mt-1">Cleaning, daily help</p>
+                                    </div>
+                                </div>
+                            </button>
+                            
+                            <button type="button" class="option-button p-5 text-left border-2 border-gray-200 rounded-xl hover:border-green-300 hover:bg-green-50 transition-all" onclick="selectOption(this, 'other')">
+                                <div class="flex flex-col items-center text-center gap-3">
+                                    <div class="bg-gray-100 p-4 rounded-xl">
+                                        <i data-lucide="tool" class="w-8 h-8 text-gray-600"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-gray-900">Other Maintenance</div>
+                                        <p class="text-sm text-gray-600 mt-1">Carpentry, painting, etc.</p>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-5 mb-8">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
+                            <input type="text" id="services-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all" required placeholder="Enter your full name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                            <input type="tel" id="services-phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all" required placeholder="+91 12345 67890">
+                        </div>
+                    </div>
+                    
+                    <!-- Honeypot field -->
+                    <input type="text" class="honeypot" name="website" autocomplete="off">
+                    
+                    <!-- Cloudflare Turnstile placeholder -->
+                    <div id="cf-turnstile" style="display: none;"></div>
+                    
+                    <div class="flex justify-center">
+                        <button type="button" class="btn-primary px-8 py-4 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center gap-3 w-full justify-center" onclick="submitServicesForm()">
+                            <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                            Request service on WhatsApp
+                        </button>
+                    </div>
+                    
+                    <p class="text-sm text-gray-500 text-center mt-4">Same-day service available for urgent requests</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Modal management
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            modal.setAttribute('aria-hidden', 'false');
+        }
+        
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            modal.setAttribute('aria-hidden', 'true');
+            resetForm(modalId.replace('-modal', '-form'));
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                event.target.setAttribute('aria-hidden', 'true');
+                resetForm(event.target.id.replace('-modal', '-form'));
+            }
+        }
+        
+        // Form step management
+        function nextStep(formId, step) {
+            const form = document.getElementById(formId);
+            const currentStep = form.querySelector('.form-step.active');
+            const nextStep = form.querySelector(`[data-step="${step}"]`);
+            
+            if (currentStep) {
+                currentStep.classList.remove('active');
+            }
+            if (nextStep) {
+                nextStep.classList.add('active');
+            }
+            
+            // Update progress bar for property modal
+            if (formId === 'property-form') {
+                const progress = document.getElementById('property-progress');
+                const stepIndicator = document.getElementById('property-step-current');
+                if (progress && stepIndicator) {
+                    progress.style.width = `${(step / 3) * 100}%`;
+                    stepIndicator.textContent = step;
+                }
+            }
+            
+            // Special handling for move-in form
+            if (formId === 'movein-form' && step === 2) {
+                const selectedOption = form.querySelector('.option-button.selected');
+                if (selectedOption && selectedOption.getAttribute('onclick').includes("'comfort'")) {
+                    document.getElementById('movein-addons').style.display = 'block';
+                } else {
+                    document.getElementById('movein-addons').style.display = 'none';
+                }
+            }
+        }
+        
+        function prevStep(formId, step) {
+            nextStep(formId, step);
+        }
+        
+        // Option selection
+        function selectOption(button, value) {
+            // Remove selection from siblings
+            const siblings = button.parentElement.querySelectorAll('.option-button');
+            siblings.forEach(sib => {
+                sib.classList.remove('selected');
+                sib.style.borderColor = '#e5e7eb';
+                sib.style.backgroundColor = '';
+            });
+            
+            // Add selection to clicked button
+            button.classList.add('selected');
+            button.style.borderColor = button.style.borderColor === 'rgb(59, 130, 246)' ? '#e5e7eb' : '#3b82f6';
+            
+            // Store the value
+            button.dataset.selectedValue = value;
+            
+            // Update step 2 options for property form
+            if (button.closest('#property-form') && button.closest('[data-step="1"]')) {
+                updatePropertyStep2(value);
+            }
+        }
+        
+        // Update property form step 2 based on step 1 selection
+        function updatePropertyStep2(selection) {
+            const optionsContainer = document.getElementById('property-step2-options');
+            optionsContainer.innerHTML = '';
+            
+            let options = [];
+            
+            switch(selection) {
+                case 'owner':
+                    options = [
+                        { value: 'movein', label: 'Moving In', desc: 'I want to move into my property', icon: 'move', color: 'blue' },
+                        { value: 'rentout', label: 'Rent Out', desc: 'I want to rent out my property', icon: 'dollar-sign', color: 'green' },
+                        { value: 'exploring', label: 'Exploring Options', desc: 'Not sure yet, need advice', icon: 'compass', color: 'purple' }
+                    ];
+                    break;
+                case 'renter':
+                    options = [
+                        { value: '1bhk', label: '1 BHK', desc: 'Looking for 1 bedroom flat', icon: 'home', color: 'blue' },
+                        { value: '2bhk', label: '2 BHK', desc: 'Looking for 2 bedroom flat', icon: 'home', color: 'green' },
+                        { value: '3bhk', label: '3 BHK', desc: 'Looking for 3 bedroom flat', icon: 'home', color: 'purple' },
+                        { value: 'studio', label: 'Studio', desc: 'Looking for studio apartment', icon: 'layout', color: 'yellow' }
+                    ];
+                    break;
+                case 'buyer':
+                    options = [
+                        { value: 'buy', label: 'Buy Property', desc: 'Looking to purchase property', icon: 'shopping-bag', color: 'green' },
+                        { value: 'sell', label: 'Sell Property', desc: 'Looking to sell property', icon: 'trending-up', color: 'blue' },
+                        { value: 'invest', label: 'Invest', desc: 'Looking for investment property', icon: 'pie-chart', color: 'purple' }
+                    ];
+                    break;
+            }
+            
+            options.forEach(opt => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'option-button p-5 text-left border-2 border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all';
+                button.innerHTML = `
+                    <div class="flex items-start gap-4">
+                        <div class="bg-${opt.color}-100 p-3 rounded-lg">
+                            <i data-lucide="${opt.icon}" class="w-6 h-6 text-${opt.color}-600"></i>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-900">${opt.label}</div>
+                            <p class="text-sm text-gray-600 mt-1">${opt.desc}</p>
+                        </div>
+                    </div>
+                `;
+                button.onclick = function() { 
+                    selectOption(this, opt.value);
+                    lucide.createIcons();
+                };
+                optionsContainer.appendChild(button);
+            });
+            
+            // Re-initialize icons in the new buttons
+            lucide.createIcons();
+        }
+        
+        // Form submission
+        function submitPropertyForm() {
+            const name = document.getElementById('property-name').value.trim();
+            const phone = document.getElementById('property-phone').value.trim();
+            const step1Option = document.querySelector('#property-form [data-step="1"] .option-button.selected');
+            const step2Option = document.querySelector('#property-form [data-step="2"] .option-button.selected');
+            
+            if (!name || !phone || !step1Option || !step2Option) {
+                alert('Please fill in all details');
+                return;
+            }
+            
+            // Honeypot check
+            const honeypot = document.querySelector('#property-form .honeypot');
+            if (honeypot && honeypot.value.trim() !== '') {
+                return; // Silent fail for bots
+            }
+            
+            const step1Value = step1Option.dataset.selectedValue;
+            const step2Value = step2Option.dataset.selectedValue;
+            
+            let message = `Hi PropertyMate, I need property assistance.%0A%0A`;
+            message += `*Name:* ${name}%0A`;
+            message += `*Phone:* ${phone}%0A`;
+            message += `*Type:* ${step1Value}%0A`;
+            message += `*Need:* ${step2Value}%0A`;
+            message += `*Source:* Property Assistance Form`;
+            
+            window.open(`https://wa.me/918796446427?text=${message}`, '_blank');
+            closeModal('property-modal');
+        }
+        
+        function submitMoveinForm() {
+            const name = document.getElementById('movein-name').value.trim();
+            const phone = document.getElementById('movein-phone').value.trim();
+            const step1Option = document.querySelector('#movein-form [data-step="1"] .option-button.selected');
+            
+            if (!name || !phone || !step1Option) {
+                alert('Please fill in all details');
+                return;
+            }
+            
+            // Honeypot check
+            const honeypot = document.querySelector('#movein-form .honeypot');
+            if (honeypot && honeypot.value.trim() !== '') {
+                return; // Silent fail for bots
+            }
+            
+            const setupType = step1Option.dataset.selectedValue;
+            const addons = Array.from(document.querySelectorAll('#movein-form input[name="addons"]:checked'))
+                               .map(cb => cb.value)
+                               .join(', ');
+            
+            let message = `Hi PropertyMate, I need move-in setup help.%0A%0A`;
+            message += `*Name:* ${name}%0A`;
+            message += `*Phone:* ${phone}%0A`;
+            message += `*Setup Type:* ${setupType}%0A`;
+            if (addons) {
+                message += `*Add-ons:* ${addons}%0A`;
+            }
+            message += `*Source:* Move-In Setup Form`;
+            
+            window.open(`https://wa.me/918796446427?text=${message}`, '_blank');
+            closeModal('movein-modal');
+        }
+        
+        function submitServicesForm() {
+            const name = document.getElementById('services-name').value.trim();
+            const phone = document.getElementById('services-phone').value.trim();
+            const serviceOption = document.querySelector('#services-form .option-button.selected');
+            
+            if (!name || !phone || !serviceOption) {
+                alert('Please fill in all details');
+                return;
+            }
+            
+            // Honeypot check
+            const honeypot = document.querySelector('#services-form .honeypot');
+            if (honeypot && honeypot.value.trim() !== '') {
+                return; // Silent fail for bots
+            }
+            
+            const serviceType = serviceOption.dataset.selectedValue;
+            
+            let message = `Hi PropertyMate, I need daily service help.%0A%0A`;
+            message += `*Name:* ${name}%0A`;
+            message += `*Phone:* ${phone}%0A`;
+            message += `*Service:* ${serviceType}%0A`;
+            message += `*Source:* Daily Services Form`;
+            
+            window.open(`https://wa.me/918796446427?text=${message}`, '_blank');
+            closeModal('services-modal');
+        }
+        
+        // Form reset
+        function resetForm(formId) {
+            const form = document.getElementById(formId);
+            if (!form) return;
+            
+            // Reset all steps to first
+            const steps = form.querySelectorAll('.form-step');
+            steps.forEach((step, index) => {
+                step.classList.toggle('active', index === 0);
+            });
+            
+            // Reset progress bar for property form
+            if (formId === 'property-form') {
+                const progress = document.getElementById('property-progress');
+                const stepIndicator = document.getElementById('property-step-current');
+                if (progress) progress.style.width = '33%';
+                if (stepIndicator) stepIndicator.textContent = '1';
+            }
+            
+            // Clear selections
+            form.querySelectorAll('.option-button').forEach(btn => {
+                btn.classList.remove('selected');
+                btn.removeAttribute('data-selected-value');
+                btn.style.borderColor = '';
+                btn.style.backgroundColor = '';
+            });
+            
+            // Clear inputs
+            form.querySelectorAll('input[type="text"], input[type="tel"]').forEach(input => {
+                input.value = '';
+            });
+            
+            form.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+            
+            // Hide addons section
+            const addonsSection = document.getElementById('movein-addons');
+            if (addonsSection) {
+                addonsSection.style.display = 'none';
+            }
+            
+            // Clear property step 2 options
+            const step2Options = document.getElementById('property-step2-options');
+            if (step2Options) {
+                step2Options.innerHTML = '';
+            }
+        }
+        
+        // Keyboard accessibility for modals
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const openModal = document.querySelector('.modal[style*="display: flex"]');
+                if (openModal) {
+                    closeModal(openModal.id);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
