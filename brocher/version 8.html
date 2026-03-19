@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>TIAASH · Design Wizard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #eef1f7;
+            color: #1a2639;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .top-bar {
+            background: #0b1a2e;
+            color: white;
+            padding: 0.7rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 20;
+        }
+
+        .menu-toggle {
+            background: #1f334a;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            padding: 0.2rem 0.7rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .top-estimate {
+            background: #1d3347;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #e3cba4;
+        }
+
+        .main-row {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .room-nav {
+            width: 260px;
+            background: #0f1f32;
+            color: #e6edf5;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem 0;
+            overflow-y: auto;
+            transition: transform 0.2s ease;
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 15;
+            transform: translateX(-100%);
+            box-shadow: 4px 0 15px rgba(0,0,0,0.2);
+        }
+
+        .room-nav.open {
+            transform: translateX(0);
+        }
+
+        .room-nav h3 {
+            font-weight: 400;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #8a9bb5;
+            margin: 0 1rem 0.75rem 1rem;
+        }
+
+        .room-btn {
+            background: transparent;
+            border: none;
+            text-align: left;
+            padding: 0.8rem 1.5rem;
+            color: #bfd0e6;
+            font-size: 0.95rem;
+            font-weight: 400;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .room-btn.active {
+            background: #1f334a;
+            color: white;
+            border-left: 3px solid #c7a35c;
+            font-weight: 500;
+        }
+
+        .room-btn .selected-badge {
+            display: none;
+            color: #c7a35c;
+            font-size: 0.8rem;
+        }
+
+        .room-btn.active .selected-badge {
+            display: inline;
+        }
+
+        .room-btn .include-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .room-btn .include-toggle input {
+            width: 16px;
+            height: 16px;
+            accent-color: #c7a35c;
+        }
+
+        .boq-panel {
+            flex: 1;
+            background: #f0f2f8;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 1rem 1rem 0 1rem;
+            width: 100%;
+        }
+
+        .room-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .room-header h2 {
+            font-weight: 500;
+            font-size: 1.5rem;
+            color: #111c2e;
+        }
+
+        .step-indicator {
+            background: #d9e0eb;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1f2b3f;
+        }
+
+        .boq-table-container {
+            background: white;
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+            overflow-x: auto;
+            overflow-y: auto;
+            flex: 1;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            min-width: 700px;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem 0.5rem 0.6rem 0.5rem;
+            color: #5c6f87;
+            font-weight: 500;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid #e2e7f0;
+        }
+
+        td {
+            padding: 0.7rem 0.4rem;
+            border-bottom: 1px solid #edf2f9;
+            vertical-align: middle;
+        }
+
+        .include-checkbox {
+            transform: scale(1.2);
+            accent-color: #c7a35c;
+        }
+
+        input, select {
+            background: #f8fafd;
+            border: 1px solid #d8e0ec;
+            border-radius: 8px;
+            padding: 0.4rem 0.3rem;
+            font-size: 0.75rem;
+            width: 100%;
+            min-width: 50px;
+        }
+
+        .spec-select {
+            min-width: 90px;
+        }
+
+        .qty-input {
+            width: 70px;
+        }
+
+        .explore-btn {
+            background: none;
+            border: 1px solid #b3c2d6;
+            border-radius: 30px;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.65rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .estimate-bar {
+            background: #0e1f2f;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.7rem 1.2rem;
+            font-size: 1rem;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .estimate-amount {
+            font-weight: 700;
+            font-size: 1.4rem;
+            background: #1d3347;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            color: #e3cba4;
+        }
+
+        /* Admin panel - hidden by default, only accessible via special URL or localStorage flag */
+        .admin-panel {
+            position: fixed;
+            bottom: 80px;
+            right: 10px;
+            width: 280px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            padding: 1.2rem 1rem;
+            z-index: 30;
+            border: 1px solid #c0cbd9;
+            display: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .admin-panel.visible {
+            display: block;
+        }
+
+        .admin-toggle {
+            position: fixed;
+            bottom: 140px;
+            right: 15px;
+            background: #2c4060;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 0.4rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            z-index: 35;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: none; /* Hidden by default */
+        }
+
+        .admin-visible .admin-toggle {
+            display: block;
+        }
+
+        .var-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .var-label {
+            font-size: 0.7rem;
+            background: #f0f4fc;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+        }
+
+        .var-input {
+            width: 90px;
+            text-align: right;
+            font-size: 0.7rem;
+        }
+
+        .summary-view {
+            background: white;
+            height: 100%;
+            overflow-y: auto;
+            padding: 1.2rem;
+            border-radius: 16px;
+        }
+        
+        .invoice-header {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .proforma-table {
+            font-size: 0.75rem;
+            width: 100%;
+        }
+        
+        .proforma-table th {
+            background: #f2f6fc;
+        }
+        
+        .email-btn {
+            background: #c7a35c;
+            color: #0b1a2e;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 30px;
+            width: 100%;
+            margin-top: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .print-btn {
+            background: #1a2e44;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 30px;
+            width: 100%;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+
+        .selector-screen {
+            background: white;
+            border-radius: 28px;
+            padding: 2rem 1rem;
+            text-align: center;
+            margin: auto;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        
+        .layout-card {
+            background: #f8faff;
+            border: 1px solid #cad2e0;
+            border-radius: 16px;
+            padding: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s;
+            width: 180px;
+            text-align: left;
+        }
+        
+        .layout-card.selected {
+            background: #1f334a;
+            color: white;
+            border-color: #c7a35c;
+            box-shadow: 0 4px 12px rgba(199,163,92,0.2);
+        }
+        
+        .layout-card .unit-type {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 0.3rem;
+        }
+        
+        .layout-card .area {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #c7a35c;
+        }
+        
+        .layout-card.selected .area {
+            color: #e3cba4;
+        }
+
+        .wardrobe-adder {
+            background: #f8fafd;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #d8e0ec;
+        }
+        
+        .add-btn {
+            background: #c7a35c;
+            border: none;
+            color: #0b1a2e;
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        
+        .bathroom-toggles {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .bath-card {
+            background: #f0f4fc;
+            border-radius: 16px;
+            padding: 1rem;
+            text-align: left;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        
+        .bath-card.selected {
+            border-color: #c7a35c;
+            background: #e1e8f3;
+        }
+        
+        .bath-card .include-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .bath-card .package-details {
+            margin-top: 0.5rem;
+            padding-left: 1.5rem;
+            font-size: 0.75rem;
+            color: #4a5a72;
+        }
+        
+        .progress-indicator {
+            display: flex;
+            gap: 0.3rem;
+            margin-top: 0.5rem;
+        }
+        
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d9e0eb;
+        }
+        
+        .progress-dot.completed {
+            background: #c7a35c;
+        }
+        
+        .progress-dot.active {
+            background: #0b1a2e;
+            transform: scale(1.2);
+        }
+        
+        .selection-summary {
+            background: #eef1f7;
+            border-radius: 30px;
+            padding: 0.3rem 1rem;
+            font-size: 0.7rem;
+            color: #1a2639;
+        }
+        
+        .disabled-step {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .image-preview {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .image-preview img {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        
+        .customer-details {
+            background: #f8fafd;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .customer-details input {
+            margin-bottom: 0.8rem;
+            padding: 0.8rem;
+            border: 1px solid #d8e0ec;
+            border-radius: 8px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="top-bar">
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <span>TIAASH · Design Wizard</span>
+        <span class="top-estimate" id="mobileTotalEstimate">₹0</span>
+    </div>
+
+    <div class="main-row">
+        <nav class="room-nav" id="roomNav">
+            <h3>DESIGN STEPS</h3>
+            <div class="room-btn" data-room="layout">
+                <span>1. Layout</span>
+                <span class="selected-badge" id="layoutBadge">✓</span>
+            </div>
+            <div class="room-btn" data-room="electrical">
+                <span>2. Electrical</span>
+                <span class="include-toggle">
+                    <input type="checkbox" id="includeElectrical" checked onchange="toggleCategory('electrical')">
+                </span>
+                <span class="selected-badge" id="electricalBadge">✓</span>
+            </div>
+            <div class="room-btn" data-room="woodwork">
+                <span>3. Woodwork</span>
+                <span class="include-toggle">
+                    <input type="checkbox" id="includeWoodwork" checked onchange="toggleCategory('woodwork')">
+                </span>
+                <span class="selected-badge" id="woodworkBadge">✓</span>
+            </div>
+            <div class="room-btn" data-room="bathroom">
+                <span>4. Bathroom</span>
+                <span class="include-toggle">
+                    <input type="checkbox" id="includeBathroom" checked onchange="toggleCategory('bathroom')">
+                </span>
+                <span class="selected-badge" id="bathroomBadge">✓</span>
+            </div>
+            <div class="room-btn" data-room="walls">
+                <span>5. Walls</span>
+                <span class="include-toggle">
+                    <input type="checkbox" id="includeWalls" checked onchange="toggleCategory('walls')">
+                </span>
+                <span class="selected-badge" id="wallsBadge">✓</span>
+            </div>
+            <div class="room-btn" data-room="floors">
+                <span>6. Floors</span>
+                <span class="include-toggle">
+                    <input type="checkbox" id="includeFloors" checked onchange="toggleCategory('floors')">
+                </span>
+                <span class="selected-badge" id="floorsBadge">✓</span>
+            </div>
+            <div class="room-btn" data-room="doors">
+                <span>7. Doors</span>
+                <span class="include-toggle">
+                    <input type="checkbox" id="includeDoors" checked onchange="toggleCategory('doors')">
+                </span>
+                <span class="selected-badge" id="doorsBadge">✓</span>
+            </div>
+            <div class="room-btn" data-room="finalboq">
+                <span>8. Final BOQ</span>
+                <span class="selected-badge" id="finalboqBadge">✓</span>
+            </div>
+        </nav>
+
+        <div class="boq-panel" id="mainPanel"></div>
+    </div>
+
+    <div class="estimate-bar">
+        <span>ESTIMATED TOTAL</span>
+        <span class="estimate-amount" id="totalEstimateDisplay">₹0</span>
+    </div>
+</div>
+
+<!-- Admin panel - hidden by default, only visible with special flag -->
+<div class="admin-panel" id="adminPanel">
+    <h4 style="margin-top:0; font-size:0.9rem;">MASTER VARIABLES</h4>
+    <div id="varsContainer"></div>
+    <p style="font-size:0.6rem; color:#888; margin-top:0.5rem;">internal – rates per unit</p>
+</div>
+<button class="admin-toggle" id="adminToggle">⚙️ prices</button>
+
+<script>
+    // ================== CONFIG_MASTER (updated rates) ==================
+    const CONFIG_MASTER = {
+        layouts: {
+            'unit1': { name: 'Unit-1 (3 BHK)', area: 645, type: '3 BHK' },
+            'unit2': { name: 'Unit-2 (3 BHK)', area: 645, type: '3 BHK' },
+            'unit3': { name: 'Unit-3 (2 BHK)', area: 560, type: '2 BHK' },
+            'unit4': { name: 'Unit-4 (2 BHK)', area: 566, type: '2 BHK' },
+            'unit5': { name: 'Unit-5 (3 BHK)', area: 720, type: '3 BHK' }
+        },
+        electrical: {
+            items: [
+                { name: 'Wiring', unit: 'point', defaultQty: 12, rate: 65, spec: 'copper', image: '🔌' },
+                { name: 'Switch', unit: 'nos', defaultQty: 20, rate: 180, spec: 'anchor', image: '🔘' },
+                { name: 'Socket', unit: 'nos', defaultQty: 15, rate: 220, spec: 'anchor', image: '🔌' },
+                { name: 'Fan', unit: 'nos', defaultQty: 4, rate: 2100, spec: 'havells', image: '🌀' },
+                { name: 'Light', unit: 'nos', defaultQty: 8, rate: 1450, spec: 'philips', image: '💡' },
+                { name: 'Bell', unit: 'nos', defaultQty: 1, rate: 950, spec: 'godrej', image: '🔔' },
+                { name: 'Geyser', unit: 'nos', defaultQty: 2, rate: 3800, spec: 'racold', image: '🔥' },
+                { name: 'Exhaust', unit: 'nos', defaultQty: 2, rate: 1850, spec: 'havells', image: '💨' },
+                { name: 'AC', unit: 'nos', defaultQty: 2, rate: 4500, spec: 'anchor', image: '❄️' },
+                { name: 'Washing Machine', unit: 'point', defaultQty: 1, rate: 950, spec: 'standard', image: '🧺' },
+                { name: 'Fridge', unit: 'point', defaultQty: 1, rate: 850, spec: 'standard', image: '🧊' },
+                { name: 'Inverter', unit: 'point', defaultQty: 1, rate: 2800, spec: 'heavy duty', image: '🔋' },
+                { name: 'RO', unit: 'point', defaultQty: 1, rate: 750, spec: 'standard', image: '💧' },
+                { name: 'Air Purifier', unit: 'point', defaultQty: 1, rate: 650, spec: 'standard', image: '🌬️' }
+            ]
+        },
+        woodwork: {
+            basic: 1250,
+            premium: 1850
+        },
+        bathroomPackages: {
+            basic: { 
+                desc: 'Basic fittings, ceramic tiles', 
+                rate: 35000,
+                includes: ['Ceramic wall tiles', 'Basic CP fittings', 'PVC door', 'Commode', 'Wash basin']
+            },
+            premium: { 
+                desc: 'Premium CP, vitrified tiles', 
+                rate: 65000,
+                includes: ['Vitrified wall/floor tiles', 'Premium CP (Jaguar/Parryware)', 'Flush door', 'European commode', 'Vanity basin']
+            },
+            luxury: { 
+                desc: 'Designer fixtures, marble look', 
+                rate: 125000,
+                includes: ['Marble look tiles', 'Designer CP (Grohe)', 'Solid wood door', 'Wall hung commode', 'Designer countertop basin', 'Rain shower']
+            }
+        },
+        wallFinishes: {
+            paint: { name: 'Paint', rate: 65, image: '🎨' },
+            wallpaper: { name: 'Wallpaper', rate: 185, image: '📜' },
+            panel: { name: 'Panel', rate: 1250, image: '🪵' }
+        },
+        floorOverlay: {
+            tile: { name: 'Tile', rate: 145, image: '🔲' },
+            wood: { name: 'Wood', rate: 595, image: '🪵' },
+            marble: { name: 'Marble', rate: 895, image: '⛲' },
+            vinyl: { name: 'Vinyl', rate: 385, image: '📀' }
+        },
+        doorFinishes: {
+            flush: { name: 'Flush', rate: 18500, image: '🚪' },
+            veneer: { name: 'Veneer', rate: 39500, image: '🪵' },
+            laminate: { name: 'Laminate', rate: 32500, image: '📋' }
+        },
+        handleRates: {
+            basic: { name: 'Basic', rate: 1650, image: '🔩' },
+            premium: { name: 'Premium', rate: 3950, image: '✨' }
+        }
+    };
+
+    // ================== GLOBAL STATE ==================
+    window.projectState = {
+        layout: 'unit1',
+        categories: {
+            electrical: true,
+            woodwork: true,
+            bathroom: true,
+            walls: true,
+            floors: true,
+            doors: true
+        },
+        electrical: CONFIG_MASTER.electrical.items.map(item => ({
+            name: item.name,
+            selected: true,
+            spec: item.spec,
+            qty: item.defaultQty
+        })),
+        woodwork: {
+            kitchen: { qty: 1, quality: 'basic', area: 25 },
+            wardrobes: []
+        },
+        bathroom: {
+            enabled: true,
+            package: 'basic'
+        },
+        walls: [],
+        floors: {
+            overlay: 'tile'
+        },
+        doors: {
+            main: { finish: 'flush', handle: 'basic' },
+            internal: { finish: 'flush', handle: 'basic', count: 3 }
+        },
+        customer: {
+            flatNo: '',
+            ownerName: '',
+            mobile: ''
+        }
+    };
+
+    // Admin mode flag - check localStorage for admin access
+    let isAdmin = localStorage.getItem('tiaash_admin') === 'true';
+    
+    // Load from localStorage if available
+    const savedState = localStorage.getItem('tiaash_project');
+    if (savedState) {
+        try {
+            const parsed = JSON.parse(savedState);
+            // Preserve admin flag
+            window.projectState = parsed;
+        } catch (e) {}
+    }
+
+    // ================== HELPER FUNCTIONS ==================
+    function saveToStorage() {
+        localStorage.setItem('tiaash_project', JSON.stringify(window.projectState));
+    }
+
+    function calculateTotal() {
+        let total = 0;
+        const state = window.projectState;
+
+        // Electrical
+        if (state.categories.electrical) {
+            state.electrical.forEach(item => {
+                if (item.selected) {
+                    const rate = CONFIG_MASTER.electrical.items.find(i => i.name === item.name)?.rate || 0;
+                    total += (item.qty || 1) * rate;
+                }
+            });
+        }
+
+        // Woodwork
+        if (state.categories.woodwork && state.woodwork.kitchen) {
+            total += state.woodwork.kitchen.area * CONFIG_MASTER.woodwork[state.woodwork.kitchen.quality];
+            state.woodwork.wardrobes.forEach(w => {
+                total += w.area * CONFIG_MASTER.woodwork[w.quality];
+            });
+        }
+
+        // Bathroom package
+        if (state.categories.bathroom && state.bathroom.enabled) {
+            total += CONFIG_MASTER.bathroomPackages[state.bathroom.package].rate;
+        }
+
+        // Walls
+        if (state.categories.walls) {
+            state.walls.forEach(w => {
+                total += w.sqft * (CONFIG_MASTER.wallFinishes[w.finish]?.rate || 0);
+            });
+        }
+
+        // Floors
+        if (state.categories.floors) {
+            const layoutArea = CONFIG_MASTER.layouts[state.layout]?.area || 645;
+            total += layoutArea * (CONFIG_MASTER.floorOverlay[state.floors.overlay]?.rate || 0);
+        }
+
+        // Doors
+        if (state.categories.doors) {
+            const mainDoor = CONFIG_MASTER.doorFinishes[state.doors.main.finish]?.rate || 18500;
+            const mainHandle = CONFIG_MASTER.handleRates[state.doors.main.handle]?.rate || 1650;
+            total += mainDoor + mainHandle;
+
+            const internalDoor = CONFIG_MASTER.doorFinishes[state.doors.internal.finish]?.rate || 18500;
+            const internalHandle = CONFIG_MASTER.handleRates[state.doors.internal.handle]?.rate || 1650;
+            total += (internalDoor + internalHandle) * (state.doors.internal.count || 3);
+        }
+
+        return Math.round(total);
+    }
+
+    function updateTotalDisplay() {
+        const total = calculateTotal();
+        document.getElementById('totalEstimateDisplay').innerText = '₹' + total.toLocaleString('en-IN');
+        document.getElementById('mobileTotalEstimate').innerText = '₹' + total.toLocaleString('en-IN');
+        saveToStorage();
+        updateNavBadges();
+    }
+
+    function updateNavBadges() {
+        const state = window.projectState;
+        document.getElementById('layoutBadge').style.display = state.layout ? 'inline' : 'none';
+        document.getElementById('electricalBadge').style.display = state.categories.electrical && state.electrical.some(i => i.selected) ? 'inline' : 'none';
+        document.getElementById('woodworkBadge').style.display = state.categories.woodwork && (state.woodwork.kitchen || state.woodwork.wardrobes.length) ? 'inline' : 'none';
+        document.getElementById('bathroomBadge').style.display = state.categories.bathroom && state.bathroom.enabled ? 'inline' : 'none';
+        document.getElementById('wallsBadge').style.display = state.categories.walls && state.walls.length ? 'inline' : 'none';
+        document.getElementById('floorsBadge').style.display = state.categories.floors ? 'inline' : 'none';
+        document.getElementById('doorsBadge').style.display = state.categories.doors ? 'inline' : 'none';
+        
+        // Update checkboxes in nav
+        document.getElementById('includeElectrical').checked = state.categories.electrical;
+        document.getElementById('includeWoodwork').checked = state.categories.woodwork;
+        document.getElementById('includeBathroom').checked = state.categories.bathroom;
+        document.getElementById('includeWalls').checked = state.categories.walls;
+        document.getElementById('includeFloors').checked = state.categories.floors;
+        document.getElementById('includeDoors').checked = state.categories.doors;
+    }
+
+    window.toggleCategory = (category) => {
+        const state = window.projectState;
+        const checkbox = document.getElementById(`include${category.charAt(0).toUpperCase() + category.slice(1)}`);
+        state.categories[category] = checkbox.checked;
+        
+        // If category is disabled, remove its badge
+        if (!checkbox.checked) {
+            document.getElementById(`${category}Badge`).style.display = 'none';
+        }
+        
+        updateTotalDisplay();
+        
+        // If current active tab is disabled, switch to layout
+        const activeBtn = document.querySelector('.room-btn.active');
+        if (activeBtn) {
+            const activeCat = activeBtn.dataset.room;
+            if (activeCat !== 'layout' && activeCat !== 'finalboq' && !state.categories[activeCat]) {
+                document.querySelectorAll('.room-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector('[data-room="layout"]').classList.add('active');
+                renderCategory('layout');
+            }
+        }
+    };
+
+    // ================== PRICE VARIABLES PANEL (Admin only) ==================
+    function renderPriceVars() {
+        if (!isAdmin) return;
+        
+        const container = document.getElementById('varsContainer');
+        container.innerHTML = '';
+        
+        // Electrical rates
+        CONFIG_MASTER.electrical.items.forEach(item => {
+            const row = document.createElement('div');
+            row.className = 'var-row';
+            row.innerHTML = `
+                <span class="var-label">elec_${item.name}</span>
+                <input type="number" class="var-input" data-cat="electrical" data-item="${item.name}" value="${item.rate}" step="10" min="0">
+            `;
+            container.appendChild(row);
+        });
+        
+        // Woodwork rates
+        for (let [key, val] of Object.entries(CONFIG_MASTER.woodwork)) {
+            const row = document.createElement('div');
+            row.className = 'var-row';
+            row.innerHTML = `
+                <span class="var-label">wood_${key}</span>
+                <input type="number" class="var-input" data-cat="woodwork" data-item="${key}" value="${val}" step="10" min="0">
+            `;
+            container.appendChild(row);
+        }
+        
+        // Bathroom rates
+        for (let [key, val] of Object.entries(CONFIG_MASTER.bathroomPackages)) {
+            const row = document.createElement('div');
+            row.className = 'var-row';
+            row.innerHTML = `
+                <span class="var-label">bath_${key}</span>
+                <input type="number" class="var-input" data-cat="bathroom" data-item="${key}" value="${val.rate}" step="100" min="0">
+            `;
+            container.appendChild(row);
+        }
+        
+        document.querySelectorAll('.var-input').forEach(inp => {
+            inp.addEventListener('input', function() {
+                const cat = this.dataset.cat;
+                const item = this.dataset.item;
+                const val = parseFloat(this.value) || 0;
+                
+                if (cat === 'electrical') {
+                    const idx = CONFIG_MASTER.electrical.items.findIndex(i => i.name === item);
+                    if (idx >= 0) CONFIG_MASTER.electrical.items[idx].rate = val;
+                } else if (cat === 'woodwork') {
+                    CONFIG_MASTER.woodwork[item] = val;
+                } else if (cat === 'bathroom') {
+                    CONFIG_MASTER.bathroomPackages[item].rate = val;
+                }
+                
+                const active = document.querySelector('.room-btn.active')?.dataset.room;
+                if (active && active !== 'finalboq' && active !== 'layout') renderCategory(active);
+                else if (active === 'finalboq') showFinalSummary();
+                updateTotalDisplay();
+            });
+        });
+    }
+
+    // ================== RENDER FUNCTIONS ==================
+    function renderLayout() {
+        const panel = document.getElementById('mainPanel');
+        let html = `
+            <div class="selector-screen">
+                <h3 style="margin-bottom:1rem;">Select your apartment layout</h3>
+                <div class="flex-row">
+        `;
+        
+        for (let [key, layout] of Object.entries(CONFIG_MASTER.layouts)) {
+            html += `
+                <div class="layout-card ${window.projectState.layout === key ? 'selected' : ''}" data-layout="${key}">
+                    <div class="unit-type">${layout.type}</div>
+                    <div class="area">${layout.area} sqft</div>
+                    <div>${layout.name}</div>
+                </div>
+            `;
+        }
+        
+        html += `</div></div>`;
+        panel.innerHTML = html;
+        
+        document.querySelectorAll('.layout-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.layout-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                window.projectState.layout = this.dataset.layout;
+                updateTotalDisplay();
+                renderLayout();
+            });
+        });
+    }
+
+    function renderElectrical() {
+        if (!window.projectState.categories.electrical) {
+            renderCategory('layout');
+            return;
+        }
+        
+        const panel = document.getElementById('mainPanel');
+        const items = window.projectState.electrical;
+        
+        let html = `
+            <div class="room-header">
+                <h2>Electrical Setup</h2>
+                <span class="step-indicator">Step 2/8</span>
+            </div>
+            <div class="selection-summary" style="margin-bottom: 0.8rem; padding: 0.5rem;">
+                <span>${items.filter(i => i.selected).length} items selected · ₹${calculateTotal().toLocaleString()}</span>
+            </div>
+            <div class="boq-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Include</th>
+                            <th>Item</th>
+                            <th>Specification</th>
+                            <th>Quantity</th>
+                            <th>Unit</th>
+                            <th>View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        
+        items.forEach((item, idx) => {
+            const config = CONFIG_MASTER.electrical.items.find(i => i.name === item.name);
+            html += `
+                <tr>
+                    <td><input type="checkbox" class="include-checkbox" data-elec-idx="${idx}" ${item.selected ? 'checked' : ''} onchange="toggleElectrical(${idx})"></td>
+                    <td>${item.name}</td>
+                    <td>
+                        <select class="spec-select" onchange="updateElectricalSpec(${idx}, this.value)">
+                            <option value="standard" ${item.spec === 'standard' ? 'selected' : ''}>Standard</option>
+                            <option value="premium" ${item.spec === 'premium' ? 'selected' : ''}>Premium</option>
+                            <option value="anchor" ${item.spec === 'anchor' ? 'selected' : ''}>Anchor</option>
+                            <option value="havells" ${item.spec === 'havells' ? 'selected' : ''}>Havells</option>
+                            <option value="philips" ${item.spec === 'philips' ? 'selected' : ''}>Philips</option>
+                            <option value="godrej" ${item.spec === 'godrej' ? 'selected' : ''}>Godrej</option>
+                            <option value="racold" ${item.spec === 'racold' ? 'selected' : ''}>Racold</option>
+                            <option value="copper" ${item.spec === 'copper' ? 'selected' : ''}>Copper</option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="qty-input" value="${item.qty}" min="0" onchange="updateElectricalQty(${idx}, this.value)"></td>
+                    <td>${config?.unit || 'nos'}</td>
+                    <td><button class="explore-btn" onclick="window.open('https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name+' '+item.spec+' electrical')}','_blank')">${config?.image || '🔍'} View</button></td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table></div>';
+        panel.innerHTML = html;
+        updateTotalDisplay();
+    }
+
+    window.toggleElectrical = (idx) => {
+        window.projectState.electrical[idx].selected = !window.projectState.electrical[idx].selected;
+        renderElectrical();
+    };
+
+    window.updateElectricalSpec = (idx, val) => {
+        window.projectState.electrical[idx].spec = val;
+        saveToStorage();
+    };
+
+    window.updateElectricalQty = (idx, val) => {
+        window.projectState.electrical[idx].qty = Math.max(0, parseInt(val) || 1);
+        updateTotalDisplay();
+    };
+
+    function renderWoodwork() {
+        if (!window.projectState.categories.woodwork) {
+            renderCategory('layout');
+            return;
+        }
+        
+        const panel = document.getElementById('mainPanel');
+        const ww = window.projectState.woodwork;
+        
+        let html = `
+            <div class="room-header">
+                <h2>Woodwork</h2>
+                <span class="step-indicator">Step 3/8</span>
+            </div>
+            <div class="boq-table-container" style="padding:1rem;">
+                <div class="wardrobe-adder" style="border: 2px solid #c7a35c;">
+                    <h4 style="color:#c7a35c;">✓ Kitchen (included)</h4>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                        <label>Quality: 
+                            <select onchange="updateKitchenQuality(this.value)">
+                                <option value="basic" ${ww.kitchen.quality==='basic'?'selected':''}>Basic ₹1250/sqft</option>
+                                <option value="premium" ${ww.kitchen.quality==='premium'?'selected':''}>Premium ₹1850/sqft</option>
+                            </select>
+                        </label>
+                        <label>Area (sqft): <input type="number" min="0" value="${ww.kitchen.area}" onchange="updateKitchenArea(this.value)" style="width:80px;"></label>
+                        <button class="explore-btn" onclick="window.open('https://www.google.com/search?tbm=isch&q=kitchen+modular+design','_blank')">🔍 View Kitchen</button>
+                    </div>
+                </div>
+                
+                <h4 style="margin: 1.5rem 0 0.5rem 0;">Wardrobes <button class="add-btn" onclick="addWardrobe()">+ Add wardrobe</button></h4>
+        `;
+        
+        ww.wardrobes.forEach((w, idx) => {
+            html += `
+                <div class="wardrobe-adder">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h5>Wardrobe ${idx+1}</h5>
+                        <button onclick="removeWardrobe(${idx})" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">🗑️</button>
+                    </div>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                        <label>Quality: 
+                            <select onchange="updateWardrobeQuality(${idx}, this.value)">
+                                <option value="basic" ${w.quality==='basic'?'selected':''}>Basic ₹1250/sqft</option>
+                                <option value="premium" ${w.quality==='premium'?'selected':''}>Premium ₹1850/sqft</option>
+                            </select>
+                        </label>
+                        <label>Area (sqft): <input type="number" min="0" value="${w.area}" onchange="updateWardrobeArea(${idx}, this.value)" style="width:80px;"></label>
+                        <button class="explore-btn" onclick="window.open('https://www.google.com/search?tbm=isch&q=wardrobe+${w.quality}+design','_blank')">🔍 View</button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        if (ww.wardrobes.length === 0) {
+            html += '<p style="color:#888; font-style:italic; margin:1rem 0;">No wardrobes added yet. Click "+ Add wardrobe" to start.</p>';
+        }
+        
+        html += '</div>';
+        panel.innerHTML = html;
+        updateTotalDisplay();
+    }
+
+    window.updateKitchenQuality = (val) => { window.projectState.woodwork.kitchen.quality = val; updateTotalDisplay(); };
+    window.updateKitchenArea = (val) => { window.projectState.woodwork.kitchen.area = Math.max(0, parseFloat(val) || 0); updateTotalDisplay(); };
+    window.updateWardrobeQuality = (idx, val) => { window.projectState.woodwork.wardrobes[idx].quality = val; updateTotalDisplay(); };
+    window.updateWardrobeArea = (idx, val) => { window.projectState.woodwork.wardrobes[idx].area = Math.max(0, parseFloat(val) || 0); updateTotalDisplay(); };
+    window.addWardrobe = () => { window.projectState.woodwork.wardrobes.push({ quality: 'basic', area: 50 }); renderWoodwork(); };
+    window.removeWardrobe = (idx) => { window.projectState.woodwork.wardrobes.splice(idx, 1); renderWoodwork(); };
+
+    function renderBathroom() {
+        if (!window.projectState.categories.bathroom) {
+            renderCategory('layout');
+            return;
+        }
+        
+        const panel = document.getElementById('mainPanel');
+        const current = window.projectState.bathroom.package;
+        
+        let html = `
+            <div class="room-header">
+                <h2>Bathroom Package</h2>
+                <span class="step-indicator">Step 4/8</span>
+            </div>
+            <div style="margin-bottom: 0.8rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; background: white; padding: 0.8rem; border-radius: 30px;">
+                    <input type="checkbox" id="enableBathroom" ${window.projectState.bathroom.enabled ? 'checked' : ''} onchange="toggleBathroom(this.checked)">
+                    <span>Include bathroom work in project</span>
+                </label>
+            </div>
+            <div class="boq-table-container" style="padding:1rem; ${!window.projectState.bathroom.enabled ? 'opacity:0.5; pointer-events:none;' : ''}">
+                <div class="bathroom-toggles">
+        `;
+        
+        for (let [key, pkg] of Object.entries(CONFIG_MASTER.bathroomPackages)) {
+            html += `
+                <div class="bath-card ${current === key && window.projectState.bathroom.enabled ? 'selected' : ''}" onclick="selectBathroom('${key}')">
+                    <div class="include-header">
+                        <h4 style="color:${current === key ? '#c7a35c' : '#0b1a2e'}">${key.toUpperCase()}</h4>
+                        <span style="font-weight:600;">₹${pkg.rate.toLocaleString()}</span>
+                    </div>
+                    <p style="font-size:0.75rem; margin-bottom:0.5rem;">${pkg.desc}</p>
+                    <div class="package-details">
+                        <small>Includes:</small>
+                        <ul style="margin-top:0.2rem; padding-left:1.2rem;">
+                            ${pkg.includes.map(item => `<li style="font-size:0.7rem;">${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <button class="explore-btn" style="margin-top:0.5rem;" onclick="event.stopPropagation(); window.open('https://www.google.com/search?tbm=isch&q=bathroom+${key}+interior','_blank')">🔍 View Examples</button>
+                </div>
+            `;
+        }
+        
+        html += '</div></div>';
+        panel.innerHTML = html;
+        updateTotalDisplay();
+    }
+
+    window.toggleBathroom = (enabled) => {
+        window.projectState.bathroom.enabled = enabled;
+        renderBathroom();
+        updateTotalDisplay();
+    };
+
+    window.selectBathroom = (pkg) => { 
+        if (window.projectState.bathroom.enabled) {
+            window.projectState.bathroom.package = pkg; 
+            renderBathroom(); 
+            updateTotalDisplay();
+        }
+    };
+
+    function renderWalls() {
+        if (!window.projectState.categories.walls) {
+            renderCategory('layout');
+            return;
+        }
+        
+        const panel = document.getElementById('mainPanel');
+        const walls = window.projectState.walls;
+        
+        let html = `
+            <div class="room-header">
+                <h2>Walls</h2>
+                <span class="step-indicator">Step 5/8</span>
+            </div>
+            <div style="margin-bottom: 0.8rem;">
+                <button class="add-btn" onclick="addWall()">+ Add wall finish</button>
+            </div>
+            <div class="boq-table-container" style="padding:1rem;">
+        `;
+        
+        if (walls.length === 0) {
+            html += '<p style="color:#888; font-style:italic;">No wall finishes added yet. Click "+ Add wall finish" to start.</p>';
+        }
+        
+        walls.forEach((w, idx) => {
+            const finish = CONFIG_MASTER.wallFinishes[w.finish];
+            html += `
+                <div class="wardrobe-adder">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h5>Wall ${idx+1}</h5>
+                        <button onclick="removeWall(${idx})" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">🗑️</button>
+                    </div>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                        <select onchange="updateWallFinish(${idx}, this.value)">
+                            <option value="paint" ${w.finish==='paint'?'selected':''}>Paint ₹65/sqft ${CONFIG_MASTER.wallFinishes.paint.image}</option>
+                            <option value="wallpaper" ${w.finish==='wallpaper'?'selected':''}>Wallpaper ₹185/sqft ${CONFIG_MASTER.wallFinishes.wallpaper.image}</option>
+                            <option value="panel" ${w.finish==='panel'?'selected':''}>Panel ₹1250/sqft ${CONFIG_MASTER.wallFinishes.panel.image}</option>
+                        </select>
+                        <input type="number" min="0" value="${w.sqft}" onchange="updateWallArea(${idx}, this.value)" placeholder="sqft" style="width:100px;">
+                        <button class="explore-btn" onclick="window.open('https://www.google.com/search?tbm=isch&q=${w.finish}+wall+finish','_blank')">🔍 View</button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        panel.innerHTML = html;
+        updateTotalDisplay();
+    }
+
+    window.addWall = () => { window.projectState.walls.push({ finish: 'paint', sqft: 100 }); renderWalls(); };
+    window.removeWall = (idx) => { window.projectState.walls.splice(idx, 1); renderWalls(); };
+    window.updateWallFinish = (idx, val) => { window.projectState.walls[idx].finish = val; updateTotalDisplay(); };
+    window.updateWallArea = (idx, val) => { window.projectState.walls[idx].sqft = Math.max(0, parseFloat(val) || 0); updateTotalDisplay(); };
+
+    function renderFloors() {
+        if (!window.projectState.categories.floors) {
+            renderCategory('layout');
+            return;
+        }
+        
+        const panel = document.getElementById('mainPanel');
+        const current = window.projectState.floors.overlay;
+        const area = CONFIG_MASTER.layouts[window.projectState.layout]?.area || 645;
+        
+        let html = `
+            <div class="room-header">
+                <h2>Flooring</h2>
+                <span class="step-indicator">Step 6/8</span>
+            </div>
+            <div class="boq-table-container" style="padding:1rem;">
+                <div style="background: #f8fafd; border-radius: 12px; padding: 1rem;">
+                    <p style="margin-bottom: 1rem;"><strong>Total area:</strong> ${area} sqft (from layout)</p>
+                    <label style="display: block; margin-bottom: 1rem;">Select floor finish: 
+                        <select onchange="selectFloor(this.value)" style="width: auto; min-width: 150px;">
+                            <option value="tile" ${current==='tile'?'selected':''}>Tile ${CONFIG_MASTER.floorOverlay.tile.image} ₹145/sqft</option>
+                            <option value="wood" ${current==='wood'?'selected':''}>Wood ${CONFIG_MASTER.floorOverlay.wood.image} ₹595/sqft</option>
+                            <option value="marble" ${current==='marble'?'selected':''}>Marble ${CONFIG_MASTER.floorOverlay.marble.image} ₹895/sqft</option>
+                            <option value="vinyl" ${current==='vinyl'?'selected':''}>Vinyl ${CONFIG_MASTER.floorOverlay.vinyl.image} ₹385/sqft</option>
+                        </select>
+                    </label>
+                    <button class="explore-btn" onclick="window.open('https://www.google.com/search?tbm=isch&q=${current}+flooring','_blank')">🔍 View ${current} flooring</button>
+                    <div style="background: #eef1f7; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                        <h4>Flooring cost: ₹${(area * CONFIG_MASTER.floorOverlay[current].rate).toLocaleString()}</h4>
+                    </div>
+                </div>
+            </div>
+        `;
+        panel.innerHTML = html;
+        updateTotalDisplay();
+    }
+
+    window.selectFloor = (val) => { window.projectState.floors.overlay = val; renderFloors(); updateTotalDisplay(); };
+
+    function renderDoors() {
+        if (!window.projectState.categories.doors) {
+            renderCategory('layout');
+            return;
+        }
+        
+        const panel = document.getElementById('mainPanel');
+        const doors = window.projectState.doors;
+        
+        let html = `
+            <div class="room-header">
+                <h2>Doors & Hardware</h2>
+                <span class="step-indicator">Step 7/8</span>
+            </div>
+            <div class="boq-table-container" style="padding:1rem;">
+                <div class="wardrobe-adder" style="border-left: 3px solid #c7a35c;">
+                    <h4>Main Door</h4>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                        <label>Finish: 
+                            <select onchange="updateMainFinish(this.value)">
+                                <option value="flush" ${doors.main.finish==='flush'?'selected':''}>Flush ${CONFIG_MASTER.doorFinishes.flush.image} ₹18500</option>
+                                <option value="veneer" ${doors.main.finish==='veneer'?'selected':''}>Veneer ${CONFIG_MASTER.doorFinishes.veneer.image} ₹39500</option>
+                                <option value="laminate" ${doors.main.finish==='laminate'?'selected':''}>Laminate ${CONFIG_MASTER.doorFinishes.laminate.image} ₹32500</option>
+                            </select>
+                        </label>
+                        <label>Handle: 
+                            <select onchange="updateMainHandle(this.value)">
+                                <option value="basic" ${doors.main.handle==='basic'?'selected':''}>Basic ${CONFIG_MASTER.handleRates.basic.image} ₹1650</option>
+                                <option value="premium" ${doors.main.handle==='premium'?'selected':''}>Premium ${CONFIG_MASTER.handleRates.premium.image} ₹3950</option>
+                            </select>
+                        </label>
+                        <button class="explore-btn" onclick="window.open('https://www.google.com/search?tbm=isch&q=${doors.main.finish}+door+design','_blank')">🔍 View Door</button>
+                    </div>
+                </div>
+                
+                <div class="wardrobe-adder" style="margin-top: 1rem;">
+                    <h4>Internal Doors (${doors.internal.count} doors)</h4>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                        <label>Finish: 
+                            <select onchange="updateInternalFinish(this.value)">
+                                <option value="flush" ${doors.internal.finish==='flush'?'selected':''}>Flush ₹18500</option>
+                                <option value="veneer" ${doors.internal.finish==='veneer'?'selected':''}>Veneer ₹39500</option>
+                                <option value="laminate" ${doors.internal.finish==='laminate'?'selected':''}>Laminate ₹32500</option>
+                            </select>
+                        </label>
+                        <label>Handle: 
+                            <select onchange="updateInternalHandle(this.value)">
+                                <option value="basic" ${doors.internal.handle==='basic'?'selected':''}>Basic ₹1650</option>
+                                <option value="premium" ${doors.internal.handle==='premium'?'selected':''}>Premium ₹3950</option>
+                            </select>
+                        </label>
+                        <label>Count: <input type="number" min="0" value="${doors.internal.count}" onchange="updateInternalCount(this.value)" style="width:70px;"></label>
+                        <button class="explore-btn" onclick="window.open('https://www.google.com/search?tbm=isch&q=internal+door+${doors.internal.finish}+design','_blank')">🔍 View</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        panel.innerHTML = html;
+        updateTotalDisplay();
+    }
+
+    window.updateMainFinish = (val) => { window.projectState.doors.main.finish = val; updateTotalDisplay(); };
+    window.updateMainHandle = (val) => { window.projectState.doors.main.handle = val; updateTotalDisplay(); };
+    window.updateInternalFinish = (val) => { window.projectState.doors.internal.finish = val; updateTotalDisplay(); };
+    window.updateInternalHandle = (val) => { window.projectState.doors.internal.handle = val; updateTotalDisplay(); };
+    window.updateInternalCount = (val) => { window.projectState.doors.internal.count = Math.max(0, parseInt(val) || 0); updateTotalDisplay(); };
+
+    function showFinalSummary() {
+        const panel = document.getElementById('mainPanel');
+        const total = calculateTotal();
+        const state = window.projectState;
+        const layout = CONFIG_MASTER.layouts[state.layout];
+        
+        // Build detailed items list
+        let items = [];
+        
+        items.push({ category: 'Layout', detail: `${layout.name} - ${layout.area} sqft` });
+        
+        if (state.categories.electrical) {
+            const elecCount = state.electrical.filter(i => i.selected).length;
+            items.push({ category: 'Electrical', detail: `${elecCount} items selected` });
+        }
+        
+        if (state.categories.woodwork) {
+            items.push({ category: 'Kitchen', detail: `${state.woodwork.kitchen.quality} ${state.woodwork.kitchen.area} sqft` });
+            state.woodwork.wardrobes.forEach((w, i) => {
+                items.push({ category: `Wardrobe ${i+1}`, detail: `${w.quality} ${w.area} sqft` });
+            });
+        }
+        
+        if (state.categories.bathroom && state.bathroom.enabled) {
+            items.push({ category: 'Bathroom', detail: `${state.bathroom.package} package` });
+        }
+        
+        if (state.categories.walls) {
+            state.walls.forEach((w, i) => {
+                items.push({ category: `Wall ${i+1}`, detail: `${w.finish} ${w.sqft} sqft` });
+            });
+        }
+        
+        if (state.categories.floors) {
+            items.push({ category: 'Flooring', detail: `${state.floors.overlay}` });
+        }
+        
+        if (state.categories.doors) {
+            items.push({ category: 'Main Door', detail: `${state.doors.main.finish} + ${state.doors.main.handle} handle` });
+            items.push({ category: 'Internal Doors', detail: `${state.doors.internal.finish} + ${state.doors.internal.handle} (${state.doors.internal.count} doors)` });
+        }
+        
+        let tableRows = items.map(item => `<tr><td>${item.category}</td><td>${item.detail}</td></tr>`).join('');
+        
+        panel.innerHTML = `
+            <div class="summary-view">
+                <div style="display:flex; flex-wrap:wrap; justify-content:space-between; margin-bottom:1.5rem;">
+                    <div>
+                        <h2 style="font-weight:400; color:#0b1a2e;">TIAASH Engineering</h2>
+                        <p>Project Quote · ${new Date().toLocaleDateString('en-IN')}</p>
+                    </div>
+                    <div style="text-align:right;">
+                        <p style="font-size:1.2rem; font-weight:600;">${layout.name}</p>
+                        <p>${layout.area} sqft</p>
+                    </div>
+                </div>
+                
+                <div class="customer-details">
+                    <h4 style="margin-bottom:1rem;">Customer Information</h4>
+                    <input type="text" id="flatNo" placeholder="Flat / Unit Number" value="${state.customer.flatNo}" onchange="updateCustomer('flatNo', this.value)">
+                    <input type="text" id="ownerName" placeholder="Owner Name" value="${state.customer.ownerName}" onchange="updateCustomer('ownerName', this.value)">
+                    <input type="text" id="mobile" placeholder="Mobile Number" value="${state.customer.mobile}" onchange="updateCustomer('mobile', this.value)">
+                </div>
+                
+                <table class="proforma-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Selection</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+                
+                <div style="background: #f0f4fc; padding: 1.5rem; border-radius: 16px; margin: 1.5rem 0; text-align: center;">
+                    <h3 style="font-size: 1.8rem; color: #c7a35c;">₹${total.toLocaleString('en-IN')}</h3>
+                    <p style="color: #5c6f87;">Estimated Total</p>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button class="email-btn" onclick="sendQuoteEmail()">📧 Email Quote to TIAASH</button>
+                    <button class="print-btn" onclick="window.print()">🖨️ Print PDF</button>
+                </div>
+                
+                <p style="font-size:0.7rem; color:#888; text-align:center; margin-top:1rem;">
+                    Your selections are saved automatically. Please fill customer details before emailing.
+                </p>
+            </div>
+        `;
+        updateTotalDisplay();
+    }
+
+    window.updateCustomer = (field, value) => {
+        window.projectState.customer[field] = value;
+        saveToStorage();
+    };
+
+    window.sendQuoteEmail = () => {
+        const state = window.projectState;
+        const layout = CONFIG_MASTER.layouts[state.layout];
+        const total = calculateTotal();
+        
+        if (!state.customer.flatNo || !state.customer.ownerName || !state.customer.mobile) {
+            alert('Please fill in all customer details before sending.');
+            return;
+        }
+        
+        let items = [];
+        items.push(`Layout: ${layout.name} (${layout.area} sqft)`);
+        
+        if (state.categories.electrical) {
+            const elecCount = state.electrical.filter(i => i.selected).length;
+            items.push(`Electrical: ${elecCount} items`);
+        }
+        
+        if (state.categories.woodwork) {
+            items.push(`Kitchen: ${state.woodwork.kitchen.quality} ${state.woodwork.kitchen.area}sqft`);
+            state.woodwork.wardrobes.forEach((w, i) => {
+                items.push(`Wardrobe ${i+1}: ${w.quality} ${w.area}sqft`);
+            });
+        }
+        
+        if (state.categories.bathroom && state.bathroom.enabled) {
+            items.push(`Bathroom: ${state.bathroom.package}`);
+        }
+        
+        if (state.categories.walls) {
+            state.walls.forEach((w, i) => {
+                items.push(`Wall ${i+1}: ${w.finish} ${w.sqft}sqft`);
+            });
+        }
+        
+        if (state.categories.floors) {
+            items.push(`Flooring: ${state.floors.overlay}`);
+        }
+        
+        if (state.categories.doors) {
+            items.push(`Main Door: ${state.doors.main.finish}`);
+            items.push(`Internal Doors: ${state.doors.internal.finish} (${state.doors.internal.count})`);
+        }
+        
+        const subject = `TIAASH Project Quote - ${layout.name} - Flat ${state.customer.flatNo}`;
+        const body = `TIAASH Project Summary
+-------------------
+Flat No: ${state.customer.flatNo}
+Owner: ${state.customer.ownerName}
+Mobile: ${state.customer.mobile}
+
+Selected Items:
+${items.map(i => `• ${i}`).join('\n')}
+
+TOTAL: ₹${total.toLocaleString('en-IN')}
+
+Generated from TIAASH Design Wizard
+-------------------
+Please review and approve.`;
+        
+        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
+
+    function renderCategory(cat) {
+        if (cat === 'layout') renderLayout();
+        else if (cat === 'electrical') renderElectrical();
+        else if (cat === 'woodwork') renderWoodwork();
+        else if (cat === 'bathroom') renderBathroom();
+        else if (cat === 'walls') renderWalls();
+        else if (cat === 'floors') renderFloors();
+        else if (cat === 'doors') renderDoors();
+        else if (cat === 'finalboq') showFinalSummary();
+    }
+
+    // Navigation
+    document.querySelectorAll('.room-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            // Don't trigger if clicking on checkbox
+            if (e.target.tagName === 'INPUT') return;
+            
+            const cat = this.dataset.room;
+            
+            // Check if category is enabled (except layout and finalboq)
+            if (cat !== 'layout' && cat !== 'finalboq' && !window.projectState.categories[cat]) {
+                return;
+            }
+            
+            document.querySelectorAll('.room-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            renderCategory(cat);
+            document.getElementById('roomNav').classList.remove('open');
+        });
+    });
+
+    document.getElementById('menuToggle').addEventListener('click', function() {
+        document.getElementById('roomNav').classList.toggle('open');
+    });
+
+    // Admin panel - only show if admin mode is enabled
+    if (isAdmin) {
+        document.body.classList.add('admin-visible');
+        document.getElementById('adminToggle').style.display = 'block';
+    }
+    
+    document.getElementById('adminToggle').addEventListener('click', function() {
+        document.getElementById('adminPanel').classList.toggle('visible');
+    });
+
+    // Secret admin activation (click on estimate bar 5 times)
+    let adminClickCount = 0;
+    document.querySelector('.estimate-bar').addEventListener('click', function() {
+        adminClickCount++;
+        if (adminClickCount >= 5) {
+            isAdmin = true;
+            localStorage.setItem('tiaash_admin', 'true');
+            document.body.classList.add('admin-visible');
+            document.getElementById('adminToggle').style.display = 'block';
+            renderPriceVars();
+            adminClickCount = 0;
+        }
+    });
+
+    // Start
+    renderLayout();
+    renderPriceVars();
+    updateTotalDisplay();
+    updateNavBadges();
+</script>
+</body>
+</html>

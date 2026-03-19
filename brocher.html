@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiaash Interiors - Landmark 81 Brochure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --slate-blue: #2C3E50;
+            --gold: #C5A059;
+            --white: #FFFFFF;
+            --light-grey: #F4F7F6;
+            --border-color: #E0E0E0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #555;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 15mm;
+            margin: 20px auto;
+            background: var(--white);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hero Hook */
+        .header {
+            border-bottom: 4px solid var(--gold);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area h1 {
+            color: var(--slate-blue);
+            font-family: 'Playfair Display', serif;
+            font-size: 32pt;
+            letter-spacing: 2px;
+        }
+
+        .hero-banner {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=1000');
+            background-size: cover;
+            height: 120mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+
+        .hero-banner h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28pt;
+            margin-bottom: 10px;
+        }
+
+        .hero-banner p {
+            font-size: 14pt;
+            font-weight: 300;
+            letter-spacing: 1px;
+            border-top: 1px solid var(--gold);
+            padding-top: 10px;
+        }
+
+        /* Comparison Table - The Counter-Attack */
+        .engineering-difference {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: var(--slate-blue);
+            text-transform: uppercase;
+            font-size: 12pt;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--gold);
+            padding-left: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10pt;
+        }
+
+        th {
+            background-color: var(--slate-blue);
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .highlight-row { background-color: #fcf9f2; font-weight: 600; }
+        .bad-standard { color: #a94442; }
+        .tiaash-standard { color: #2c5e2e; font-weight: 600; }
+
+        /* Packages */
+        .packages-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .package-card {
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 4px;
+        }
+
+        .package-card.featured {
+            border: 2px solid var(--gold);
+            background-color: var(--light-grey);
+        }
+
+        .package-card h3 {
+            color: var(--slate-blue);
+            margin-bottom: 10px;
+            font-size: 16pt;
+        }
+
+        .price-tag {
+            color: var(--gold);
+            font-size: 18pt;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .package-list {
+            list-style: none;
+            font-size: 9pt;
+            line-height: 1.6;
+        }
+
+        .package-list li::before {
+            content: "✓";
+            color: var(--gold);
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        /* Proof of Reality */
+        .demo-flat-box {
+            background: var(--slate-blue);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 4px;
+        }
+
+        .cta-section {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .qr-placeholder {
+            width: 100px;
+            height: 100px;
+            background: #eee;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            font-size: 8pt;
+        }
+
+        @media print {
+            body { background: none; }
+            .page { margin: 0; box-shadow: none; }
+        }
+
+
+
+ 
+        /* Hero Hook */
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .hero-text { background: var(--slate-blue); color: white; padding: 30px; border-radius: 4px; display: flex; flex-direction: column; justify-content: center; }
+        .hero-text h2 { font-family: 'Playfair Display', serif; font-size: 24pt; margin-bottom: 15px; line-height: 1.2; }
+        .hero-text p { font-size: 11pt; color: #BDC3C7; font-weight: 300; border-left: 2px solid var(--gold); padding-left: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="page">
+        <header class="header">
+            <div class="logo-area">
+                <h1>TIAASH</h1>
+                <p style="font-size: 9pt; color: var(--gold); letter-spacing: 3px;">INTERIORS & ENGINEERING</p>
+            </div>
+            <div style="text-align: right; font-size: 9pt;">
+                <p> Interior contractor</p>
+                <p><b>Landmark 81</b></p>
+            </div>
+        </header>
+
+<section class="hero-section">
+        <div class="hero-text">
+            <h2>The Move-In Specialist for Landmark 81.</h2>
+            <p>We don't just fit furniture; we engineer homes for the high-end resident and smart investor.</p>
+        </div>
+        <div class="visual-box">
+            <span class="label">Main Render</span>
+            <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=250" alt="Main Render">
+        </div>
+    </section>
+       
+
+        <section class="engineering-difference">
+            <h3 class="section-title">The Engineering Difference: Tiaash vs. Market Standards</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Standard "Market" Packages</th>
+                        <th>Tiaash Engineering Standard</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Base Material</b></td>
+                        <td class="bad-standard">Commercial MDF / HDHMR (Swells in moisture)</td>
+                        <td class="tiaash-standard">BWP Plywood (Boiling Water Proof - IS:710)</td>
+                    </tr>
+                    <tr>
+                        <td><b>Electricals</b></td>
+                        <td class="bad-standard">Standard internal wiring (Prone to AC trips)</td>
+                        <td class="tiaash-standard">Load-Tested Heavy Duty Polycab/Havells</td>
+                    </tr>
+                    <tr>
+                        <td><b>Hardware</b></td>
+                        <td class="bad-standard">Local or OEM Chinese Channels</td>
+                        <td class="tiaash-standard">Hettich / Hafele with Lifetime Warranty</td>
+                    </tr>
+                    <tr>
+                        <td><b>Finish</b></td>
+                        <td class="bad-standard">0.8mm Manual Press Laminate</td>
+                        <td class="tiaash-standard">1.0mm Anti-Fingerprint / Factory Hot-Press</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="packages-grid">
+            <div class="package-card">
+                <h3>The Essential Starter</h3>
+                <p style="font-size: 9pt; color: #666; margin-bottom: 10px;">Best for High-Yield Investors</p>
+                <div class="price-tag">₹1,32,000 - ₹1,50,000</div>
+                <ul class="package-list">
+                    <li>Rental-Ready High Durability Kitchen (BWP)</li>
+                    <li>Master Bedroom Wardrobe (Full Height)</li>
+                    <li>Basic Electrical Load Balancing</li>
+                    <li>Chimney & Basic Hob (Glen/Elica)</li>
+                    <li>1-Year Comprehensive Maintenance</li>
+                </ul>
+            </div>
+
+            <div class="package-card featured">
+                <h3>The Signature Turnkey</h3>
+                <p style="font-size: 9pt; color: #666; margin-bottom: 10px;">The Homeowner's Dream</p>
+                <div class="price-tag">₹2,50,000 onwards</div>
+                <ul class="package-list">
+                    <li>Full 3D Coohom Visualization & Walkthrough</li>
+                    <li>Premium Soft-Close Kitchen (PU/Acrylic)</li>
+                    <li>False Ceiling with Layered Mood Lighting</li>
+                    <li>Italian Texture Wall Treatments</li>
+                    <li><b>Exclusive:</b> 24-Hour On-Site After-Sales Support</li>
+                </ul>
+            </div>
+        </section>
+
+
+
+
+
+
+
+<style>
+    .wood-choice-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+    .choice-card {
+        border: 1px solid #e0e0e0;
+        padding: 15px;
+        border-radius: 6px;
+        text-align: center;
+        transition: 0.3s;
+    }
+    .choice-card:hover { border-color: var(--gold); background: #fdfaf5; }
+    .choice-card h4 { color: var(--slate-blue); font-size: 11pt; margin-bottom: 8px; text-transform: uppercase; }
+    .choice-card .price-indicator { font-weight: 700; color: var(--gold); font-size: 10pt; margin-bottom: 10px; display: block; }
+    .choice-card ul { list-style: none; padding: 0; font-size: 8pt; text-align: left; color: #666; line-height: 1.6; }
+    .choice-card ul li::before { content: "• "; color: var(--gold); }
+    
+    .choice-header {
+        background: var(--slate-blue);
+        color: white;
+        padding: 10px;
+        margin-bottom: 15px;
+        font-size: 10pt;
+        letter-spacing: 1px;
+        text-align: center;
+        border-radius: 4px;
+    }
+</style>
+
+<div class="section-header">
+    <h3>Engineered Woodwork: Choose Your Core</h3>
+</div>
+
+<p style="font-size: 9pt; color: #777; margin-bottom: 15px; font-style: italic;">
+    *Rates fluctuate based on the core material selected. We recommend BWP for all wet areas (Kitchen/Vanity).
+</p>
+
+<div class="wood-choice-container">
+    <div class="choice-card">
+        <h4>Investor Core</h4>
+        <span class="price-indicator">Standard Rates</span>
+        <div style="font-size: 7pt; font-weight: bold; margin-bottom: 10px;">MATERIAL: HDHMR</div>
+        <ul>
+            <li>High-Density Fiber Board</li>
+            <li>Moisture Resistant (Not Proof)</li>
+            <li>Laminate finish (0.8mm)</li>
+            <li>Standard Hettich Hinges</li>
+            <li><b>Best for:</b> Rental Units</li>
+        </ul>
+    </div>
+
+    <div class="choice-card" style="border: 2px solid var(--gold); position: relative;">
+        <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--gold); color: white; font-size: 7pt; padding: 2px 10px; border-radius: 10px;">MOST POPULAR</span>
+        <h4>Signature Core</h4>
+        <span class="price-indicator">+15% Premium</span>
+        <div style="font-size: 7pt; font-weight: bold; margin-bottom: 10px;">MATERIAL: BWP PLY (IS:710)</div>
+        <ul>
+            <li>100% Boiling Water Proof</li>
+            <li>Termite & Borer Shield</li>
+            <li>Factory Hot-Press Laminate</li>
+            <li>Soft-close Hardware (Hettich)</li>
+            <li><b>Best for:</b> End-Users</li>
+        </ul>
+    </div>
+
+    <div class="choice-card">
+        <h4>Ultra Core</h4>
+        <span class="price-indicator">+35% Premium</span>
+        <div style="font-size: 7pt; font-weight: bold; margin-bottom: 10px;">MATERIAL: BIRCH PLYWOOD</div>
+        <ul>
+            <li>Premium European Birch</li>
+            <li>Zero-Bending Warranty</li>
+            <li>Acrylic / PU Matte Finish</li>
+            <li>Hafele Sensys Hardware</li>
+            <li><b>Best for:</b> Luxury Estates</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+        <div class="demo-flat-box">
+            <div>
+                <h4 style="color: var(--gold); margin-bottom: 5px;">STOP BUYING FROM SAMPLES.</h4>
+                <p style="font-size: 10pt;">See the actual engineering quality at our <b>Demo Flat: Tower E, 804</b>.</p>
+            </div>
+            <div style="text-align: right;">
+                <p style="font-size: 8pt; opacity: 0.8;">Site In-charge:</p>
+                <p style="font-weight: 600;">SHUBHAM S BOHARA</p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <div style="width: 60%;">
+                <h4 style="color: var(--slate-blue); font-size: 11pt; margin-bottom: 10px;">LANDMARK 81 EXCLUSIVE ADD-ONS</h4>
+                <p style="font-size: 8pt; line-height: 1.4;">
+                    • <b>Rental Management:</b> We find your tenant and manage the lease.<br>
+                    • <b>Complimentary Deep Clean:</b> Post-installation clinical cleaning.<br>
+                    • <b>Smart-Home Ready:</b> Automated lighting and AC controls available.
+                </p>
+            </div>
+            <div style="text-align: right;">
+                <p style="font-size: 9pt; font-weight: 600; margin-bottom: 5px;">Scan to Build Your Bill</p>
+                <div class="qr-placeholder" style="margin-left: auto;">[QR CODE: tiaash.com/quote]</div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <footer style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px; font-size: 8pt; display: flex; justify-content: space-between;">
+            <div>tiaash.com | +91 9599617551</div>
+            <div>*T&C Apply. Prices based on standard floor plans.</div>
+        </footer>
+    </div>
+
+</body>
+</html>

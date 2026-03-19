@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Landmark Interiors Estimator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="app">
+        <header style="position: relative;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h1 style="margin: 0;">Tiaash Interiors</h1>
+            <p style="margin: 5px 0 0 0;">Project Estimator</p>
+        </div>
+        <a href="https://www.tiaash.com" target="_blank" style="text-decoration: none;">
+            <button style="background: white; color: #667eea; border: none; padding: 10px 20px; border-radius: 5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                <span style="font-size: 18px;">🏠</span> Visit Main Site
+            </button>
+        </a>
+    </div>
+</header>
+
+
+        <!-- Progress bar removed - using sidebar only for navigation -->
+
+        <div class="main-container">
+            <div class="sidebar">
+                <div class="steps" id="stepNav"></div>
+	 <div class="totals-preview">
+                    <h3>Total Estimate</h3>
+                    <div class="grand-total" id="grandTotal">₹0</div>
+                    <button class="btn-pdf" id="generatePDF">Download PDF</button>
+                    <button class="btn-email" id="emailEstimate">Email</button>
+                    <button class="btn-whatsapp" id="whatsappEstimate">WhatsApp</button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Step 1: Layout -->
+                <div class="step-content" id="step1">
+                    <h2>Select Layout</h2>
+                    <div class="card-grid" id="layoutGrid"></div>
+                </div>
+
+                <!-- Step 2: Electrical -->
+                <div class="step-content" id="step2" style="display:none;">
+                    <h2>Electrical Items 
+                        <button class="inspire-btn" onclick="window.open('https://www.google.com/search?q=modern+electrical+switches+design&tbm=isch', '_blank')">
+                            View Inspiration
+                        </button>
+                    </h2>
+                    <div class="electrical-grid" id="electricalGrid"></div>
+                </div>
+
+                <!-- Step 3: Woodwork -->
+                <div class="step-content" id="step3" style="display:none;">
+                   <h2>Woodwork</h2>
+
+<!-- Kitchen Section with its own inspiration button -->
+<div class="woodwork-section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3 style="margin: 0;">Kitchen</h3>
+        <button class="inspire-btn" onclick="window.open('https://www.google.com/search?q=modern+kitchen+interior+design&tbm=isch', '_blank')">
+            View Kitchen Inspiration
+        </button>
+    </div>
+    <div class="quality-selector" id="kitchenQuality"></div>
+    <div class="area-input">
+        <label>Kitchen Area (sq ft):</label>
+        <input type="number" id="kitchenArea" min="0" step="0.1" value="0">
+    </div>
+</div>
+
+<!-- Wardrobes Section with its own inspiration button -->
+<div class="woodwork-section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3 style="margin: 0;">Wardrobes</h3>
+        <button class="inspire-btn" onclick="window.open('https://www.google.com/search?q=modern+wardrobe+design+interior&tbm=isch', '_blank')">
+            View Wardrobe Inspiration
+        </button>
+    </div>
+    <button class="add-btn" id="addWardrobe">+ Add Wardrobe</button>
+    <div id="wardrobesList"></div>
+</div>
+                    
+                   
+
+
+<!-- Kitchen Package Inclusions -->
+<div class="package-inclusions" style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+    <h4 style="margin: 0 0 15px 0; color: #333; font-size: 16px;">What's Included in Kitchen Packages:</h4>
+    
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+        <!-- Basic Package -->
+        <div style="padding: 12px; background: white; border-radius: 6px; border-left: 3px solid #28a745;">
+            <h5 style="margin: 0 0 8px 0; color: #28a745;">Basic Package</h5>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #666;">
+                <li>Shutter units (18mm BWR ply)</li>
+                <li>Carcase (18mm prelam board)</li>
+                <li>Basic membrane finish</li>
+                <li>Standard SS hinges</li>
+                <li>Basic wire basket</li>
+                <li>Granite platform (basic)</li>
+                <li>SS sink with drain board</li>
+                <li>Standard CP fittings</li>
+            </ul>
+        </div>
+        
+        <!-- Premium Package -->
+        <div style="padding: 12px; background: white; border-radius: 6px; border-left: 3px solid #007bff;">
+            <h5 style="margin: 0 0 8px 0; color: #007bff;">Premium Package</h5>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #666;">
+                <li>All Basic features +</li>
+                <li>Premium membrane finish</li>
+                <li>Soft-close hinges & channels</li>
+                <li>2 x premium wire baskets</li>
+                <li>Cutlery tray insert</li>
+                <li>Granite platform (premium)</li>
+                <li>Nero sink with drain board</li>
+                <li>Premium CP fittings</li>
+                <li>Under-sink RO provision</li>
+            </ul>
+        </div>
+        
+        <!-- Luxury Package -->
+        <div style="padding: 12px; background: white; border-radius: 6px; border-left: 3px solid #6f42c1;">
+            <h5 style="margin: 0 0 8px 0; color: #6f42c1;">Luxury Package</h5>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #666;">
+                <li>All Premium features +</li>
+                <li>PU finish / Acrylic finish</li>
+                <li>Hydraulic soft-close system</li>
+                <li>4 x premium baskets & organisers</li>
+                <li>Corner carousel unit</li>
+                <li>Quartz / Marble platform</li>
+                <li>Fragranite sink with accessories</li>
+                <li>Designer CP fittings</li>
+                <li>Built-in waste bin</li>
+                <li>LED strip lighting</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Wardrobe Package Inclusions -->
+<div class="package-inclusions" style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+    <h4 style="margin: 0 0 15px 0; color: #333; font-size: 16px;">What's Included in Wardrobe Packages:</h4>
+    
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+        <!-- Basic Wardrobe -->
+        <div style="padding: 12px; background: white; border-radius: 6px; border-left: 3px solid #28a745;">
+            <h5 style="margin: 0 0 8px 0; color: #28a745;">Basic Wardrobe</h5>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #666;">
+                <li>18mm prelam board carcase</li>
+                <li>MDF shutters with laminate</li>
+                <li>Standard SS hinges</li>
+                <li>Single hanging rod</li>
+                <li>One fixed shelf</li>
+                <li>Standard handles</li>
+            </ul>
+        </div>
+        
+        <!-- Premium Wardrobe -->
+        <div style="padding: 12px; background: white; border-radius: 6px; border-left: 3px solid #007bff;">
+            <h5 style="margin: 0 0 8px 0; color: #007bff;">Premium Wardrobe</h5>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #666;">
+                <li>All Basic features +</li>
+                <li>BWP ply carcase</li>
+                <li>Soft-close hinges</li>
+                <li>Double hanging rod</li>
+                <li>2 adjustable shelves</li>
+                <li>2 pull-out baskets</li>
+                <li>Premium handles</li>
+                <li>Internal drawer (1 no.)</li>
+            </ul>
+        </div>
+        
+        <!-- Luxury Wardrobe -->
+        <div style="padding: 12px; background: white; border-radius: 6px; border-left: 3px solid #6f42c1;">
+            <h5 style="margin: 0 0 8px 0; color: #6f42c1;">Luxury Wardrobe</h5>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #666;">
+                <li>All Premium features +</li>
+                <li>PU finish / Veneer finish</li>
+                <li>Hydraulic soft-close system</li>
+                <li>Full organization system</li>
+                <li>Tie & belt rack</li>
+                <li>Trouser pull-out</li>
+                <li>Jewelry tray insert</li>
+                <li>LED strip lighting</li>
+                <li>Designer handles</li>
+                <li>Dressing mirror option</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+                </div>
+
+                <!-- Step 4: Bathroom -->
+                <div class="step-content" id="step4" style="display:none;">
+                    <h2>Bathroom Package 
+                        <button class="inspire-btn" onclick="window.open('https://www.google.com/search?q=modern+bathroom+interior+design&tbm=isch', '_blank')">
+                            View Inspiration
+                        </button>
+                    </h2>
+                    <div class="card-grid" id="bathroomGrid"></div>
+
+<!-- Bathroom Package Inclusions -->
+<div class="package-inclusions" style="margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+    <h4 style="margin: 0 0 20px 0; color: #333; font-size: 18px; border-bottom: 2px solid #667eea; padding-bottom: 8px;">
+        What's Included in Bathroom Packages:
+    </h4>
+    
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        
+        <!-- Basic Package -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #28a745; color: white; padding: 12px; text-align: center; font-weight: 600;">
+                Basic Package - ₹45,000
+            </div>
+            <div style="padding: 15px;">
+                <h5 style="margin: 0 0 12px 0; color: #28a745;">Sanitaryware & Fittings</h5>
+                <ul style="margin: 0 0 15px 0; padding-left: 20px; font-size: 13px; color: #666;">
+                    <li>European standard WC (2-piece)</li>
+                    <li>Wall mounted wash basin</li>
+                    <li>Single lever basin mixer</li>
+                    <li>Wall mounted shower set</li>
+                    <li>5L geyser point provision</li>
+                </ul>
+                
+                <h5 style="margin: 10px 0 12px 0; color: #28a745;">Tiles & Flooring</h5>
+                <ul style="margin: 0 0 15px 0; padding-left: 20px; font-size: 13px; color: #666;">
+                    <li>Ceramic wall tiles (up to 7ft)</li>
+                    <li>Anti-skid ceramic floor tiles</li>
+                    <li>Standard grout</li>
+                </ul>
+                
+                <h5 style="margin: 10px 0 12px 0; color: #28a745;">Accessories</h5>
+                <ul style="margin: 0 0 15px 0; padding-left: 20px; font-size: 13px; color: #666;">
+                    <li>CPVC plumbing</li>
+                    <li>Standard towel rail</li>
+                    <li>Standard mirror (2x2.5ft)</li>
+                    <li>Basic exhaust fan</li>
+                    <li>Soap dish & holder</li>
+                </ul>
+                
+                <div style="margin-top: 15px; padding: 10px; background: #f0f3ff; border-radius: 5px; font-size: 12px; color: #666;">
+                    <strong>Installation:</strong> Basic fitting & plumbing included
+                </div>
+            </div>
+        </div>
+        
+        <!-- Premium Package -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #007bff; color: white; padding: 12px; text-align: center; font-weight: 600;">
+                Premium Package - ₹85,000
+            </div>
+            <div style="padding: 15px;">
+                <h5 style="margin: 0 0 12px 0; color: #007bff;">Sanitaryware & Fittings</h5>
+                <ul style="margin: 0 0 15px 0; padding-left: 20px; font-size: 13px; color: #666;">
+                    <li>European standard WC (1-piece)</li>
+                    <li>Counter-top wash basin</li>
+                    <li>Premium basin mixer</li>
+                    <li>Rain shower with diverter</li>
+                    <li>15L geyser with concealed piping</li>
+                </ul>
+                
+                <h5 style="margin: 10px 0 12px 0; color: #007bff;">Tiles & Flooring</h5>
+                <ul style="margin: 0 0 15px 0; padding-left: 20px; font-size: 13px; color: #666;">
+                    <li>Vitrified wall tiles (full height)</li>
+                    <li>Premium anti-skid floor tiles</li>
+                    <li>Colored grout</li>
+                    <li>Feature wall (1 wall)</li>
+                </ul>
+                
+                <h5 style="margin: 10px 0 12px 0; color: #007bff;">Accessories</h5>
+                <ul style="margin: 0 0 15px 0; padding-left: 20px; font-size: 13px; color: #666;">
+                    <li>Chrome plumbing</li>
+                    <li>Premium towel warmer/rail</li>
+                    <li>LED mirror cabinet</li>
+                    <li>Premium exhaust fan</li>
+                    <li>Glass shelf & accessories</li>
+                </ul>
+                
+                <h5 style="margin: 10px 0 12px 0; color: #007bff;">Extras</h5>
+                <ul style="margin: 0 0 15px 0; padding-left: 20px; font-size: 13px; color: #666;">
+                    <li>PVC false ceiling</li>
+                    <li>4-LED spotlights</li>
+                    <li>Glass partition (wet area)</li>
+                </ul>
+                
+                <div style="margin-top: 15px; padding: 10px; background: #f0f3ff; border-radius: 5px; font-size: 12px; color: #666;">
+                    <strong>Installation:</strong> Premium fitting, waterproofing included
+                </div>
+            </div>
+        </div>
+        
+        <!-- Luxury Package -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #6f42c1; color: white; padding: 12px; text-align: center; font-weight: 600;">
+                Luxury Package - ₹1,50,000
+            </div>
+            <div style="padding: 15px;">
+                <h5 style="margin: 0 0 12px 0; color: #6f42c1;">Sanitaryware & Fittings</h5>
+                <ul style="margin: 0 0 15px 0; padding-left: 20px; font-size: 13px; color: #666;">
+                    <li>Wall hung WC with soft-close seat</li>
+                    <li>Designer counter-top basin</li>
+                    <li>Designer basin mixer</li>
+                    <li>Thermostatic rain shower</li>
+                    <li>25L geyser with recirculation</li>
+                </ul>
+                
+                <h5 style="margin: 10px 0 12px 0; color: #6f42c1;">Tiles & Flooring</h5>
+                <ul style="margin: 0 0 15px 0; padding-left: 20px; font-size: 13px; color: #666;">
+                    <li>Imported marble/granite tiles</li>
+                    <li>Designer floor tiles with pattern</li>
+                    <li>Epoxy grout</li>
+                    <li>Feature wall (2 walls) with inlay</li>
+                    <li>Heated flooring option</li>
+                </ul>
+                
+                <h5 style="margin: 10px 0 12px 0; color: #6f42c1;">Accessories</h5>
+                <ul style="margin: 0 0 15px 0; padding-left: 20px; font-size: 13px; color: #666;">
+                    <li>Concealed brass plumbing</li>
+                    <li>Designer towel warmer</li>
+                    <li>Smart LED mirror with demister</li>
+                    <li>Designer exhaust fan</li>
+                    <li>Complete accessory set</li>
+                </ul>
+                
+                <h5 style="margin: 10px 0 12px 0; color: #6f42c1;">Extras</h5>
+                <ul style="margin: 0 0 15px 0; padding-left: 20px; font-size: 13px; color: #666;">
+                    <li>Gypsum/wooden false ceiling</li>
+                    <li>6-LED designer lights + cove lighting</li>
+                    <li>Toughened glass shower enclosure</li>
+                    <li>Niches & shelving in walls</li>
+                    <li>Hidden cistern with flush plate</li>
+                </ul>
+                
+                <div style="margin-top: 15px; padding: 10px; background: #f0f3ff; border-radius: 5px; font-size: 12px; color: #666;">
+                    <strong>Installation:</strong> Premium fitting, waterproofing, niche work included
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Note at bottom -->
+    <div style="margin-top: 20px; padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; font-size: 13px; color: #856404;">
+        <strong>Note:</strong> Prices are indicative and include basic sanitaryware, tiles up to specified area, fittings, and installation. Premium branded items may have additional cost.
+    </div>
+</div>
+
+                </div>
+
+                <!-- Step 5: Walls -->
+                <div class="step-content" id="step5" style="display:none;">
+                    <h2>Wall Finishes 
+                        <button class="inspire-btn" onclick="window.open('https://www.google.com/search?q=modern+wall+panels+design&tbm=isch', '_blank')">
+                            View Inspiration
+                        </button>
+                    </h2>
+                    <div id="wallsList"></div>
+                    <button class="add-btn" id="addWall">+ Add Wall Finish</button>
+
+
+
+
+<!-- Wall Finish Guide -->
+<div class="wall-guide" style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+    <h3 style="margin: 0 0 20px 0; color: #333; border-bottom: 2px solid #667eea; padding-bottom: 8px;">
+        Wall Finish Guide: Choose What's Right for You
+    </h3>
+    
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        
+        <!-- Paint Card -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #667eea; color: white; padding: 12px; text-align: center; font-weight: 600; font-size: 18px;">
+                Paint - ₹55/sq ft
+            </div>
+            <div style="padding: 20px;">
+                <div style="margin-bottom: 15px;">
+                    <h4 style="margin: 0 0 10px 0; color: #28a745;">✅ Pros</h4>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #666;">
+                        <li>Most economical option</li>
+                        <li>Wide color range (1000+ shades)</li>
+                        <li>Quick application (2-3 days)</li>
+                        <li>Easy to touch up later</li>
+                        <li>Can be changed frequently</li>
+                        <li>Low maintenance - just wipe cleaning</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 style="margin: 0 0 10px 0; color: #dc3545;">❌ Cons</h4>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #666;">
+                        <li>Less durable (5-7 years)</li>
+                        <li>Prone to wall marks/scuffs</li>
+                        <li>No texture or dimension</li>
+                        <li>Fades over time with sunlight</li>
+                        <li>Moisture issues in bathrooms</li>
+                        <li>Shows wall imperfections</li>
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 15px; padding: 10px; background: #e8f4fd; border-radius: 5px; font-size: 12px;">
+                    <strong>Best for:</strong> Bedrooms, living rooms, rental properties, budget projects
+                </div>
+            </div>
+        </div>
+        
+        <!-- Wallpaper Card -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #28a745; color: white; padding: 12px; text-align: center; font-weight: 600; font-size: 18px;">
+                Wallpaper - ₹145/sq ft
+            </div>
+            <div style="padding: 20px;">
+                <div style="margin-bottom: 15px;">
+                    <h4 style="margin: 0 0 10px 0; color: #28a745;">✅ Pros</h4>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #666;">
+                        <li>Vast patterns, textures, designs</li>
+                        <li>Hides wall imperfections well</li>
+                        <li>Adds warmth and character</li>
+                        <li>Durable (8-12 years)</li>
+                        <li>Washable options available</li>
+                        <li>Quick installation</li>
+                        <li>Can create feature walls</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 style="margin: 0 0 10px 0; color: #dc3545;">❌ Cons</h4>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #666;">
+                        <li>Higher cost than paint</li>
+                        <li>Difficult removal</li>
+                        <li>Seams may show over time</li>
+                        <li>Not moisture-proof (except vinyl)</li>
+                        <li>Can peel at edges</li>
+                        <li>Repairing damage is hard</li>
+                        <li>Professional installation needed</li>
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 15px; padding: 10px; background: #e8f4fd; border-radius: 5px; font-size: 12px;">
+                    <strong>Best for:</strong> Feature walls, bedrooms, living rooms, dining areas
+                </div>
+                
+                <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                    <strong>Types:</strong> Vinyl, non-woven, paper, textile, 3D effect
+                </div>
+            </div>
+        </div>
+        
+        <!-- Panel Card -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #6f42c1; color: white; padding: 12px; text-align: center; font-weight: 600; font-size: 18px;">
+                Wall Panels - ₹280/sq ft
+            </div>
+            <div style="padding: 20px;">
+                <div style="margin-bottom: 15px;">
+                    <h4 style="margin: 0 0 10px 0; color: #28a745;">✅ Pros</h4>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #666;">
+                        <li>Premium luxury look</li>
+                        <li>Excellent sound insulation</li>
+                        <li>Very durable (15-20 years)</li>
+                        <li>Hides all wall imperfections</li>
+                        <li>Easy to clean</li>
+                        <li>Moisture resistant options</li>
+                        <li>Can hide wiring/conduits</li>
+                        <li>Adds thermal insulation</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 style="margin: 0 0 10px 0; color: #dc3545;">❌ Cons</h4>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #666;">
+                        <li>Most expensive option</li>
+                        <li>Reduces room size slightly</li>
+                        <li>Professional installation only</li>
+                        <li>Longer installation time</li>
+                        <li>Cannot change frequently</li>
+                        <li>Repairs require specialists</li>
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 15px; padding: 10px; background: #e8f4fd; border-radius: 5px; font-size: 12px;">
+                    <strong>Best for:</strong> TV walls, headboard walls, luxury homes, offices
+                </div>
+                
+                <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                    <strong>Materials:</strong> MDF, PVC, WPC, 3D panels, acoustic, wood veneer
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Comparison Table -->
+    <div style="margin-top: 30px;">
+        <h4 style="margin: 0 0 15px 0; color: #333;">Quick Comparison</h4>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 13px;">
+            <div style="font-weight: 600; padding: 8px; background: #e9ecef;">Feature</div>
+            <div style="font-weight: 600; padding: 8px; background: #e9ecef;">Paint</div>
+            <div style="font-weight: 600; padding: 8px; background: #e9ecef;">Wallpaper</div>
+            <div style="font-weight: 600; padding: 8px; background: #e9ecef;">Panels</div>
+            
+            <div style="padding: 8px;">Cost</div>
+            <div style="padding: 8px;">₹55/sq ft</div>
+            <div style="padding: 8px;">₹145/sq ft</div>
+            <div style="padding: 8px;">₹280/sq ft</div>
+            
+            <div style="padding: 8px;">Durability</div>
+            <div style="padding: 8px;">5-7 years</div>
+            <div style="padding: 8px;">8-12 years</div>
+            <div style="padding: 8px;">15-20 years</div>
+            
+            <div style="padding: 8px;">Installation</div>
+            <div style="padding: 8px;">2-3 days</div>
+            <div style="padding: 8px;">3-4 days</div>
+            <div style="padding: 8px;">5-7 days</div>
+            
+            <div style="padding: 8px;">Maintenance</div>
+            <div style="padding: 8px;">Easy</div>
+            <div style="padding: 8px;">Moderate</div>
+            <div style="padding: 8px;">Very Easy</div>
+        </div>
+    </div>
+    
+    <!-- Tip Box -->
+    <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
+        <strong style="color: #856404;">💡 Pro Tip:</strong>
+        <span style="color: #856404; font-size: 14px;"> 
+            Combine different finishes! Use paint for most walls, wallpaper for a feature wall, 
+            and panels for the TV wall or behind the bed. This creates depth and stays within budget.
+        </span>
+    </div>
+</div>
+
+
+
+
+                </div>
+
+                <!-- Step 6: Floor -->
+                <div class="step-content" id="step6" style="display:none;">
+                    <h2>Flooring 
+                        <button class="inspire-btn" onclick="window.open('https://www.google.com/search?q=modern+flooring+design&tbm=isch', '_blank')">
+                            View Inspiration
+                        </button>
+                    </h2>
+                    <div class="toggle-container">
+                        <label class="toggle">
+                            <input type="checkbox" id="floorToggle" checked>
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Enable Flooring</span>
+                        </label>
+                    </div>
+                    <div class="card-grid" id="floorGrid"></div>
+                </div>
+
+                <!-- Step 7: Doors -->
+                <div class="step-content" id="step7" style="display:none;">
+                    <h2>Doors 
+                        <button class="inspire-btn" onclick="window.open('https://www.google.com/search?q=modern+door+design&tbm=isch', '_blank')">
+                            View Inspiration
+                        </button>
+                    </h2>
+                    
+                    <div class="doors-section">
+                        <h3>Main Door</h3>
+                        <div class="card-grid" id="mainDoorGrid"></div>
+                    </div>
+
+                    <div class="doors-section">
+                        <h3>Internal Doors</h3>
+                        <div class="card-grid" id="internalDoorGrid"></div>
+                        <div class="count-input">
+                            <label>Number of Internal Doors:</label>
+                            <input type="number" id="internalDoorCount" min="0" value="3">
+                        </div>
+                    </div>
+
+                    <div class="doors-section">
+                        <h3>Door Handles</h3>
+                        <div class="card-grid" id="handleGrid"></div>
+                    </div>
+
+
+<!-- Door Guide -->
+<div class="door-guide" style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+    <h3 style="margin: 0 0 20px 0; color: #333; border-bottom: 2px solid #667eea; padding-bottom: 8px;">
+        Door Guide: Understand Your Options
+    </h3>
+    
+    <!-- Main Doors Section -->
+    <h4 style="margin: 20px 0 15px 0; color: #495057;">Main Entrance Doors</h4>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;">
+        
+        <!-- Flush Door -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #28a745; color: white; padding: 12px; text-align: center; font-weight: 600;">
+                Flush Door - ₹18,000
+            </div>
+            <div style="padding: 15px;">
+                <p style="margin: 0 0 10px 0; font-size: 14px; color: #666;">Solid core flush door with laminate finish. Simple, clean, and economical.</p>
+                <div style="font-size: 13px;">
+                    <div style="margin-bottom: 8px;"><strong>Core:</strong> Solid blockboard/particle board</div>
+                    <div style="margin-bottom: 8px;"><strong>Finish:</strong> Laminate / Veneer</div>
+                    <div style="margin-bottom: 8px;"><strong>Style:</strong> Modern, minimalist</div>
+                    <div><strong>Best for:</strong> Apartments, budget homes</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Veneer Door -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #007bff; color: white; padding: 12px; text-align: center; font-weight: 600;">
+                Veneer Door - ₹38,000
+            </div>
+            <div style="padding: 15px;">
+                <p style="margin: 0 0 10px 0; font-size: 14px; color: #666;">Real wood veneer over engineered core. Natural wood look at reasonable cost.</p>
+                <div style="font-size: 13px;">
+                    <div style="margin-bottom: 8px;"><strong>Core:</strong> Engineered wood/HDF</div>
+                    <div style="margin-bottom: 8px;"><strong>Finish:</strong> Natural wood veneer</div>
+                    <div style="margin-bottom: 8px;"><strong>Wood options:</strong> Oak, Maple, Walnut, Teak</div>
+                    <div><strong>Best for:</strong> Premium homes, traditional-modern fusion</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Premium Door -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #6f42c1; color: white; padding: 12px; text-align: center; font-weight: 600;">
+                Premium Door - ₹55,000
+            </div>
+            <div style="padding: 15px;">
+                <p style="margin: 0 0 10px 0; font-size: 14px; color: #666;">Solid wood or premium engineered door with designer finishes and hardware.</p>
+                <div style="font-size: 13px;">
+                    <div style="margin-bottom: 8px;"><strong>Core:</strong> Solid wood / Premium HDF</div>
+                    <div style="margin-bottom: 8px;"><strong>Finish:</strong> PU paint / High-gloss / Real wood</div>
+                    <div style="margin-bottom: 8px;"><strong>Features:</strong> Designer panels, double glazing option</div>
+                    <div><strong>Best for:</strong> Luxury homes, villas, statement entry</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Internal Doors Section -->
+    <h4 style="margin: 30px 0 15px 0; color: #495057;">Internal Doors</h4>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;">
+        
+        <!-- Internal Flush Door -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #28a745; color: white; padding: 8px; text-align: center; font-weight: 600;">
+                Flush Door - ₹8,000
+            </div>
+            <div style="padding: 12px; font-size: 13px;">
+                <p style="margin: 0 0 8px 0;">Hollow or solid core flush door with laminate finish.</p>
+                <div><strong>Core:</strong> Honeycomb/Solid blockboard</div>
+                <div><strong>Thickness:</strong> 30-35mm</div>
+                <div><strong>Best for:</strong> Bedrooms, bathrooms, budget projects</div>
+            </div>
+        </div>
+        
+        <!-- Internal Veneer Door -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #007bff; color: white; padding: 8px; text-align: center; font-weight: 600;">
+                Veneer Door - ₹15,000
+            </div>
+            <div style="padding: 12px; font-size: 13px;">
+                <p style="margin: 0 0 8px 0;">Engineered door with real wood veneer finish.</p>
+                <div><strong>Core:</strong> Engineered wood/HDF</div>
+                <div><strong>Finish:</strong> Natural wood veneer</div>
+                <div><strong>Best for:</strong> Bedrooms, study, premium interiors</div>
+            </div>
+        </div>
+        
+        <!-- Internal Premium Door -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #6f42c1; color: white; padding: 8px; text-align: center; font-weight: 600;">
+                Premium Door - ₹25,000
+            </div>
+            <div style="padding: 12px; font-size: 13px;">
+                <p style="margin: 0 0 8px 0;">Solid wood or designer door with premium finish.</p>
+                <div><strong>Core:</strong> Solid wood/Premium HDF</div>
+                <div><strong>Finish:</strong> PU/High-gloss</div>
+                <div><strong>Best for:</strong> Master bedroom, luxury homes</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Door Handles Section -->
+    <h4 style="margin: 30px 0 15px 0; color: #495057;">Door Handles</h4>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        
+        <!-- Standard Handles -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #6c757d; color: white; padding: 8px; text-align: center; font-weight: 600;">
+                Standard - Included
+            </div>
+            <div style="padding: 12px; font-size: 13px;">
+                <p style="margin: 0 0 8px 0;">Basic SS or zinc alloy handles.</p>
+                <div><strong>Material:</strong> Zinc alloy/SS</div>
+                <div><strong>Finish:</strong> Satin chrome/SS</div>
+                <div><strong>Durability:</strong> 5-7 years</div>
+            </div>
+        </div>
+        
+        <!-- Premium Handles -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #007bff; color: white; padding: 8px; text-align: center; font-weight: 600;">
+                Premium - ₹2,500/door
+            </div>
+            <div style="padding: 12px; font-size: 13px;">
+                <p style="margin: 0 0 8px 0;">Better quality SS or brass handles.</p>
+                <div><strong>Material:</strong> SS/Brass</div>
+                <div><strong>Finish:</strong> Polished chrome/Matte black</div>
+                <div><strong>Durability:</strong> 8-10 years</div>
+            </div>
+        </div>
+        
+        <!-- Luxury Handles -->
+        <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="background: #6f42c1; color: white; padding: 8px; text-align: center; font-weight: 600;">
+                Luxury - ₹6,000/door
+            </div>
+            <div style="padding: 12px; font-size: 13px;">
+                <p style="margin: 0 0 8px 0;">Designer handles from premium brands.</p>
+                <div><strong>Material:</strong> Solid brass/Stainless steel</div>
+                <div><strong>Finish:</strong> Antique/Matte gold/Champagne</div>
+                <div><strong>Features:</strong> Designer styles, warranty</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Door Materials Guide -->
+    <div style="margin-top: 30px; padding: 15px; background: white; border-radius: 8px;">
+        <h4 style="margin: 0 0 15px 0; color: #333;">Door Construction Guide</h4>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; font-size: 13px;">
+            <div>
+                <strong>Solid Wood</strong>
+                <p style="margin: 5px 0 0 0; color: #666;">Traditional, heavy, premium, natural grain</p>
+            </div>
+            <div>
+                <strong>Engineered Wood</strong>
+                <p style="margin: 5px 0 0 0; color: #666;">Stable, warp-resistant, cost-effective</p>
+            </div>
+            <div>
+                <strong>Hollow Core</strong>
+                <p style="margin: 5px 0 0 0; color: #666;">Lightweight, economical, for internal use</p>
+            </div>
+            <div>
+                <strong>Solid Core</strong>
+                <p style="margin: 5px 0 0 0; color: #666;">Heavy, sound-proof, main doors</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tip Box -->
+    <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
+        <strong style="color: #856404;">💡 Pro Tip:</strong>
+        <span style="color: #856404; font-size: 14px;"> 
+            Match main door style with your home's exterior. For internal doors, consider using the same 
+            finish throughout for consistency. Premium handles on budget doors make a big difference!
+        </span>
+    </div>
+</div>
+
+
+
+                </div>
+
+                <!-- Step 8: Customer -->
+                <div class="step-content" id="step8" style="display:none;">
+                    <h2>Customer Details</h2>
+                    <div class="customer-form">
+    <div class="form-group">
+        <label>Name *</label>
+        <input type="text" id="customerName" placeholder="Enter your full name">
+    </div>
+    
+    <div class="form-group">
+        <label>Flat Details</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+            <input type="text" id="customerTower" placeholder="Tower">
+            <input type="text" id="customerFloor" placeholder="Floor">
+            <input type="text" id="customerFlat" placeholder="Flat No">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label>Email *</label>
+        <input type="email" id="customerEmail" placeholder="email@example.com">
+    </div>
+    
+    <div class="form-group">
+        <label>Phone *</label>
+        <input type="tel" id="customerPhone" placeholder="10 digit mobile number">
+    </div>
+    
+    <div style="font-size: 12px; color: #666; margin-top: 10px;">
+        * Required fields for PDF download and queries
+    </div>
+</div>
+                    </div>
+                </div>
+
+                <!-- Step 9: Summary -->
+                <div class="step-content" id="step9" style="display:none;">
+                    <h2>Estimate Summary</h2>
+                    <div class="summary-container" id="summaryContainer">
+                        <div class="summary-item">
+                            <span>Layout:</span>
+                            <span id="summaryLayout">Not selected</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Electrical:</span>
+                            <span id="summaryElectrical">₹0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Woodwork:</span>
+                            <span id="summaryWoodwork">₹0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Bathroom:</span>
+                            <span id="summaryBathroom">₹0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Walls:</span>
+                            <span id="summaryWalls">₹0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Flooring:</span>
+                            <span id="summaryFloor">₹0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Doors:</span>
+                            <span id="summaryDoors">₹0</span>
+                        </div>
+                        <div class="summary-item grand">
+                            <span>Grand Total:</span>
+                            <span id="summaryGrand">₹0</span>
+                        </div>
+                    </div>
+       <!-- Terms and Conditions -->
+<div class="terms-section" style="margin-top: 30px; padding: 15px; background: #f8f9fa; border-radius: 8px; font-size: 12px; color: #666;">
+    <h4 style="margin: 0 0 10px 0; color: #333;">Terms & Conditions</h4>
+    <ul style="margin: 0; padding-left: 20px;">
+        <li>This is a preliminary estimate and subject to site visit</li>
+        <li><strong>Material & Hardware:</strong> All prices are subject to modification. If customer provides their own hardware (handles, hinges, channels) or raw material (plywood, boards, granite), only labour charges will be applicable as per site measurement</li>
+        <li>Prices valid for 30 days from the date of estimate</li>
+        <li>GST extra as applicable</li>
+        <li>Payment terms: 50% advance, 40% on material dispatch, 10% on completion</li>
+        <li>Installation timeline: 6-8 weeks post approval</li>
+        <li>Warranty: 1 year on workmanship, 5 years on modular products</li>
+        <li>Any changes in layout or design may affect final pricing</li>
+        <li>Electrical points estimate excludes main panel wiring and external cabling</li>
+        <li>Flooring estimate includes material and labour up to specified area only</li>
+        <li>Woodwork estimate assumes standard sizes; custom sizes may incur additional charges</li>
+        <li>Bathroom estimate includes standard CP fittings; branded/designer fittings will have cost difference</li>
+        <li>Site measurements final; any variation post measurement will be billed extra</li>
+        <li>Painting/Polish extra for woodwork if not specified in package</li>
+        <li>Demolition/removal of existing fittings not included unless specified</li>
+        <li>Transportation and labour charges subject to site location (within city limits)</li>
+        <li>Night shifts or weekend work if required will be charged extra</li>
+    </ul>
+    <div style="margin-top: 15px; padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; font-size: 12px;">
+        <strong style="color: #856404;">📝 Important Note:</strong>
+        <span style="color: #856404;"> If you wish to provide your own hardware (handles, hinges) or materials (plywood, granite, tiles), please inform us during site visit for revised labour-only quotation.</span>
+    </div>
+    <div style="margin-top: 10px; font-weight: 500; color: #dc3545; text-align: center;">
+        * This is a computer generated estimate - valid with customer signature
+    </div>
+</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="variables.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

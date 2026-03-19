@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIAASH | Master Architect BOQ Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --tiaash: #1A2634; --gold: #C5A059; --bg: #F1F5F9; --border: #CBD5E1; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tiaash); display: flex; height: 100vh; }
+
+        /* Navigation Sidebar */
+        nav { width: 260px; background: var(--tiaash); color: white; display: flex; flex-direction: column; flex-shrink: 0; }
+        .nav-head { padding: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .nav-head h1 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 22px; }
+        .nav-link { padding: 15px 30px; cursor: pointer; opacity: 0.6; transition: 0.2s; border-left: 4px solid transparent; font-size: 14px; }
+        .nav-link:hover, .nav-link.active { opacity: 1; background: rgba(255,255,255,0.05); border-left-color: var(--gold); }
+        .nav-link.summary-link { margin-top: auto; background: var(--gold); color: var(--tiaash); font-weight: bold; opacity: 1; }
+
+        /* Main Stage */
+        main { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; }
+        header { background: white; padding: 20px 40px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
+        
+        .content-area { padding: 40px; flex-grow: 1; }
+        .category-view { display: none; }
+        .category-view.active { display: block; }
+
+        /* Professional BOQ Table */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        th { background: #E2E8F0; padding: 15px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #475569; }
+        td { padding: 15px; border-bottom: 1px solid #F1F5F9; font-size: 14px; }
+        tr.excluded { opacity: 0.4; background: #F8FAFC; }
+        
+        .rate-select { padding: 5px; border: 1px solid var(--border); border-radius: 4px; font-size: 12px; }
+        .total-cell { font-weight: 700; text-align: right; width: 120px; }
+
+        /* Summary Styling */
+        .summary-card { background: white; padding: 40px; border: 2px solid var(--tiaash); border-radius: 4px; }
+        .summary-header { border-bottom: 2px solid var(--gold); padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; }
+
+        /* Floating Total */
+        .sticky-footer { background: var(--tiaash); color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .grand-amt { color: var(--gold); font-size: 28px; font-weight: 700; }
+
+        @media print { nav, header, .sticky-footer, .nav-link { display: none !important; } main { width: 100%; } .summary-card { border: none; } }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-head"><h1>TIAASH</h1><p style="font-size: 9px; opacity: 0.6;">ENGINEERING & INTERIORS</p></div>
+        <div class="nav-link active" onclick="switchTab('elec', this)">01. Electrical</div>
+        <div class="nav-link" onclick="switchTab('walls', this)">02. Wall Treatments</div>
+        <div class="nav-link" onclick="switchTab('doors', this)">03. Doors & Hardware</div>
+        <div class="nav-link" onclick="switchTab('bath', this)">04. Bathrooms</div>
+        <div class="nav-link" onclick="switchTab('addons', this)">05. Furniture Add-ons</div>
+        <div class="nav-link summary-link" onclick="switchTab('summary', this)">VIEW FINAL BOQ</div>
+    </nav>
+
+    <main id="main">
+        <header>
+            <h2 id="tab-title">Electrical & Automation</h2>
+            <div style="text-align: right;"><p style="font-size: 12px;">PROJECT ID</p><strong>L81-2024-001</strong></div>
+        </header>
+
+        <div class="content-area" id="content-body">
+            </div>
+
+        <div class="sticky-footer">
+            <div><p style="font-size: 11px; opacity: 0.7;">TOTAL ESTIMATED BUDGET</p><div class="grand-amt" id="grand-total">₹0</div></div>
+            <button onclick="window.print()" style="background: var(--gold); border: none; padding: 12px 25px; border-radius: 4px; font-weight: bold; cursor: pointer;">PRINT PROFORMA</button>
+        </div>
+    </main>
+
+<script>
+    // THE MASTER DATABASE (State)
+    const BOQ_DATA = {
+        elec: {
+            title: "Electrical & Automation",
+            items: [
+                { id: 'e1', inc: true, name: "Main Internal Wiring", spec: "4sqmm for AC lines", unit: "LS", qty: 1, options: [{l: "Polycab FR", r: 45000}, {l: "Havells S3", r: 52000}] },
+                { id: 'e2', inc: true, name: "Modular Switches", spec: "Touch Panels available", unit: "Nos", qty: 30, options: [{l: "Legrand", r: 850}, {l: "Touch Glass", r: 2400}] }
+            ]
+        },
+        walls: {
+            title: "Wall Treatments",
+            items: [
+                { id: 'w1', inc: true, name: "Living Area Wall", spec: "Feature Wall Treatment", unit: "sqft", qty: 150, options: [{l: "Paint", r: 45}, {l: "Wallpaper", r: 125}, {l: "Charcoal Panel", r: 450}] }
+            ]
+        },
+        doors: {
+            title: "Doors & Hardware",
+            items: [
+                { id: 'd1', inc: true, name: "Main Entrance", spec: "Solid Core Flush Door", unit: "Nos", qty: 1, options: [{l: "Teak Finish", r: 25000}, {l: "Veneer Finish", r: 42000}] },
+                { id: 'd2', inc: false, name: "Digital Lock", spec: "Biometric + RFID", unit: "Nos", qty: 1, options: [{l: "Yale YDM", r: 18500}, {l: "Samsung Biometric", r: 24000}] }
+            ]
+        },
+        bath: {
+            title: "Bathrooms",
+            items: [
+                { id: 'b1', inc: true, name: "Master Vanity", spec: "BWP Plywood + Quartz Top", unit: "Nos", qty: 1, options: [{l: "Standard 3ft", r: 14000}, {l: "Designer 4ft", r: 22000}] }
+            ]
+        },
+        addons: {
+            title: "Furniture Add-ons",
+            items: [
+                { id: 'a1', inc: true, name: "Master Wardrobe", spec: "Floor to Ceiling Sliding", unit: "sqft", qty: 80, options: [{l: "Laminate", r: 1650}, {l: "Acrylic", r: 2100}] },
+                { id: 'a2', inc: false, name: "TV Living Panel", spec: "Hidden wiring channel", unit: "sqft", qty: 40, options: [{l: "Louvered", r: 850}, {l: "Stone Finish", r: 1400}] }
+            ]
+        }
+    };
+
+    let activeTab = 'elec';
+
+    function switchTab(tabId, el) {
+        activeTab = tabId;
+        document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+        el.classList.add('active');
+        document.getElementById('tab-title').innerText = tabId === 'summary' ? "Final BOQ Summary" : BOQ_DATA[tabId].title;
+        render();
+    }
+
+    function toggleInc(cat, idx) {
+        BOQ_DATA[cat].items[idx].inc = !BOQ_DATA[cat].items[idx].inc;
+        render();
+    }
+
+    function changeRate(cat, idx, rateIdx) {
+        BOQ_DATA[cat].items[idx].selectedIdx = rateIdx;
+        render();
+    }
+
+    function render() {
+        const body = document.getElementById('content-body');
+        if (activeTab === 'summary') {
+            renderSummary(body);
+        } else {
+            renderCategory(body);
+        }
+        calculateTotal();
+    }
+
+    function renderCategory(container) {
+        const cat = BOQ_DATA[activeTab];
+        let html = `<table><thead><tr><th>Inc</th><th>Particulars</th><th>Unit</th><th>Qty</th><th>Rate / Selection</th><th class="total-cell">Total</th></tr></thead><tbody>`;
+        
+        cat.items.forEach((item, i) => {
+            const sIdx = item.selectedIdx || 0;
+            const rate = item.options[sIdx].r;
+            const rowTotal = item.qty * rate;
+            html += `<tr class="${item.inc ? '' : 'excluded'}">
+                <td><input type="checkbox" ${item.inc ? 'checked' : ''} onchange="toggleInc('${activeTab}', ${i})"></td>
+                <td><strong>${item.name}</strong><br><small>${item.spec}</small></td>
+                <td>${item.unit}</td>
+                <td>${item.qty}</td>
+                <td>
+                    <select class="rate-select" onchange="changeRate('${activeTab}', ${i}, this.selectedIndex)">
+                        ${item.options.map((o, oi) => `<option ${sIdx === oi ? 'selected' : ''}>${o.l} - ₹${o.r}</option>`).join('')}
+                    </select>
+                </td>
+                <td class="total-cell">₹${item.inc ? rowTotal.toLocaleString() : '0'}</td>
+            </tr>`;
+        });
+        container.innerHTML = html + `</tbody></table>`;
+    }
+
+    function renderSummary(container) {
+        let html = `<div class="summary-card"><div class="summary-header"><div><h3>PROFORMA INVOICE</h3><p>TIAASH ENGINEERING STANDARD</p></div><img src="https://via.placeholder.com/100x40?text=TIAASH+LOGO" alt="Logo"></div><table><thead><tr><th>Item</th><th>Spec/Grade</th><th>Qty</th><th class="total-cell">Total</th></tr></thead><tbody>`;
+        
+        for (let cat in BOQ_DATA) {
+            BOQ_DATA[cat].items.forEach(item => {
+                if (item.inc) {
+                    const sIdx = item.selectedIdx || 0;
+                    html += `<tr><td>${item.name}</td><td>${item.options[sIdx].l}</td><td>${item.qty} ${item.unit}</td><td class="total-cell">₹${(item.qty * item.options[sIdx].r).toLocaleString()}</td></tr>`;
+                }
+            });
+        }
+        container.innerHTML = html + `</tbody></table></div>`;
+    }
+
+    function calculateTotal() {
+        let grand = 0;
+        for (let cat in BOQ_DATA) {
+            BOQ_DATA[cat].items.forEach(item => {
+                if (item.inc) {
+                    const sIdx = item.selectedIdx || 0;
+                    grand += (item.qty * item.options[sIdx].r);
+                }
+            });
+        }
+        document.getElementById('grand-total').innerText = "₹" + grand.toLocaleString('en-IN');
+    }
+
+    // Initialize
+    render();
+</script>
+</body>
+</html>

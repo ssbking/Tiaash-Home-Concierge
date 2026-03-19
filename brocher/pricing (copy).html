@@ -1,0 +1,2739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landmark Interiors - Project Estimator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1a2a44;
+            --accent-gold: #c5a059;
+            --bg-white: #ffffff;
+            --bg-light: #f8f9fa;
+            --text-dark: #1a1a1a;
+            --text-muted: #6c757d;
+            --border-light: #e9ecef;
+            --success: #28a745;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-gold);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .logo-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .logo-text span {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            color: var(--accent-gold);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: white;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-light);
+            position: sticky;
+            top: 72px;
+            z-index: 999;
+        }
+
+        .progress-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--border-light);
+            z-index: 1;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-gold);
+            transition: width 0.5s ease;
+        }
+
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .progress-step.active .step-circle {
+            border-color: var(--accent-gold);
+            background: var(--accent-gold);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .progress-step.completed .step-circle {
+            border-color: var(--success);
+            background: var(--success);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.625rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .step-label {
+                display: block;
+            }
+        }
+
+        .progress-step.active .step-label {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        .step-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .step-header h2 {
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card.selected {
+            border-color: var(--accent-gold);
+            background: linear-gradient(135deg, #fff9f0 0%, #ffffff 100%);
+        }
+
+        .card.selected::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 28px;
+            height: 28px;
+            background: var(--accent-gold);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .card.selected .card-icon {
+            background: var(--accent-gold);
+            color: white;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-blue);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Tables */
+        .table-container {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .table-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h3 {
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cost-display {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-light);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .custom-checkbox.checked {
+            background: var(--accent-gold);
+            border-color: var(--accent-gold);
+        }
+
+        .custom-checkbox.checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: white;
+            font-size: 0.75rem;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--primary-blue);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border-light);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Quality Selector */
+        .quality-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quality-card {
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .quality-card:hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+        }
+
+        .quality-card.selected {
+            border-color: var(--accent-gold);
+            background: linear-gradient(135deg, #fff9f0 0%, #ffffff 100%);
+        }
+
+        .quality-card.selected::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            color: var(--accent-gold);
+        }
+
+        .quality-name {
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 0.25rem;
+        }
+
+        .quality-desc {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .quality-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        /* Dynamic Lists */
+        .dynamic-list {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .list-item {
+            background: var(--bg-light);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 1rem;
+            align-items: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .btn-remove {
+            background: #fee;
+            color: #dc3545;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-remove:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+        /* Inspiration Grid */
+        .inspiration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .inspiration-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .inspiration-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .inspiration-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: var(--bg-light);
+        }
+
+        .inspiration-content {
+            padding: 1.25rem;
+        }
+
+        .inspiration-content h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-blue);
+        }
+
+        .inspiration-content p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .search-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 42, 68, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .inspiration-card:hover .search-overlay {
+            opacity: 1;
+        }
+
+        .search-btn {
+            background: var(--accent-gold);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Package Cards */
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .package-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            border: 2px solid var(--border-light);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            text-align: center;
+        }
+
+        .package-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-gold);
+        }
+
+        .package-card.selected {
+            border-color: var(--accent-gold);
+            background: linear-gradient(135deg, #fff9f0 0%, #ffffff 100%);
+            box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
+        }
+
+        .package-card.selected::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 32px;
+            height: 32px;
+            background: var(--accent-gold);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .package-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .package-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin: 1rem 0;
+        }
+
+        .package-features {
+            list-style: none;
+            text-align: left;
+            margin: 1.5rem 0;
+        }
+
+        .package-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .package-features li:last-child {
+            border-bottom: none;
+        }
+
+        .package-features i {
+            color: var(--success);
+        }
+
+        /* Toggle Switch */
+        .toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1.25rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: var(--border-light);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toggle-switch.active {
+            background: var(--accent-gold);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        /* Summary Page */
+        .summary-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .summary-title {
+            font-size: 1.25rem;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .summary-content {
+            color: var(--text-muted);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        .grand-total {
+            background: var(--primary-blue);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .grand-total h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .grand-total .amount {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.75rem;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-gold);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #b08d4b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(197, 160, 89, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-blue);
+            border: 2px solid var(--border-light);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-blue);
+            background: var(--bg-light);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .btn-group.center {
+            justify-content: center;
+        }
+
+        /* Image Preview Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .image-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.25rem;
+            color: var(--primary-blue);
+        }
+
+        /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: #25d366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 999;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        /* Loading State */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .step-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--border-light);
+        }
+
+        /* Image Gallery in Cards */
+        .card-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            background: var(--bg-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .card-image:hover {
+            transform: scale(1.02);
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .image-grid img:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        /* Cost Badge */
+        .cost-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary-blue);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .cost-badge i {
+            color: var(--accent-gold);
+        }
+
+        /* Alert */
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .alert-info {
+            background: #e7f3ff;
+            color: #004085;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 4px solid #ffc107;
+        }
+
+        /* Print Styles */
+        @media print {
+            .header, .progress-container, .btn-group, .whatsapp-float {
+                display: none !important;
+            }
+            
+            .step-content {
+                display: block !important;
+                page-break-after: always;
+            }
+        }
+
+        /* Customer Form */
+        .customer-form {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .customer-form h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-blue);
+        }
+
+        /* Terms Section */
+        .terms-section {
+            background: var(--bg-light);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .terms-section ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .terms-section li {
+            margin-bottom: 0.25rem;
+        }
+
+        /* BOQ Table */
+        .boq-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .boq-table th {
+            background: var(--primary-blue);
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+            font-size: 0.875rem;
+        }
+
+        .boq-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .boq-table tr:nth-child(even) {
+            background: var(--bg-light);
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary-blue);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success {
+            background: var(--success);
+        }
+
+        /* Disabled State */
+        .disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Image Preview in Summary */
+        .summary-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .summary-image-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .summary-image-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .summary-image-item img:hover {
+            transform: scale(1.05);
+        }
+
+        .summary-image-item p {
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Landmark Interiors</h1>
+                    <span>powered by Tiaash</span>
+                </div>
+            </div>
+            <div style="font-size: 0.875rem; opacity: 0.9;">
+                <i class="fas fa-phone"></i> +91 98XXX XXXXX
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-wrapper">
+            <div class="progress-bar">
+                <div class="progress-line">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <div class="progress-step active" data-step="1" onclick="goToStep(1)">
+                    <div class="step-circle">1</div>
+                    <span class="step-label">Layout</span>
+                </div>
+                <div class="progress-step" data-step="2" onclick="goToStep(2)">
+                    <div class="step-circle">2</div>
+                    <span class="step-label">Electrical</span>
+                </div>
+                <div class="progress-step" data-step="3" onclick="goToStep(3)">
+                    <div class="step-circle">3</div>
+                    <span class="step-label">Woodwork</span>
+                </div>
+                <div class="progress-step" data-step="4" onclick="goToStep(4)">
+                    <div class="step-circle">4</div>
+                    <span class="step-label">Inspiration</span>
+                </div>
+                <div class="progress-step" data-step="5" onclick="goToStep(5)">
+                    <div class="step-circle">5</div>
+                    <span class="step-label">Bathroom</span>
+                </div>
+                <div class="progress-step" data-step="6" onclick="goToStep(6)">
+                    <div class="step-circle">6</div>
+                    <span class="step-label">Walls</span>
+                </div>
+                <div class="progress-step" data-step="7" onclick="goToStep(7)">
+                    <div class="step-circle">7</div>
+                    <span class="step-label">Floors</span>
+                </div>
+                <div class="progress-step" data-step="8" onclick="goToStep(8)">
+                    <div class="step-circle">8</div>
+                    <span class="step-label">Doors</span>
+                </div>
+                <div class="progress-step" data-step="9" onclick="goToStep(9)">
+                    <div class="step-circle">9</div>
+                    <span class="step-label">Summary</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Step 1: Layout Selection -->
+        <div class="step-content active" id="step1">
+            <div class="step-header">
+                <h2>Choose Your Apartment Layout</h2>
+                <p>Select the unit type that matches your requirements</p>
+            </div>
+            
+            <div class="cards-grid" id="layoutGrid">
+                <!-- Layouts injected by JS -->
+            </div>
+
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <strong>Auto-calculation:</strong> Floor area will be automatically determined based on your layout selection for accurate costing.
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <div></div>
+                <button class="btn btn-primary" onclick="nextStep()">
+                    Continue <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Electrical Work -->
+        <div class="step-content" id="step2">
+            <div class="step-header">
+                <h2>Electrical Specifications</h2>
+                <p>Select required electrical components for your home</p>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3><i class="fas fa-bolt"></i> Electrical Items</h3>
+                    <div class="cost-display" id="electricalCost">₹0</div>
+                </div>
+                <table id="electricalTable">
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Item</th>
+                            <th>Unit</th>
+                            <th>Qty</th>
+                            <th>Est. Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody id="electricalBody">
+                        <!-- Electrical items injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert alert-warning">
+                <i class="fas fa-lightbulb"></i>
+                <div>
+                    <strong>Pre-selected essentials:</strong> Wires and Points are included in basic package. You can customize quantities as needed.
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="prevStep()">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="btn btn-primary" onclick="nextStep()">
+                    Continue <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Woodwork -->
+        <div class="step-content" id="step3">
+            <div class="step-header">
+                <h2>Woodwork & Cabinetry</h2>
+                <p>Configure kitchen and wardrobe specifications</p>
+            </div>
+
+            <!-- Kitchen Section -->
+            <div class="summary-section">
+                <div class="summary-header">
+                    <h3 class="summary-title"><i class="fas fa-utensils"></i> Kitchen</h3>
+                </div>
+                
+                <div class="quality-options" id="kitchenQuality">
+                    <div class="quality-card" data-quality="basic" onclick="selectKitchenQuality('basic')">
+                        <div class="quality-name">Basic</div>
+                        <div class="quality-desc">HDMR + Standard Laminate</div>
+                        <div class="quality-price">₹1,100/sqft</div>
+                    </div>
+                    <div class="quality-card" data-quality="premium" onclick="selectKitchenQuality('premium')">
+                        <div class="quality-name">Premium</div>
+                        <div class="quality-desc">HDMR + Premium Laminate</div>
+                        <div class="quality-price">₹1,350/sqft</div>
+                    </div>
+                    <div class="quality-card" data-quality="luxury" onclick="selectKitchenQuality('luxury')">
+                        <div class="quality-name">Luxury</div>
+                        <div class="quality-desc">HDMR + Veneer/Acrylic Finish</div>
+                        <div class="quality-price">₹1,700/sqft</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Kitchen Area (sqft)</label>
+                        <input type="number" class="form-control" id="kitchenArea" placeholder="Enter area" onchange="updateWoodwork()">
+                    </div>
+                    <div class="form-group">
+                        <label>Estimated Cost</label>
+                        <div class="cost-badge" id="kitchenCost">₹0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wardrobes Section -->
+            <div class="dynamic-list">
+                <div class="list-header">
+                    <h3 class="summary-title"><i class="fas fa-tshirt"></i> Wardrobes</h3>
+                    <button class="btn btn-primary" onclick="addWardrobe()" id="addWardrobeBtn">
+                        <i class="fas fa-plus"></i> Add Wardrobe
+                    </button>
+                </div>
+                <div id="wardrobesList">
+                    <!-- Wardrobes injected here -->
+                </div>
+                <div class="empty-state" id="emptyWardrobes" style="display: none;">
+                    <i class="fas fa-wardrobe"></i>
+                    <p>No wardrobes added yet. Click "Add Wardrobe" to begin.</p>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="prevStep()">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="btn btn-primary" onclick="nextStep()">
+                    Continue <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 4: Inspiration -->
+        <div class="step-content" id="step4">
+            <div class="step-header">
+                <h2>Design Inspiration</h2>
+                <p>Browse styles and visualize your dream home</p>
+            </div>
+
+            <div class="inspiration-grid">
+                <div class="inspiration-card" onclick="openInspiration('kitchen')">
+                    <div style="position: relative;">
+                        <div class="inspiration-image" style="background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--primary-blue);">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="search-overlay">
+                            <div class="search-btn">
+                                <i class="fas fa-search"></i> Browse Designs
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inspiration-content">
+                        <h3>Modern Kitchens</h3>
+                        <p>Contemporary modular kitchen designs with smart storage solutions</p>
+                    </div>
+                </div>
+
+                <div class="inspiration-card" onclick="openInspiration('wardrobe')">
+                    <div style="position: relative;">
+                        <div class="inspiration-image" style="background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--primary-blue);">
+                            <i class="fas fa-tshirt"></i>
+                        </div>
+                        <div class="search-overlay">
+                            <div class="search-btn">
+                                <i class="fas fa-search"></i> Browse Designs
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inspiration-content">
+                        <h3>Wardrobe Designs</h3>
+                        <p>Sliding doors, walk-in closets, and custom storage systems</p>
+                    </div>
+                </div>
+
+                <div class="inspiration-card" onclick="openInspiration('living')">
+                    <div style="position: relative;">
+                        <div class="inspiration-image" style="background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--primary-blue);">
+                            <i class="fas fa-couch"></i>
+                        </div>
+                        <div class="search-overlay">
+                            <div class="search-btn">
+                                <i class="fas fa-search"></i> Browse Designs
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inspiration-content">
+                        <h3>Living Room</h3>
+                        <p>TV units, false ceilings, and accent walls</p>
+                    </div>
+                </div>
+
+                <div class="inspiration-card" onclick="openInspiration('bedroom')">
+                    <div style="position: relative;">
+                        <div class="inspiration-image" style="background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--primary-blue);">
+                            <i class="fas fa-bed"></i>
+                        </div>
+                        <div class="search-overlay">
+                            <div class="search-btn">
+                                <i class="fas fa-search"></i> Browse Designs
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inspiration-content">
+                        <h3>Modern Bedrooms</h3>
+                        <p>Headboards, lighting, and cozy aesthetics</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <i class="fas fa-images"></i>
+                <div>
+                    <strong>Visual Reference:</strong> Click any category to open Google Images in a new tab. Save your favorite designs to discuss with our consultants.
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="prevStep()">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="btn btn-primary" onclick="nextStep()">
+                    Continue <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 5: Bathroom -->
+        <div class="step-content" id="step5">
+            <div class="step-header">
+                <h2>Bathroom Package</h2>
+                <p>Choose your bathroom renovation scope</p>
+            </div>
+
+            <div class="package-grid" id="bathroomPackages">
+                <div class="package-card" onclick="selectBathroom('basic')">
+                    <div class="package-name">Basic</div>
+                    <div class="package-price">~₹45,000</div>
+                    <ul class="package-features">
+                        <li><i class="fas fa-check"></i> Light fixtures replacement</li>
+                        <li><i class="fas fa-check"></i> Standard faucets</li>
+                        <li><i class="fas fa-check"></i> Basic sanitary ware</li>
+                        <li><i class="fas fa-check"></i> Standard accessories</li>
+                    </ul>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 1rem;">Best for: Rental properties & budget renovations</p>
+                </div>
+
+                <div class="package-card" onclick="selectBathroom('premium')">
+                    <div class="package-name">Premium</div>
+                    <div class="package-price">~₹85,000</div>
+                    <ul class="package-features">
+                        <li><i class="fas fa-check"></i> WC upgrade (wall-mounted)</li>
+                        <li><i class="fas fa-check"></i> Premium fittings (Jaquar/Kohler)</li>
+                        <li><i class="fas fa-check"></i> Vanity with mirror</li>
+                        <li><i class="fas fa-check"></i> Shower enclosure</li>
+                    </ul>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 1rem;">Best for: Modern homes & comfort upgrade</p>
+                </div>
+
+                <div class="package-card" onclick="selectBathroom('luxury')">
+                    <div class="package-name">Luxury</div>
+                    <div class="package-price">~₹150,000</div>
+                    <ul class="package-features">
+                        <li><i class="fas fa-check"></i> Complete civil work</li>
+                        <li><i class="fas fa-check"></i> Imported tiles/marble</li>
+                        <li><i class="fas fa-check"></i> Rain shower system</li>
+                        <li><i class="fas fa-check"></i> Bathtub installation</li>
+                        <li><i class="fas fa-check"></i> Heated towel rails</li>
+                    </ul>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 1rem;">Best for: Luxury apartments & spa-like experience</p>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="prevStep()">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="btn btn-primary" onclick="nextStep()">
+                    Continue <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 6: Wall Finishes -->
+        <div class="step-content" id="step6">
+            <div class="step-header">
+                <h2>Wall Finishes</h2>
+                <p>Add accent walls and special finishes</p>
+            </div>
+
+            <div class="dynamic-list">
+                <div class="list-header">
+                    <h3 class="summary-title"><i class="fas fa-paint-roller"></i> Wall Treatments</h3>
+                    <button class="btn btn-primary" onclick="addWall()">
+                        <i class="fas fa-plus"></i> Add Wall
+                    </button>
+                </div>
+                <div id="wallsList">
+                    <!-- Walls injected here -->
+                </div>
+                <div class="empty-state" id="emptyWalls">
+                    <i class="fas fa-wall-brick"></i>
+                    <p>No wall finishes added. Click "Add Wall" to select paint, wallpaper, or panels.</p>
+                </div>
+            </div>
+
+            <div class="summary-section" style="margin-top: 2rem;">
+                <div class="summary-header">
+                    <h3 class="summary-title">Wall Finish Cost Summary</h3>
+                    <div class="cost-display" id="wallsTotalCost">₹0</div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="prevStep()">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="btn btn-primary" onclick="nextStep()">
+                    Continue <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 7: Flooring -->
+        <div class="step-content" id="step7">
+            <div class="step-header">
+                <h2>Floor Finish</h2>
+                <p>Select flooring material for your home</p>
+            </div>
+
+            <div class="toggle-wrapper">
+                <div class="toggle-switch active" id="flooringToggle" onclick="toggleFlooring()">
+                    <div class="toggle-slider"></div>
+                </div>
+                <div>
+                    <strong>Include Flooring Work</strong>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0;">Toggle off to skip flooring (keep existing)</p>
+                </div>
+            </div>
+
+            <div id="flooringOptions">
+                <div class="alert alert-info" style="margin-bottom: 1.5rem;">
+                    <i class="fas fa-ruler-combined"></i>
+                    <div>
+                        <strong>Auto-calculated Area:</strong> <span id="floorAreaDisplay">0</span> sqft (based on selected layout)
+                    </div>
+                </div>
+
+                <div class="quality-options">
+                    <div class="quality-card" onclick="selectFlooring('vitrified')">
+                        <div class="quality-name">Vitrified Tiles</div>
+                        <div class="quality-desc">Durable, stain-resistant, easy maintenance</div>
+                        <div class="quality-price">₹65/sqft</div>
+                    </div>
+                    <div class="quality-card" onclick="selectFlooring('wooden')">
+                        <div class="quality-name">Wooden Flooring</div>
+                        <div class="quality-desc">Warm, elegant, premium feel</div>
+                        <div class="quality-price">₹185/sqft</div>
+                    </div>
+                    <div class="quality-card" onclick="selectFlooring('marble')">
+                        <div class="quality-name">Italian Marble</div>
+                        <div class="quality-desc">Luxurious, timeless, high-end</div>
+                        <div class="quality-price">₹250/sqft</div>
+                    </div>
+                </div>
+
+                <div class="summary-section">
+                    <div class="summary-header">
+                        <h3 class="summary-title">Flooring Estimate</h3>
+                        <div class="cost-display" id="flooringCost">₹0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="prevStep()">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="btn btn-primary" onclick="nextStep()">
+                    Continue <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 8: Doors -->
+        <div class="step-content" id="step8">
+            <div class="step-header">
+                <h2>Door Finishes</h2>
+                <p>Select main and internal door specifications</p>
+            </div>
+
+            <div class="summary-section">
+                <div class="summary-header">
+                    <h3 class="summary-title"><i class="fas fa-door-open"></i> Main Door</h3>
+                </div>
+                <div class="quality-options" id="mainDoorOptions">
+                    <div class="quality-card" onclick="selectMainDoor('flush')">
+                        <div class="quality-name">Flush Door</div>
+                        <div class="quality-desc">Simple, economical, painted finish</div>
+                        <div class="quality-price">₹8,500</div>
+                    </div>
+                    <div class="quality-card" onclick="selectMainDoor('veneer')">
+                        <div class="quality-name">Veneer Finish</div>
+                        <div class="quality-desc">Natural wood look, polished</div>
+                        <div class="quality-price">₹15,000</div>
+                    </div>
+                    <div class="quality-card" onclick="selectMainDoor('premium')">
+                        <div class="quality-name">Premium Panel</div>
+                        <div class="quality-desc">Decorative panels, high-end hardware</div>
+                        <div class="quality-price">₹25,000</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-section">
+                <div class="summary-header">
+                    <h3 class="summary-title"><i class="fas fa-door-closed"></i> Internal Doors</h3>
+                </div>
+                
+                <div class="form-group">
+                    <label>Number of Internal Doors</label>
+                    <input type="number" class="form-control" id="internalDoorCount" value="3" min="0" max="10" onchange="updateDoors()">
+                </div>
+
+                <div class="quality-options" id="internalDoorOptions" style="margin-top: 1rem;">
+                    <div class="quality-card" onclick="selectInternalDoor('flush')">
+                        <div class="quality-name">Flush Door</div>
+                        <div class="quality-desc">Standard internal door</div>
+                        <div class="quality-price">₹4,500 each</div>
+                    </div>
+                    <div class="quality-card" onclick="selectInternalDoor('veneer')">
+                        <div class="quality-name">Veneer Finish</div>
+                        <div class="quality-desc">Matching wood theme</div>
+                        <div class="quality-price">₹7,500 each</div>
+                    </div>
+                    <div class="quality-card" onclick="selectInternalDoor('premium')">
+                        <div class="quality-name">Premium Design</div>
+                        <div class="quality-desc">Designer panels</div>
+                        <div class="quality-price">₹12,000 each</div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label>Handle Style</label>
+                    <select class="form-control" id="handleStyle" onchange="updateDoors()">
+                        <option value="standard">Standard SS Handles</option>
+                        <option value="premium">Premium Rose Gold/Black</option>
+                        <option value="luxury">Imported Designer Handles</option>
+                    </select>
+                </div>
+
+                <div class="summary-header" style="margin-top: 2rem;">
+                    <h3 class="summary-title">Total Door Cost</h3>
+                    <div class="cost-display" id="doorsTotalCost">₹0</div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="prevStep()">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="btn btn-primary" onclick="nextStep()">
+                    View Summary <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 9: Summary -->
+        <div class="step-content" id="step9">
+            <div class="step-header">
+                <h2>Project Summary</h2>
+                <p>Review your complete Bill of Quantities</p>
+            </div>
+
+            <!-- Customer Details Form -->
+            <div class="customer-form">
+                <h3><i class="fas fa-user"></i> Your Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" class="form-control" id="customerName" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address *</label>
+                        <input type="email" class="form-control" id="customerEmail" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <input type="tel" class="form-control" id="customerPhone" placeholder="Enter your phone number" required>
+                </div>
+            </div>
+
+            <div id="summaryContainer">
+                <!-- Summary content injected by JS -->
+            </div>
+
+            <div class="grand-total">
+                <h3>Estimated Project Investment</h3>
+                <div class="amount" id="grandTotal">₹0</div>
+                <p style="margin-top: 0.5rem; opacity: 0.8;">*Final quote may vary based on site conditions</p>
+            </div>
+
+            <div class="terms-section">
+                <strong>Terms & Conditions:</strong>
+                <ul>
+                    <li>Prices are indicative and subject to final site measurement</li>
+                    <li>Material selection may affect final pricing</li>
+                    <li>GST @ 18% applicable on total value</li>
+                    <li>50% advance payment required to commence work</li>
+                    <li>Valid for 30 days from date of generation</li>
+                </ul>
+            </div>
+
+            <div class="btn-group center">
+                <button class="btn btn-secondary" onclick="prevStep()">
+                    <i class="fas fa-arrow-left"></i> Modify
+                </button>
+                <button class="btn btn-primary" onclick="downloadPDF()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-success" onclick="sendEmail()">
+                    <i class="fas fa-envelope"></i> Send Estimate
+                </button>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem; padding: 1.5rem; background: white; border-radius: 12px;">
+                <p style="color: var(--text-muted); margin-bottom: 0.5rem;">
+                    <i class="fas fa-phone"></i> Need help? Contact our design consultant
+                </p>
+                <a href="mailto:interiors@tiaash.com" style="color: var(--primary-blue); font-weight: 600; text-decoration: none;">
+                    interiors@tiaash.com
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal" onclick="closeModal()">
+        <div class="modal-close">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="Preview">
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/9198XXXXXXXX" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Global State
+        window.projectState = {
+            currentStep: 1,
+            layout: null,
+            electrical: {},
+            woodwork: {
+                kitchen: { quality: null, area: 0 },
+                wardrobes: []
+            },
+            bathroom: null,
+            walls: [],
+            flooring: { enabled: true, type: null },
+            doors: {
+                main: null,
+                internal: { type: null, count: 3, handle: 'standard' }
+            },
+            customer: {
+                name: '',
+                email: '',
+                phone: ''
+            }
+        };
+
+        // Pricing Data (Hidden from user view but used for calculations)
+        const PRICING = {
+            layouts: {
+                'Unit-1': { name: '3 BHK', sqft: 645, price: 0 },
+                'Unit-2': { name: '3 BHK', sqft: 645, price: 0 },
+                'Unit-3': { name: '2 BHK', sqft: 560, price: 0 },
+                'Unit-4': { name: '2 BHK', sqft: 566, price: 0 },
+                'Unit-5': { name: '1 BHK / Studio', sqft: 450, price: 0 }
+            },
+            electrical: {
+                'Wires': { unit: 'per sqft', rate: 45, default: true, qty: 1 },
+                'Switches': { unit: 'per point', rate: 350, default: false, qty: 1 },
+                'Points': { unit: 'per point', rate: 450, default: true, qty: 8 },
+                'Fan': { unit: 'per unit', rate: 2500, default: false, qty: 3 },
+                'Lights': { unit: 'per point', rate: 800, default: false, qty: 6 },
+                'Door Bell': { unit: 'per unit', rate: 1200, default: false, qty: 1 },
+                'Geyser': { unit: 'per unit', rate: 3500, default: false, qty: 2 },
+                'Exhaust Fan': { unit: 'per unit', rate: 1800, default: false, qty: 2 },
+                'AC Point': { unit: 'per point', rate: 2500, default: false, qty: 3 },
+                'Washing Machine Point': { unit: 'per point', rate: 1500, default: false, qty: 1 },
+                'Fridge Point': { unit: 'per point', rate: 1200, default: false, qty: 1 },
+                'Inverter Point': { unit: 'per point', rate: 2000, default: false, qty: 1 },
+                'RO Point': { unit: 'per point', rate: 800, default: false, qty: 1 },
+                'Air Purifier Point': { unit: 'per point', rate: 800, default: false, qty: 1 }
+            },
+            woodwork: {
+                basic: 1100,
+                premium: 1350,
+                luxury: 1700
+            },
+            bathroom: {
+                basic: 45000,
+                premium: 85000,
+                luxury: 150000
+            },
+            walls: {
+                paint: 55,
+                wallpaper: 145,
+                panel: 280
+            },
+            flooring: {
+                vitrified: 65,
+                wooden: 185,
+                marble: 250
+            },
+            doors: {
+                main: { flush: 8500, veneer: 15000, premium: 25000 },
+                internal: { flush: 4500, veneer: 7500, premium: 12000 },
+                handles: { standard: 500, premium: 1200, luxury: 2500 }
+            }
+        };
+
+        // Image URLs for visual feedback
+        const DESIGN_IMAGES = {
+            kitchen: [
+                'https://images.unsplash.com/photo-1556911220-bff31c812dba?w=400&h=300&fit=crop',
+                'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop',
+                'https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=400&h=300&fit=crop'
+            ],
+            wardrobe: [
+                'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=400&h=300&fit=crop',
+                'https://images.unsplash.com/photo-1594136976553-3860f0d07d97?w=400&h=300&fit=crop',
+                'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&h=300&fit=crop'
+            ],
+            living: [
+                'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400&h=300&fit=crop',
+                'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=300&fit=crop',
+                'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=300&fit=crop'
+            ],
+            bedroom: [
+                'https://images.unsplash.com/photo-1616594039964-40891a909d99?w=400&h=300&fit=crop',
+                'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop',
+                'https://images.unsplash.com/photo-1600585154526-3d70768c56b9?w=400&h=300&fit=crop'
+            ]
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadState();
+            initLayouts();
+            initElectrical();
+            updateProgress();
+            updateAllCosts();
+        });
+
+        // State Management
+        function saveState() {
+            localStorage.setItem('landmarkProjectState', JSON.stringify(window.projectState));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('landmarkProjectState');
+            if (saved) {
+                window.projectState = JSON.parse(saved);
+                goToStep(window.projectState.currentStep || 1);
+                restoreSelections();
+            }
+        }
+
+        function restoreSelections() {
+            // Restore layout
+            if (window.projectState.layout) {
+                document.querySelectorAll('#layoutGrid .card').forEach(card => {
+                    if (card.dataset.layout === window.projectState.layout) {
+                        card.classList.add('selected');
+                    }
+                });
+            }
+
+            // Restore electrical
+            Object.keys(window.projectState.electrical).forEach(item => {
+                const checkbox = document.querySelector(`[data-electrical="${item}"]`);
+                if (checkbox) {
+                    checkbox.classList.add('checked');
+                    const qtyInput = document.getElementById(`qty-${item}`);
+                    if (qtyInput) qtyInput.value = window.projectState.electrical[item].qty;
+                }
+            });
+
+            // Restore kitchen
+            if (window.projectState.woodwork.kitchen.quality) {
+                selectKitchenQuality(window.projectState.woodwork.kitchen.quality, false);
+                document.getElementById('kitchenArea').value = window.projectState.woodwork.kitchen.area || '';
+            }
+
+            // Restore wardrobes
+            window.projectState.woodwork.wardrobes.forEach((wardrobe, index) => {
+                addWardrobe(wardrobe);
+            });
+
+            // Restore bathroom
+            if (window.projectState.bathroom) {
+                selectBathroom(window.projectState.bathroom, false);
+            }
+
+            // Restore walls
+            window.projectState.walls.forEach(wall => addWall(wall));
+
+            // Restore flooring
+            if (!window.projectState.flooring.enabled) {
+                toggleFlooring();
+            }
+            if (window.projectState.flooring.type) {
+                selectFlooring(window.projectState.flooring.type, false);
+            }
+
+            // Restore doors
+            if (window.projectState.doors.main) {
+                selectMainDoor(window.projectState.doors.main, false);
+            }
+            if (window.projectState.doors.internal.type) {
+                selectInternalDoor(window.projectState.doors.internal.type, false);
+                document.getElementById('internalDoorCount').value = window.projectState.doors.internal.count;
+                document.getElementById('handleStyle').value = window.projectState.doors.internal.handle;
+            }
+
+            // Restore customer details
+            if (window.projectState.customer.name) {
+                document.getElementById('customerName').value = window.projectState.customer.name;
+            }
+            if (window.projectState.customer.email) {
+                document.getElementById('customerEmail').value = window.projectState.customer.email;
+            }
+            if (window.projectState.customer.phone) {
+                document.getElementById('customerPhone').value = window.projectState.customer.phone;
+            }
+        }
+
+        // Navigation
+        function goToStep(step) {
+            if (step < 1 || step > 9) return;
+            
+            // Validation
+            if (step > 1 && !window.projectState.layout && step !== 9) {
+                showToast('Please select a layout first', 'warning');
+                goToStep(1);
+                return;
+            }
+
+            window.projectState.currentStep = step;
+            saveState();
+
+            // Update UI
+            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+
+            // Update progress bar
+            document.querySelectorAll('.progress-step').forEach((el, idx) => {
+                el.classList.remove('active', 'completed');
+                if (idx + 1 < step) el.classList.add('completed');
+                if (idx + 1 === step) el.classList.add('active');
+            });
+
+            updateProgress();
+            
+            if (step === 9) generateSummary();
+        }
+
+        function nextStep() {
+            if (window.projectState.currentStep === 9) return;
+            
+            // Validate current step before proceeding
+            if (window.projectState.currentStep === 3) {
+                if (!window.projectState.woodwork.kitchen.quality && !window.projectState.woodwork.wardrobes.length) {
+                    if (!confirm('No woodwork items configured. Continue anyway?')) return;
+                }
+            }
+            
+            goToStep(window.projectState.currentStep + 1);
+        }
+
+        function prevStep() {
+            if (window.projectState.currentStep === 1) return;
+            goToStep(window.projectState.currentStep - 1);
+        }
+
+        // Layout initialization
+        function initLayouts() {
+            const grid = document.getElementById('layoutGrid');
+            let html = '';
+            const layouts = [
+                { name: 'Unit-1 (3 BHK)', sqft: 645, icon: 'fa-building' },
+                { name: 'Unit-2 (3 BHK)', sqft: 645, icon: 'fa-building' },
+                { name: 'Unit-3 (2 BHK)', sqft: 560, icon: 'fa-home' },
+                { name: 'Unit-4 (2 BHK)', sqft: 566, icon: 'fa-home' },
+                { name: 'Unit-5 (1 BHK / Studio)', sqft: 400, icon: 'fa-couch' }
+            ];
+            
+            layouts.forEach(layout => {
+                html += `
+                    <div class="card" onclick="selectLayout('${layout.name}')">
+                        <div class="card-icon"><i class="fas ${layout.icon}"></i></div>
+                        <h3>${layout.name}</h3>
+                        <p>${layout.sqft} sqft</p>
+                        <div class="card-meta">
+                            <span><i class="fas fa-ruler-combined"></i> ${layout.sqft} sqft</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            grid.innerHTML = html;
+        }
+
+        function selectLayout(layoutName) {
+            document.querySelectorAll('#layoutGrid .card').forEach(c => c.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            window.projectState.layout = layoutName;
+            
+            // Update floor area display if on flooring step
+            const floorAreaSpan = document.getElementById('floorAreaDisplay');
+            if (floorAreaSpan) {
+                floorAreaSpan.textContent = PRICING.layouts[layoutName].sqft;
+            }
+            
+            saveState();
+        }
+
+        // Electrical initialization
+        function initElectrical() {
+            const body = document.getElementById('electricalBody');
+            let html = '';
+            
+            Object.entries(PRICING.electrical).forEach(([item, data]) => {
+                const selected = window.projectState.electrical[item]?.selected ?? data.default;
+                const qty = window.projectState.electrical[item]?.qty ?? data.qty;
+                
+                html += `
+                    <tr>
+                        <td>
+                            <div class="checkbox-wrapper" onclick="toggleElectrical('${item}')">
+                                <div class="custom-checkbox ${selected ? 'checked' : ''}" data-electrical="${item}"></div>
+                            </div>
+                        </td>
+                        <td>${item}</td>
+                        <td>${data.unit}</td>
+                        <td><input type="number" class="form-control" style="width: 80px;" id="qty-${item}" value="${qty}" min="0" onchange="updateElectricalQty('${item}', this.value)"></td>
+                        <td>₹${(data.rate * qty).toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+            
+            body.innerHTML = html;
+        }
+
+        function toggleElectrical(item) {
+            const checkbox = document.querySelector(`[data-electrical="${item}"]`);
+            const current = window.projectState.electrical[item]?.selected ?? false;
+            
+            window.projectState.electrical[item] = {
+                ...(window.projectState.electrical[item] || {}),
+                selected: !current
+            };
+            
+            checkbox.classList.toggle('checked');
+            updateElectricalCost();
+            saveState();
+        }
+
+        function updateElectricalQty(item, qty) {
+            window.projectState.electrical[item] = {
+                ...(window.projectState.electrical[item] || {}),
+                qty: parseInt(qty) || 0
+            };
+            updateElectricalCost();
+            saveState();
+        }
+
+        function updateElectricalCost() {
+            let total = 0;
+            Object.entries(PRICING.electrical).forEach(([item, data]) => {
+                const selected = window.projectState.electrical[item]?.selected ?? false;
+                const qty = window.projectState.electrical[item]?.qty ?? data.qty;
+                if (selected) total += data.rate * qty;
+            });
+            
+            document.getElementById('electricalCost').textContent = `₹${total.toLocaleString()}`;
+        }
+
+        // Kitchen functions
+        function selectKitchenQuality(quality, updateState = true) {
+            document.querySelectorAll('#kitchenQuality .quality-card').forEach(c => c.classList.remove('selected'));
+            event?.currentTarget.classList.add('selected');
+            if (updateState) window.projectState.woodwork.kitchen.quality = quality;
+            updateWoodwork();
+        }
+
+        function updateWoodwork() {
+            const area = parseFloat(document.getElementById('kitchenArea').value) || 0;
+            window.projectState.woodwork.kitchen.area = area;
+            
+            let kitchenCost = 0;
+            if (window.projectState.woodwork.kitchen.quality && area) {
+                kitchenCost = PRICING.woodwork[window.projectState.woodwork.kitchen.quality] * area;
+            }
+            document.getElementById('kitchenCost').textContent = `₹${kitchenCost.toLocaleString()}`;
+            
+            saveState();
+            updateAllCosts();
+        }
+
+        // Wardrobe functions
+        function addWardrobe(existingWardrobe = null) {
+            if (window.projectState.woodwork.wardrobes.length >= 4) {
+                showToast('Maximum 4 wardrobes allowed', 'warning');
+                return;
+            }
+            
+            const container = document.getElementById('wardrobesList');
+            const emptyState = document.getElementById('emptyWardrobes');
+            const index = window.projectState.woodwork.wardrobes.length;
+            
+            const wardrobe = existingWardrobe || { quality: 'basic', area: 0 };
+            
+            if (!existingWardrobe) {
+                window.projectState.woodwork.wardrobes.push(wardrobe);
+            }
+            
+            const html = `
+                <div class="list-item" data-wardrobe-index="${index}">
+                    <select class="form-control" onchange="updateWardrobeQuality(${index}, this.value)">
+                        <option value="basic" ${wardrobe.quality === 'basic' ? 'selected' : ''}>Basic (₹1,100/sqft)</option>
+                        <option value="premium" ${wardrobe.quality === 'premium' ? 'selected' : ''}>Premium (₹1,350/sqft)</option>
+                        <option value="luxury" ${wardrobe.quality === 'luxury' ? 'selected' : ''}>Luxury (₹1,700/sqft)</option>
+                    </select>
+                    <input type="number" class="form-control" placeholder="Area (sqft)" value="${wardrobe.area}" onchange="updateWardrobeArea(${index}, this.value)">
+                    <button class="btn-remove" onclick="removeWardrobe(${index})"><i class="fas fa-trash"></i></button>
+                </div>
+            `;
+            
+            container.innerHTML += html;
+            
+            if (emptyState) emptyState.style.display = 'none';
+            if (window.projectState.woodwork.wardrobes.length >= 4) {
+                document.getElementById('addWardrobeBtn').disabled = true;
+            }
+            
+            saveState();
+            updateAllCosts();
+        }
+
+        function updateWardrobeQuality(index, quality) {
+            window.projectState.woodwork.wardrobes[index].quality = quality;
+            saveState();
+            updateAllCosts();
+        }
+
+        function updateWardrobeArea(index, area) {
+            window.projectState.woodwork.wardrobes[index].area = parseFloat(area) || 0;
+            saveState();
+            updateAllCosts();
+        }
+
+        function removeWardrobe(index) {
+            window.projectState.woodwork.wardrobes.splice(index, 1);
+            document.getElementById('wardrobesList').innerHTML = '';
+            window.projectState.woodwork.wardrobes.forEach((wardrobe, i) => addWardrobe(wardrobe));
+            
+            if (window.projectState.woodwork.wardrobes.length === 0) {
+                document.getElementById('emptyWardrobes').style.display = 'block';
+            }
+            
+            if (window.projectState.woodwork.wardrobes.length < 4) {
+                document.getElementById('addWardrobeBtn').disabled = false;
+            }
+            
+            saveState();
+            updateAllCosts();
+        }
+
+        // Bathroom functions
+        function selectBathroom(package, updateState = true) {
+            document.querySelectorAll('#bathroomPackages .package-card').forEach(c => c.classList.remove('selected'));
+            event?.currentTarget.classList.add('selected');
+            if (updateState) window.projectState.bathroom = package;
+            saveState();
+            updateAllCosts();
+        }
+
+        // Wall functions
+        function addWall(existingWall = null) {
+            const container = document.getElementById('wallsList');
+            const emptyState = document.getElementById('emptyWalls');
+            const index = window.projectState.walls.length;
+            
+            const wall = existingWall || { type: 'paint', area: 0 };
+            
+            if (!existingWall) {
+                window.projectState.walls.push(wall);
+            }
+            
+            const html = `
+                <div class="list-item" data-wall-index="${index}">
+                    <select class="form-control" onchange="updateWallType(${index}, this.value)">
+                        <option value="paint" ${wall.type === 'paint' ? 'selected' : ''}>Paint (₹55/sqft)</option>
+                        <option value="wallpaper" ${wall.type === 'wallpaper' ? 'selected' : ''}>Wallpaper (₹145/sqft)</option>
+                        <option value="panel" ${wall.type === 'panel' ? 'selected' : ''}>Panel (₹280/sqft)</option>
+                    </select>
+                    <input type="number" class="form-control" placeholder="Area (sqft)" value="${wall.area}" onchange="updateWallArea(${index}, this.value)">
+                    <button class="btn-remove" onclick="removeWall(${index})"><i class="fas fa-trash"></i></button>
+                </div>
+            `;
+            
+            container.innerHTML += html;
+            
+            if (emptyState) emptyState.style.display = 'none';
+            saveState();
+            updateWallCost();
+        }
+
+        function updateWallType(index, type) {
+            window.projectState.walls[index].type = type;
+            saveState();
+            updateWallCost();
+        }
+
+        function updateWallArea(index, area) {
+            window.projectState.walls[index].area = parseFloat(area) || 0;
+            saveState();
+            updateWallCost();
+        }
+
+        function removeWall(index) {
+            window.projectState.walls.splice(index, 1);
+            document.getElementById('wallsList').innerHTML = '';
+            window.projectState.walls.forEach((wall, i) => addWall(wall));
+            
+            if (window.projectState.walls.length === 0) {
+                document.getElementById('emptyWalls').style.display = 'block';
+            }
+            
+            saveState();
+            updateWallCost();
+        }
+
+        function updateWallCost() {
+            let total = 0;
+            window.projectState.walls.forEach(wall => {
+                total += (PRICING.walls[wall.type] * wall.area);
+            });
+            document.getElementById('wallsTotalCost').textContent = `₹${total.toLocaleString()}`;
+        }
+
+        // Flooring functions
+        function toggleFlooring() {
+            const toggle = document.getElementById('flooringToggle');
+            const options = document.getElementById('flooringOptions');
+            
+            window.projectState.flooring.enabled = !window.projectState.flooring.enabled;
+            
+            toggle.classList.toggle('active');
+            options.style.opacity = window.projectState.flooring.enabled ? '1' : '0.5';
+            options.style.pointerEvents = window.projectState.flooring.enabled ? 'auto' : 'none';
+            
+            saveState();
+            updateFlooringCost();
+        }
+
+        function selectFlooring(type, updateState = true) {
+            document.querySelectorAll('#flooringOptions .quality-card').forEach(c => c.classList.remove('selected'));
+            event?.currentTarget.classList.add('selected');
+            if (updateState) window.projectState.flooring.type = type;
+            saveState();
+            updateFlooringCost();
+        }
+
+        function updateFlooringCost() {
+            if (!window.projectState.flooring.enabled || !window.projectState.flooring.type || !window.projectState.layout) {
+                document.getElementById('flooringCost').textContent = '₹0';
+                return;
+            }
+            
+            const area = PRICING.layouts[window.projectState.layout].sqft;
+            const cost = PRICING.flooring[window.projectState.flooring.type] * area;
+            document.getElementById('flooringCost').textContent = `₹${cost.toLocaleString()}`;
+        }
+
+        // Door functions
+        function selectMainDoor(type, updateState = true) {
+            document.querySelectorAll('#mainDoorOptions .quality-card').forEach(c => c.classList.remove('selected'));
+            event?.currentTarget.classList.add('selected');
+            if (updateState) window.projectState.doors.main = type;
+            saveState();
+            updateDoorCost();
+        }
+
+        function selectInternalDoor(type, updateState = true) {
+            document.querySelectorAll('#internalDoorOptions .quality-card').forEach(c => c.classList.remove('selected'));
+            event?.currentTarget.classList.add('selected');
+            if (updateState) window.projectState.doors.internal.type = type;
+            saveState();
+            updateDoorCost();
+        }
+
+        function updateDoors() {
+            window.projectState.doors.internal.count = parseInt(document.getElementById('internalDoorCount').value) || 0;
+            window.projectState.doors.internal.handle = document.getElementById('handleStyle').value;
+            saveState();
+            updateDoorCost();
+        }
+
+        function updateDoorCost() {
+            let total = 0;
+            
+            if (window.projectState.doors.main) {
+                total += PRICING.doors.main[window.projectState.doors.main];
+            }
+            
+            if (window.projectState.doors.internal.type) {
+                total += PRICING.doors.internal[window.projectState.doors.internal.type] * window.projectState.doors.internal.count;
+                total += PRICING.doors.handles[window.projectState.doors.internal.handle] * window.projectState.doors.internal.count;
+            }
+            
+            document.getElementById('doorsTotalCost').textContent = `₹${total.toLocaleString()}`;
+        }
+
+        // All costs
+        function updateAllCosts() {
+            updateElectricalCost();
+            updateWoodwork();
+            updateWallCost();
+            updateFlooringCost();
+            updateDoorCost();
+            
+            if (window.projectState.currentStep === 9) {
+                generateSummary();
+            }
+        }
+
+        // Progress
+        function updateProgress() {
+            const fill = document.getElementById('progressFill');
+            const percent = ((window.projectState.currentStep - 1) / 8) * 100;
+            fill.style.width = `${percent}%`;
+        }
+
+        // Summary generation
+        function generateSummary() {
+            const container = document.getElementById('summaryContainer');
+            let total = 0;
+            let html = '';
+            
+            // Layout
+            if (window.projectState.layout) {
+                const layout = PRICING.layouts[window.projectState.layout];
+                html += `
+                    <div class="summary-section">
+                        <div class="summary-header">
+                            <h3 class="summary-title"><i class="fas fa-home"></i> Layout</h3>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">${window.projectState.layout}</span>
+                            <span class="summary-value">${layout.sqft} sqft</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Electrical
+            let elecTotal = 0;
+            let elecItems = [];
+            Object.entries(PRICING.electrical).forEach(([item, data]) => {
+                const selected = window.projectState.electrical[item]?.selected ?? false;
+                const qty = window.projectState.electrical[item]?.qty ?? data.qty;
+                if (selected) {
+                    const cost = data.rate * qty;
+                    elecTotal += cost;
+                    elecItems.push(`${item} x${qty} - ₹${cost.toLocaleString()}`);
+                }
+            });
+            total += elecTotal;
+            
+            html += `
+                <div class="summary-section">
+                    <div class="summary-header">
+                        <h3 class="summary-title"><i class="fas fa-bolt"></i> Electrical</h3>
+                        <div>₹${elecTotal.toLocaleString()}</div>
+                    </div>
+                    <div class="summary-content">
+                        ${elecItems.map(item => `<div class="summary-item"><span>${item}</span></div>`).join('')}
+                    </div>
+                </div>
+            `;
+            
+            // Woodwork
+            let woodTotal = 0;
+            if (window.projectState.woodwork.kitchen.quality && window.projectState.woodwork.kitchen.area > 0) {
+                const kitchenCost = PRICING.woodwork[window.projectState.woodwork.kitchen.quality] * window.projectState.woodwork.kitchen.area;
+                woodTotal += kitchenCost;
+                html += `
+                    <div class="summary-section">
+                        <div class="summary-header">
+                            <h3 class="summary-title"><i class="fas fa-utensils"></i> Kitchen</h3>
+                            <div>₹${kitchenCost.toLocaleString()}</div>
+                        </div>
+                        <div class="summary-item">
+                            <span>${window.projectState.woodwork.kitchen.quality} quality</span>
+                            <span>${window.projectState.woodwork.kitchen.area} sqft</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (window.projectState.woodwork.wardrobes.length > 0) {
+                let wardrobeHtml = '';
+                let wardrobeTotal = 0;
+                window.projectState.woodwork.wardrobes.forEach((w, i) => {
+                    const cost = PRICING.woodwork[w.quality] * w.area;
+                    wardrobeTotal += cost;
+                    wardrobeHtml += `<div class="summary-item"><span>Wardrobe ${i+1} (${w.quality})</span><span>${w.area} sqft - ₹${cost.toLocaleString()}</span></div>`;
+                });
+                woodTotal += wardrobeTotal;
+                html += `
+                    <div class="summary-section">
+                        <div class="summary-header">
+                            <h3 class="summary-title"><i class="fas fa-tshirt"></i> Wardrobes</h3>
+                            <div>₹${wardrobeTotal.toLocaleString()}</div>
+                        </div>
+                        ${wardrobeHtml}
+                    </div>
+                `;
+            }
+            
+            // Bathroom
+            if (window.projectState.bathroom) {
+                const bathCost = PRICING.bathroom[window.projectState.bathroom];
+                total += bathCost;
+                html += `
+                    <div class="summary-section">
+                        <div class="summary-header">
+                            <h3 class="summary-title"><i class="fas fa-toilet"></i> Bathroom</h3>
+                            <div>₹${bathCost.toLocaleString()}</div>
+                        </div>
+                        <div class="summary-item">
+                            <span>${window.projectState.bathroom} package</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Walls
+            let wallsTotal = 0;
+            if (window.projectState.walls.length > 0) {
+                let wallsHtml = '';
+                window.projectState.walls.forEach((wall, i) => {
+                    const cost = PRICING.walls[wall.type] * wall.area;
+                    wallsTotal += cost;
+                    wallsHtml += `<div class="summary-item"><span>Wall ${i+1} (${wall.type})</span><span>${wall.area} sqft - ₹${cost.toLocaleString()}</span></div>`;
+                });
+                total += wallsTotal;
+                html += `
+                    <div class="summary-section">
+                        <div class="summary-header">
+                            <h3 class="summary-title"><i class="fas fa-paint-roller"></i> Wall Finishes</h3>
+                            <div>₹${wallsTotal.toLocaleString()}</div>
+                        </div>
+                        ${wallsHtml}
+                    </div>
+                `;
+            }
+            
+            // Flooring
+            if (window.projectState.flooring.enabled && window.projectState.flooring.type && window.projectState.layout) {
+                const area = PRICING.layouts[window.projectState.layout].sqft;
+                const floorCost = PRICING.flooring[window.projectState.flooring.type] * area;
+                total += floorCost;
+                html += `
+                    <div class="summary-section">
+                        <div class="summary-header">
+                            <h3 class="summary-title"><i class="fas fa-floor"></i> Flooring</h3>
+                            <div>₹${floorCost.toLocaleString()}</div>
+                        </div>
+                        <div class="summary-item">
+                            <span>${window.projectState.flooring.type}</span>
+                            <span>${area} sqft</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Doors
+            let doorsTotal = 0;
+            if (window.projectState.doors.main) {
+                doorsTotal += PRICING.doors.main[window.projectState.doors.main];
+            }
+            if (window.projectState.doors.internal.type) {
+                doorsTotal += PRICING.doors.internal[window.projectState.doors.internal.type] * window.projectState.doors.internal.count;
+                doorsTotal += PRICING.doors.handles[window.projectState.doors.internal.handle] * window.projectState.doors.internal.count;
+            }
+            total += doorsTotal;
+            
+            if (doorsTotal > 0) {
+                html += `
+                    <div class="summary-section">
+                        <div class="summary-header">
+                            <h3 class="summary-title"><i class="fas fa-door-open"></i> Doors</h3>
+                            <div>₹${doorsTotal.toLocaleString()}</div>
+                        </div>
+                        ${window.projectState.doors.main ? `<div class="summary-item"><span>Main Door</span><span>${window.projectState.doors.main}</span></div>` : ''}
+                        ${window.projectState.doors.internal.type ? `<div class="summary-item"><span>Internal Doors</span><span>${window.projectState.doors.internal.count} x ${window.projectState.doors.internal.type}</span></div>` : ''}
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
+            document.getElementById('grandTotal').textContent = `₹${total.toLocaleString()}`;
+            
+            // Update customer info
+            const name = document.getElementById('customerName');
+            const email = document.getElementById('customerEmail');
+            const phone = document.getElementById('customerPhone');
+            
+            if (name) name.value = window.projectState.customer.name;
+            if (email) email.value = window.projectState.customer.email;
+            if (phone) phone.value = window.projectState.customer.phone;
+            
+            if (name) name.onchange = () => { window.projectState.customer.name = name.value; saveState(); };
+            if (email) email.onchange = () => { window.projectState.customer.email = email.value; saveState(); };
+            if (phone) phone.onchange = () => { window.projectState.customer.phone = phone.value; saveState(); };
+        }
+
+        // Inspiration
+        function openInspiration(category) {
+            const searchTerms = {
+                kitchen: 'modern modular kitchen designs interior',
+                wardrobe: 'wardrobe designs sliding doors interior',
+                living: 'living room interior design tv unit',
+                bedroom: 'modern bedroom interior design headboard'
+            };
+            window.open(`https://www.google.com/search?q=${encodeURIComponent(searchTerms[category])}&tbm=isch`, '_blank');
+        }
+
+        // PDF Generation
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add content
+            doc.setFontSize(20);
+            doc.text('Landmark Interiors', 20, 20);
+            doc.setFontSize(12);
+            doc.text('Project Estimate', 20, 30);
+            doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 40);
+            
+            let y = 60;
+            doc.setFontSize(14);
+            doc.text('Bill of Quantities', 20, y);
+            y += 10;
+            
+            // Add summary items
+            doc.setFontSize(10);
+            const total = document.getElementById('grandTotal').textContent;
+            doc.text(`Total Estimated Cost: ${total}`, 20, y + 10);
+            
+            // Save PDF
+            doc.save('Landmark-Interiors-Estimate.pdf');
+            showToast('PDF downloaded successfully', 'success');
+        }
+
+        // Email
+        function sendEmail() {
+            const name = document.getElementById('customerName').value;
+            const email = document.getElementById('customerEmail').value;
+            const phone = document.getElementById('customerPhone').value;
+            
+            if (!name || !email || !phone) {
+                showToast('Please fill in all customer details', 'warning');
+                return;
+            }
+            
+            window.projectState.customer = { name, email, phone };
+            saveState();
+            
+            const total = document.getElementById('grandTotal').textContent;
+            const subject = encodeURIComponent('New Project Estimate from Landmark Interiors');
+            const body = encodeURIComponent(
+                `Customer: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nEstimated Total: ${total}\n\nPlease find attached the detailed BOQ.`
+            );
+            
+            window.location.href = `mailto:interiors@tiaash.com?subject=${subject}&body=${body}`;
+            showToast('Email client opened', 'success');
+        }
+
+        // Toast
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Image Modal
+        function showImage(src) {
+            document.getElementById('modalImage').src = src;
+            document.getElementById('imageModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').classList.remove('active');
+        }
+    </script>
+
+</body>
+</html>
