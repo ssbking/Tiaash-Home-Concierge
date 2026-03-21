@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Landmark Interiors Estimator</title>
+    <title>Tiaash Interiors Estimator</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -808,76 +808,169 @@
         * Required fields for PDF download and queries
     </div>
 </div>
-                    </div>
-                </div>
 
-                <!-- Step 9: Summary -->
-                <div class="step-content" id="step9" style="display:none;">
-                    <h2>Estimate Summary</h2>
-                    <div class="summary-container" id="summaryContainer">
-                        <div class="summary-item">
-                            <span>Layout:</span>
-                            <span id="summaryLayout">Not selected</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Electrical:</span>
-                            <span id="summaryElectrical">₹0</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Woodwork:</span>
-                            <span id="summaryWoodwork">₹0</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Bathroom:</span>
-                            <span id="summaryBathroom">₹0</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Walls:</span>
-                            <span id="summaryWalls">₹0</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Flooring:</span>
-                            <span id="summaryFloor">₹0</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Doors:</span>
-                            <span id="summaryDoors">₹0</span>
-                        </div>
-                        <div class="summary-item grand">
-                            <span>Grand Total:</span>
-                            <span id="summaryGrand">₹0</span>
-                        </div>
+
+
+
+
+
+
+
                     </div>
-       <!-- Terms and Conditions -->
-<div class="terms-section" style="margin-top: 30px; padding: 15px; background: #f8f9fa; border-radius: 8px; font-size: 12px; color: #666;">
-    <h4 style="margin: 0 0 10px 0; color: #333;">Terms & Conditions</h4>
-    <ul style="margin: 0; padding-left: 20px;">
-        <li>This is a preliminary estimate and subject to site visit</li>
-        <li><strong>Material & Hardware:</strong> All prices are subject to modification. If customer provides their own hardware (handles, hinges, channels) or raw material (plywood, boards, granite), only labour charges will be applicable as per site measurement</li>
-        <li>Prices valid for 30 days from the date of estimate</li>
-        <li>GST extra as applicable</li>
-        <li>Payment terms: 50% advance, 40% on material dispatch, 10% on completion</li>
-        <li>Installation timeline: 6-8 weeks post approval</li>
-        <li>Warranty: 1 year on workmanship, 5 years on modular products</li>
-        <li>Any changes in layout or design may affect final pricing</li>
-        <li>Electrical points estimate excludes main panel wiring and external cabling</li>
-        <li>Flooring estimate includes material and labour up to specified area only</li>
-        <li>Woodwork estimate assumes standard sizes; custom sizes may incur additional charges</li>
-        <li>Bathroom estimate includes standard CP fittings; branded/designer fittings will have cost difference</li>
-        <li>Site measurements final; any variation post measurement will be billed extra</li>
-        <li>Painting/Polish extra for woodwork if not specified in package</li>
-        <li>Demolition/removal of existing fittings not included unless specified</li>
-        <li>Transportation and labour charges subject to site location (within city limits)</li>
-        <li>Night shifts or weekend work if required will be charged extra</li>
-    </ul>
-    <div style="margin-top: 15px; padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; font-size: 12px;">
-        <strong style="color: #856404;">📝 Important Note:</strong>
-        <span style="color: #856404;"> If you wish to provide your own hardware (handles, hinges) or materials (plywood, granite, tiles), please inform us during site visit for revised labour-only quotation.</span>
+
+
+
+<!-- Step 9: Summary -->
+<div class="step-content" id="step9" style="display:none;">
+    <h2>Estimate Summary</h2>
+    
+    <!-- Customer Details Section -->
+    <div class="summary-customer" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="margin: 0 0 10px 0; color: #333; font-size: 16px;">Customer Details</h3>
+        <div id="summaryCustomerDetails">
+            <p><strong>Name:</strong> <span id="summaryCustomerName">Not provided</span></p>
+            <p><strong>Flat:</strong> <span id="summaryCustomerFlat">Not provided</span></p>
+            <p><strong>Email:</strong> <span id="summaryCustomerEmail">Not provided</span></p>
+            <p><strong>Phone:</strong> <span id="summaryCustomerPhone">Not provided</span></p>
+        </div>
     </div>
-    <div style="margin-top: 10px; font-weight: 500; color: #dc3545; text-align: center;">
-        * This is a computer generated estimate - valid with customer signature
+    
+    <!-- Layout Section -->
+    <div class="summary-layout" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="margin: 0 0 10px 0; color: #333; font-size: 16px;">Layout</h3>
+        <p><strong>Selected:</strong> <span id="summaryLayout">Not selected</span></p>
+    </div>
+    
+    <!-- Electrical Items Section -->
+    <div class="summary-electrical" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="margin: 0 0 10px 0; color: #333; font-size: 16px;">Electrical Items</h3>
+        <div id="summaryElectricalItems" style="margin-bottom: 10px;"></div>
+        <div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px solid #ddd; font-weight: 500;">
+            <span>Subtotal:</span>
+            <span id="summaryElectrical" style="color: #28a745;">₹0</span>
+        </div>
+    </div>
+    
+    <!-- Woodwork Section -->
+    <div class="summary-woodwork" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="margin: 0 0 10px 0; color: #333; font-size: 16px;">Woodwork</h3>
+        
+        <h4 style="margin: 10px 0 5px 0; font-size: 14px;">Kitchen</h4>
+        <div id="summaryKitchen" style="margin-bottom: 10px;"></div>
+        
+        <h4 style="margin: 10px 0 5px 0; font-size: 14px;">Wardrobes</h4>
+        <div id="summaryWardrobes" style="margin-bottom: 10px;"></div>
+        
+        <div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px solid #ddd; font-weight: 500;">
+            <span>Woodwork Total:</span>
+            <span id="summaryWoodwork" style="color: #28a745;">₹0</span>
+        </div>
+    </div>
+    
+    <!-- Bathroom Section -->
+    <div class="summary-bathroom" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="margin: 0 0 10px 0; color: #333; font-size: 16px;">Bathroom Package</h3>
+        <div id="summaryBathroomDetails"></div>
+        <div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px solid #ddd; font-weight: 500;">
+            <span>Bathroom Total:</span>
+            <span id="summaryBathroom" style="color: #28a745;">₹0</span>
+        </div>
+    </div>
+    
+    <!-- Walls Section -->
+    <div class="summary-walls" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="margin: 0 0 10px 0; color: #333; font-size: 16px;">Wall Finishes</h3>
+        <div id="summaryWallsList" style="margin-bottom: 10px;"></div>
+        <div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px solid #ddd; font-weight: 500;">
+            <span>Walls Total:</span>
+            <span id="summaryWalls" style="color: #28a745;">₹0</span>
+        </div>
+    </div>
+    
+    <!-- Flooring Section -->
+    <div class="summary-floor" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="margin: 0 0 10px 0; color: #333; font-size: 16px;">Flooring</h3>
+        <div id="summaryFloorDetails"></div>
+        <div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px solid #ddd; font-weight: 500;">
+            <span>Flooring Total:</span>
+            <span id="summaryFloor" style="color: #28a745;">₹0</span>
+        </div>
+    </div>
+    
+    <!-- Doors Section -->
+    <div class="summary-doors" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="margin: 0 0 10px 0; color: #333; font-size: 16px;">Doors</h3>
+        <div id="summaryDoorsDetails"></div>
+        <div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px solid #ddd; font-weight: 500;">
+            <span>Doors Total:</span>
+            <span id="summaryDoors" style="color: #28a745;">₹0</span>
+        </div>
+    </div>
+    
+    <!-- Grand Total -->
+    <div class="summary-grand" style="background: #28a745; color: white; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
+        <h3 style="margin: 0 0 10px 0; font-size: 18px;">GRAND TOTAL</h3>
+        <div style="font-size: 32px; font-weight: bold;" id="summaryGrand">₹0</div>
+    </div>
+    
+    <!-- Terms and Conditions -->
+    <div class="terms-section" style="margin-top: 30px; padding: 15px; background: #f8f9fa; border-radius: 8px; font-size: 12px; color: #666;">
+        <h4 style="margin: 0 0 10px 0; color: #333;">Terms & Conditions</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+            <li>This is a preliminary estimate and subject to site visit</li>
+            <li><strong>Material & Hardware:</strong> All prices are subject to modification. If customer provides their own hardware (handles, hinges, channels) or raw material (plywood, boards, granite), only labour charges will be applicable as per site measurement</li>
+            <li>Prices valid for 30 days from the date of estimate</li>
+            <li>GST extra as applicable</li>
+            <li>Payment terms: 60% advance, 30% on material dispatch, 10% on completion</li>
+            <li>Installation timeline: 6-8 weeks post approval</li>
+            <li>Warranty: 1 year on workmanship, 5 years on modular products</li>
+            <li>Any changes in layout or design may affect final pricing</li>
+            <li>Electrical points estimate excludes main panel wiring and external cabling</li>
+            <li>Flooring estimate includes material and labour up to specified area only</li>
+            <li>Woodwork estimate assumes standard sizes; custom sizes may incur additional charges</li>
+            <li>Bathroom estimate includes standard CP fittings; branded/designer fittings will have cost difference</li>
+            <li>Site measurements final; any variation post measurement will be billed extra</li>
+            <li>Painting/Polish extra for woodwork if not specified in package</li>
+            <li>Demolition/removal of existing fittings not included unless specified</li>
+            <li>Transportation and labour charges subject to site location (within city limits)</li>
+            <li>Night shifts or weekend work if required will be charged extra</li>
+        </ul>
+        <div style="margin-top: 15px; padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; font-size: 12px;">
+            <strong style="color: #856404;">📝 Important Note:</strong>
+            <span style="color: #856404;"> If you wish to provide your own hardware (handles, hinges) or materials (plywood, granite, tiles), please inform us during site visit for revised labour-only quotation.</span>
+        </div>
+        <div style="margin-top: 10px; font-weight: 500; color: #dc3545; text-align: center;">
+            * This is a computer generated estimate - valid with customer signature
+        </div>
+        <div style="margin-top: 15px; text-align: center; font-size: 11px; color: #999;">
+            Thank you for choosing Tiaash Interiors
+        </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
                 </div>
             </div>

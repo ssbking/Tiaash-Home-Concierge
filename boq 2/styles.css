@@ -690,3 +690,115 @@ input:checked + .toggle-slider:before {
     }
 }
 
+
+
+
+/* Make package inclusions scrollable on mobile */
+@media (max-width: 768px) {
+    .package-inclusions .scroll-container,
+    .package-inclusions > div {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        -webkit-overflow-scrolling: touch !important;
+        white-space: nowrap !important;
+        display: block !important;
+        padding-bottom: 15px !important;
+    }
+    
+    .package-inclusions .scroll-item,
+    .package-inclusions > div > div {
+        display: inline-block !important;
+        width: 280px !important;
+        margin-right: 15px !important;
+        vertical-align: top !important;
+        white-space: normal !important;
+    }
+    
+    .package-inclusions .scroll-item:last-child,
+    .package-inclusions > div > div:last-child {
+        margin-right: 0 !important;
+    }
+    
+    /* Scroll hint */
+    .package-inclusions {
+        position: relative;
+    }
+    
+    .package-inclusions::before {
+        content: "← Swipe to see more →";
+        display: block;
+        text-align: right;
+        font-size: 11px;
+        color: #667eea;
+        margin-bottom: 10px;
+        opacity: 0.8;
+    }
+}
+
+/* Wall guide mobile scroll */
+@media (max-width: 768px) {
+    .wall-guide .scroll-container,
+    .wall-guide > div:first-of-type {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        -webkit-overflow-scrolling: touch !important;
+        white-space: nowrap !important;
+        display: block !important;
+        padding-bottom: 15px !important;
+    }
+    
+    .wall-guide .scroll-item,
+    .wall-guide > div:first-of-type > div {
+        display: inline-block !important;
+        width: 300px !important;
+        margin-right: 15px !important;
+        vertical-align: top !important;
+        white-space: normal !important;
+    }
+    
+    .wall-guide::before {
+        content: "← Swipe to see more →";
+        display: block;
+        text-align: right;
+        font-size: 11px;
+        color: #667eea;
+        margin-bottom: 10px;
+        opacity: 0.8;
+    }
+}
+
+/* Door guide mobile scroll */
+@media (max-width: 768px) {
+    .door-guide .scroll-container,
+    .door-guide > div:nth-child(3),
+    .door-guide > div:nth-child(5),
+    .door-guide > div:nth-child(7) {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        -webkit-overflow-scrolling: touch !important;
+        white-space: nowrap !important;
+        display: block !important;
+        padding-bottom: 15px !important;
+    }
+    
+    .door-guide .scroll-item,
+    .door-guide > div:nth-child(3) > div,
+    .door-guide > div:nth-child(5) > div,
+    .door-guide > div:nth-child(7) > div {
+        display: inline-block !important;
+        width: 280px !important;
+        margin-right: 15px !important;
+        vertical-align: top !important;
+        white-space: normal !important;
+    }
+    
+    .door-guide::before {
+        content: "← Swipe to see more →";
+        display: block;
+        text-align: right;
+        font-size: 11px;
+        color: #667eea;
+        margin-bottom: 10px;
+        opacity: 0.8;
+    }
+}

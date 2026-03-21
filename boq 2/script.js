@@ -592,17 +592,168 @@ function renderCustomer() {
 //    }
 //}
 
-// Summary render
+
+
+
+
+
+
+
+
+// Summary render - Full detailed version
 function renderSummary() {
-    document.getElementById('summaryLayout').textContent = STATE.layout ? LAYOUTS[STATE.layout].name : 'Not selected';
+    // Customer Details
+    document.getElementById('summaryCustomerName').textContent = STATE.customer.name || 'Not provided';
+    let flatDetails = '';
+    if (STATE.customer.tower || STATE.customer.floor || STATE.customer.flat) {
+        flatDetails = `${STATE.customer.tower || ''} ${STATE.customer.floor || ''} ${STATE.customer.flat || ''}`.trim();
+    }
+    document.getElementById('summaryCustomerFlat').textContent = flatDetails || 'Not provided';
+    document.getElementById('summaryCustomerEmail').textContent = STATE.customer.email || 'Not provided';
+    document.getElementById('summaryCustomerPhone').textContent = STATE.customer.phone || 'Not provided';
+    
+    // Layout
+    document.getElementById('summaryLayout').textContent = STATE.layout ? LAYOUTS[STATE.layout].name + ' (' + LAYOUTS[STATE.layout].area + ' sq ft)' : 'Not selected';
+    
+    // Electrical Items
+    let electricalItemsHtml = '';
+    let hasElectrical = false;
+    Object.keys(STATE.electrical.items).forEach(key => {
+        const item = STATE.electrical.items[key];
+        if (item.selected && ELECTRICAL_ITEMS[key]) {
+            hasElectrical = true;
+            const rate = ELECTRICAL_ITEMS[key].rate;
+            const qty = item.qty || 1;
+            electricalItemsHtml += `
+                <div style="display: flex; justify-content: space-between; padding: 5px 0; font-size: 14px;">
+                    <span>${ELECTRICAL_ITEMS[key].name} (${qty} x ₹${rate})</span>
+                    <span style="color: #28a745;">₹${(rate * qty).toLocaleString()}</span>
+                </div>
+            `;
+        }
+    });
+    if (!hasElectrical) {
+        electricalItemsHtml = '<p style="color: #999; font-style: italic;">No items selected</p>';
+    }
+    document.getElementById('summaryElectricalItems').innerHTML = electricalItemsHtml;
     document.getElementById('summaryElectrical').textContent = `₹${STATE.totals.electrical.toLocaleString()}`;
+    
+    // Kitchen
+    let kitchenHtml = '';
+    if (STATE.woodwork.kitchen.quality && STATE.woodwork.kitchen.area > 0) {
+        const rate = WOODWORK_RATES[STATE.woodwork.kitchen.quality];
+        kitchenHtml = `
+            <div>Quality: ${STATE.woodwork.kitchen.quality} (₹${rate}/sq ft)</div>
+            <div>Area: ${STATE.woodwork.kitchen.area} sq ft</div>
+            <div style="margin-top: 5px;">Cost: <strong>₹${(rate * STATE.woodwork.kitchen.area).toLocaleString()}</strong></div>
+        `;
+    } else {
+        kitchenHtml = '<p style="color: #999; font-style: italic;">Not selected</p>';
+    }
+    document.getElementById('summaryKitchen').innerHTML = kitchenHtml;
+    
+    // Wardrobes
+    let wardrobesHtml = '';
+    if (STATE.woodwork.wardrobes.length > 0) {
+        STATE.woodwork.wardrobes.forEach((wardrobe, index) => {
+            if (wardrobe.quality && wardrobe.area > 0) {
+                const rate = WOODWORK_RATES[wardrobe.quality];
+                wardrobesHtml += `
+                    <div style="margin-bottom: 8px;">
+                        <strong>Wardrobe ${index + 1}:</strong> ${wardrobe.quality} (${wardrobe.area} sq ft @ ₹${rate}/sq ft)
+                        <span style="float: right; color: #28a745;">₹${(rate * wardrobe.area).toLocaleString()}</span>
+                    </div>
+                `;
+            }
+        });
+    }
+    if (!wardrobesHtml) {
+        wardrobesHtml = '<p style="color: #999; font-style: italic;">No wardrobes added</p>';
+    }
+    document.getElementById('summaryWardrobes').innerHTML = wardrobesHtml;
     document.getElementById('summaryWoodwork').textContent = `₹${STATE.totals.woodwork.toLocaleString()}`;
+    
+    // Bathroom
+    let bathroomHtml = '';
+    if (STATE.bathroom) {
+        bathroomHtml = `
+            <div>Package: ${BATHROOM_PACKAGES[STATE.bathroom].name}</div>
+            <div>Price: ₹${BATHROOM_PACKAGES[STATE.bathroom].price.toLocaleString()}</div>
+        `;
+    } else {
+        bathroomHtml = '<p style="color: #999; font-style: italic;">Not selected</p>';
+    }
+    document.getElementById('summaryBathroomDetails').innerHTML = bathroomHtml;
     document.getElementById('summaryBathroom').textContent = `₹${STATE.totals.bathroom.toLocaleString()}`;
+    
+    // Walls
+    let wallsHtml = '';
+    if (STATE.walls.length > 0) {
+        STATE.walls.forEach((wall, index) => {
+            if (wall.type && wall.area > 0) {
+                const rate = WALL_RATES[wall.type].rate;
+                wallsHtml += `
+                    <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+                        <span>Wall ${index + 1}: ${WALL_RATES[wall.type].name} (${wall.area} sq ft @ ₹${rate})</span>
+                        <span style="color: #28a745;">₹${(rate * wall.area).toLocaleString()}</span>
+                    </div>
+                `;
+            }
+        });
+    }
+    if (!wallsHtml) {
+        wallsHtml = '<p style="color: #999; font-style: italic;">No walls selected</p>';
+    }
+    document.getElementById('summaryWallsList').innerHTML = wallsHtml;
     document.getElementById('summaryWalls').textContent = `₹${STATE.totals.walls.toLocaleString()}`;
+    
+    // Flooring
+    let floorHtml = '';
+    if (STATE.floor.enabled && STATE.floor.type && STATE.layout) {
+        floorHtml = `
+            <div>Type: ${FLOOR_RATES[STATE.floor.type].name} (₹${FLOOR_RATES[STATE.floor.type].rate}/sq ft)</div>
+            <div>Area: ${LAYOUTS[STATE.layout].area} sq ft</div>
+            <div style="margin-top: 5px;">Cost: <strong>₹${STATE.totals.floor.toLocaleString()}</strong></div>
+        `;
+    } else {
+        floorHtml = `<p style="color: #999; font-style: italic;">${STATE.floor.enabled ? 'Type not selected' : 'Flooring disabled'}</p>`;
+    }
+    document.getElementById('summaryFloorDetails').innerHTML = floorHtml;
     document.getElementById('summaryFloor').textContent = `₹${STATE.totals.floor.toLocaleString()}`;
+    
+    // Doors
+    let doorsHtml = `
+        <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+            <span>Main Door: ${STATE.doors.main ? DOOR_RATES.main[STATE.doors.main].name : 'Not selected'}</span>
+            <span style="color: #28a745;">₹${STATE.doors.main ? DOOR_RATES.main[STATE.doors.main].rate.toLocaleString() : 0}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+            <span>Internal Doors: ${STATE.doors.internal.type ? DOOR_RATES.internal[STATE.doors.internal.type].name : 'Not selected'} x ${STATE.doors.internal.count}</span>
+            <span style="color: #28a745;">₹${(STATE.doors.internal.type && STATE.doors.internal.count > 0 ? DOOR_RATES.internal[STATE.doors.internal.type].rate * STATE.doors.internal.count : 0).toLocaleString()}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+            <span>Handles: ${DOOR_RATES.handles[STATE.doors.handle].name}</span>
+            <span style="color: #28a745;">${STATE.doors.handle !== 'standard' ? '₹' + (DOOR_RATES.handles[STATE.doors.handle].rate * STATE.doors.internal.count).toLocaleString() : 'Included'}</span>
+        </div>
+    `;
+    document.getElementById('summaryDoorsDetails').innerHTML = doorsHtml;
     document.getElementById('summaryDoors').textContent = `₹${STATE.totals.doors.toLocaleString()}`;
+    
+    // Grand Total
     document.getElementById('summaryGrand').textContent = `₹${STATE.totals.grand.toLocaleString()}`;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Recalculate all totals
 function recalculateTotals() {
@@ -733,7 +884,7 @@ function updateButtonStates() {
 
 // Generate detailed message body with all selections
 function generateMessageBody() {
-    let body = 'LANDMARK INTERIORS - DETAILED ESTIMATE\n';
+    let body = 'TIAASH INTERIORS - DETAILED ESTIMATE\n';
     body += '='.repeat(50) + '\n\n';
     
     // Customer Details
@@ -846,12 +997,12 @@ function generateMessageBody() {
     body += '• This is a preliminary estimate and subject to site visit\n';
     body += '• Prices valid for 30 days from the date of estimate\n';
     body += '• GST extra as applicable\n';
-    body += '• Payment terms: 50% advance, 40% on material dispatch, 10% on completion\n';
+    body += '• Payment terms: 60% advance, 30% on material dispatch, 10% on completion\n';
     body += '• Installation timeline: 6-8 weeks post approval\n';
     body += '• Warranty: 1 year on workmanship, 5 years on modular products\n\n';
     
     body += `Generated on: ${new Date().toLocaleString()}\n`;
-    body += 'Thank you for choosing Landmark Interiors!';
+    body += 'Thank you for choosing Tiaash Interiors!';
     
     return body;
 }
@@ -890,17 +1041,16 @@ function generateWhatsAppSummary() {
 
 
 
-
-// Generate PDF - Fixed for A4 size with customer validation and detailed items
+// Generate PDF - Optimized for smaller file size
 document.getElementById('generatePDF').onclick = function() {
     // Check if customer details are complete
     if (!isCustomerDetailsComplete()) {
         alert('Please fill in all customer details (Name, Email, Phone) before downloading PDF.');
-        goToStep(8); // Navigate to customer page
+        goToStep(8);
         return;
     }
     
-    // Create a clone for PDF generation with better styling
+    // Create a clone for PDF generation
     const cloneContainer = document.createElement('div');
     cloneContainer.style.width = '800px';
     cloneContainer.style.padding = '30px';
@@ -910,7 +1060,7 @@ document.getElementById('generatePDF').onclick = function() {
     // Add header with customer details
     cloneContainer.innerHTML = `
         <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: #667eea; margin: 0;">Landmark Interiors</h1>
+            <h1 style="color: #667eea; margin: 0;">Tiaash Interiors</h1>
             <h3 style="color: #666; margin: 5px 0;">Project Estimate</h3>
             <p style="color: #999;">Generated on ${new Date().toLocaleDateString()}</p>
         </div>
@@ -1017,12 +1167,6 @@ document.getElementById('generatePDF').onclick = function() {
     } else {
         cloneContainer.innerHTML += `<p style="color: #999; font-style: italic;">Not selected</p>`;
     }
-    cloneContainer.innerHTML += `
-        <div style="display: flex; justify-content: space-between; padding: 8px 0; margin-top: 5px; border-top: 1px dashed #ccc; font-weight: 500;">
-            <span>Bathroom Subtotal:</span>
-            <span style="color: #28a745;">₹${STATE.totals.bathroom.toLocaleString()}</span>
-        </div>
-    `;
     
     // Walls
     cloneContainer.innerHTML += `<h3 style="color: #333; border-bottom: 2px solid #667eea; padding-bottom: 5px; margin-top: 20px;">Wall Finishes</h3>`;
@@ -1108,7 +1252,7 @@ document.getElementById('generatePDF').onclick = function() {
                 <li>This is a preliminary estimate and subject to site visit</li>
                 <li>Prices valid for 30 days from the date of estimate</li>
                 <li>GST extra as applicable</li>
-                <li>Payment terms: 50% advance, 40% on material dispatch, 10% on completion</li>
+                <li>Payment terms: 60% advance, 30% on material dispatch, 10% on completion</li>
                 <li>Installation timeline: 6-8 weeks post approval</li>
                 <li>Warranty: 1 year on workmanship, 5 years on modular products</li>
                 <li>Any changes in layout or design may affect final pricing</li>
@@ -1118,49 +1262,35 @@ document.getElementById('generatePDF').onclick = function() {
             </div>
         </div>
         <div style="margin-top: 20px; text-align: center; color: #999; font-size: 12px;">
-            <p>Thank you for choosing Landmark Interiors</p>
+            <p>Thank you for choosing Tiaash Interiors</p>
         </div>
     `;
     
-    // Temporarily add to body, render, then remove
+    // Add to body and generate PDF with optimized settings
     document.body.appendChild(cloneContainer);
     
     html2canvas(cloneContainer, {
-        scale: 2,
+        scale: 1.5,  // Reduced from 2 to 1.5 for smaller file size
         backgroundColor: '#ffffff',
         logging: false,
         windowWidth: 800,
         allowTaint: true,
-        useCORS: true
+        useCORS: true,
+        imageTimeout: 0,
+        removeContainer: true,
+        pixelRatio: 1.5  // Reduced from 2 to 1.5
     }).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
+        // Compress the canvas image
+        const imgData = canvas.toDataURL('image/jpeg', 0.7);  // JPEG at 70% quality instead of PNG
         
-        // A4 dimensions in mm: 210mm x 297mm
+        // Create PDF with custom dimensions to fit content
         const pdf = new jspdf.jsPDF({
             orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4'
+            unit: 'px',
+            format: [canvas.width + 40, canvas.height + 40]
         });
         
-        const imgWidth = 190; // mm (leaving 10mm margins on each side)
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        
-        // Check if content exceeds one page
-        let heightLeft = imgHeight;
-        let position = 10;
-        let pageCount = 1;
-        
-        pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-        heightLeft -= 277; // A4 height minus margins
-        
-        while (heightLeft > 0) {
-            position = heightLeft - imgHeight;
-            pdf.addPage();
-            pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-            heightLeft -= 277;
-            pageCount++;
-        }
-        
+        pdf.addImage(imgData, 'JPEG', 20, 20, canvas.width, canvas.height, undefined, 'FAST');
         pdf.save(`landmark-estimate-${Date.now()}.pdf`);
         
         // Remove the clone
@@ -1184,8 +1314,6 @@ document.getElementById('generatePDF').onclick = function() {
 
 
 
-
-
 // Email estimate with validation
 document.getElementById('emailEstimate').onclick = function() {
     if (!isCustomerDetailsComplete()) {
@@ -1193,7 +1321,7 @@ document.getElementById('emailEstimate').onclick = function() {
         goToStep(8);
         return;
     }
-    const subject = 'Landmark Interiors Estimate';
+    const subject = 'Tiaash Interiors Estimate';
     const body = generateMessageBody();
     
     window.location.href = `mailto:ssb@tiaash.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -1212,7 +1340,7 @@ document.getElementById('whatsappEstimate').onclick = function() {
     const flatInfo = STATE.customer.tower || STATE.customer.floor || STATE.customer.flat ? 
         `Flat: ${STATE.customer.tower || ''} ${STATE.customer.floor || ''} ${STATE.customer.flat || ''}`.replace(/\s+/g, ' ') : '';
     
-    const message = `Hello Landmark Interiors,%0A%0A${customerInfo}%0A${flatInfo}%0A%0ALayout: ${STATE.layout ? LAYOUTS[STATE.layout].name : 'Not selected'}%0A%0ADetailed Estimate:%0A${generateWhatsAppSummary()}%0A%0ATotal Estimate: ₹${STATE.totals.grand.toLocaleString()}%0A%0APlease review the detailed estimate.`;
+    const message = `Hello Tiaash Interiors,%0A%0A${customerInfo}%0A${flatInfo}%0A%0ALayout: ${STATE.layout ? LAYOUTS[STATE.layout].name : 'Not selected'}%0A%0ADetailed Estimate:%0A${generateWhatsAppSummary()}%0A%0ATotal Estimate: ₹${STATE.totals.grand.toLocaleString()}%0A%0APlease review the detailed estimate.`;
     
     window.open(`https://wa.me/918796446427/?text=${message}`, '_blank');
 };

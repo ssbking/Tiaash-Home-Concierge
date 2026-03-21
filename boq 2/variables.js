@@ -2,25 +2,26 @@
 const ELECTRICAL_ITEMS = {
     wires1: { name: 'Complet Wiring', rate: 45000, defaultQty: 1 },
     wires2: { name: 'only 16 amp Wiring', rate: 30000, defaultQty: 1 },
-    switches: { name: 'Switches', rate: 200, defaultQty: 6 },
-    points: { name: 'Power Points', rate: 200, defaultQty: 4 },
-    fan: { name: 'Fans (basic)', rate: 1500, defaultQty: 5 },
-    light: { name: 'Lights', rate: 2000, defaultQty: 5 },
+    switches: { name: 'Switches', rate: 210, defaultQty: 6 },
+    points: { name: 'Power Points', rate: 210, defaultQty: 4 },
+    fan: { name: 'Fans (basic)', rate: 1600, defaultQty: 5 },
+    light: { name: 'Lights', rate: 1500, defaultQty: 5 },
     bell: { name: 'Door Bell', rate: 500, defaultQty: 1 },
     exhaust: { name: 'Exhaust Fan', rate: 1500, defaultQty: 2 },
+    acfitting: { name: 'AC Fitting', rate: 2500, defaultQty: 2 },
 
 };
 
 // Woodwork quality rates
 const WOODWORK_RATES = {
-    basic: 1100,
+    basic: 1150,
     premium: 1350,
     luxury: 1700
 };
 
 // Bathroom packages
 const BATHROOM_PACKAGES = {
-    basic: { name: 'Basic', price: 45000 },
+    basic: { name: 'Basic', price: 15000 },
     premium: { name: 'Premium', price: 85000 },
     luxury: { name: 'Luxury', price: 150000 }
 };
