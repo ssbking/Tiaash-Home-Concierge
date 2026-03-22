@@ -21,9 +21,9 @@ const WOODWORK_RATES = {
 
 // Bathroom packages
 const BATHROOM_PACKAGES = {
-    basic: { name: 'Basic', price: 15000 },
+    basic: { name: 'Basic', price: 15000},
     premium: { name: 'Premium', price: 85000 },
-    luxury: { name: 'Luxury', price: 150000 }
+    luxury: { name: 'Luxury', price: 150000}
 };
 
 // Wall finish rates
@@ -35,13 +35,13 @@ const WALL_RATES = {
 
 // Layout areas
 const LAYOUTS = {
-    unit1: { name: '3BHK - Unit 1', area: 645.48 },
-    unit2: { name: '3BHK - Unit 2', area: 644.86 },
-    unit3: { name: '2BHK - Unit 3', area: 559.82 },
-    unit4: { name: '2BHK - Unit 4', area: 566.61 },
-    unit5: { name: '3BHK - Unit 5', area: 645.26 },
-    unit6: { name: '1BHK - Unit 6', area: 348.04 },
-    unit7: { name: '1BHK - Unit 7', area: 398.86 }
+    unit1: { name: '3BHK - Unit 1', area: 645.48 ,  image: '../brocher/unit-1_3bhk.png'},
+    unit2: { name: '3BHK - Unit 2', area: 644.86 ,  image: '../brocher/unit-2_3bhk.png'},
+    unit3: { name: '2BHK - Unit 3', area: 559.82 ,  image: '../brocher/Unit-3(2 BHK).png'},
+    unit4: { name: '2BHK - Unit 4', area: 566.61 ,  image: '../brocher/Unit-4(2 BHK).png'},
+    unit5: { name: '3BHK - Unit 5', area: 645.26 ,  image: '../brocher/Unit-5(3 BHK).png'},
+    unit6: { name: '1BHK - Unit 6', area: 348.04 ,  image: '../brocher/unit-1_3bhk.png'},
+    unit7: { name: '1BHK - Unit 7', area: 398.86 ,  image: '../brocher/unit-1_3bhk.png'}
 };
 
 // Flooring rates

@@ -142,7 +142,7 @@ function renderStep(stepNumber) {
     }
 }
 
-// Layout render
+/// Layout render with images
 function renderLayout() {
     const grid = document.getElementById('layoutGrid');
     grid.innerHTML = '';
@@ -152,6 +152,7 @@ function renderLayout() {
         const card = document.createElement('div');
         card.className = `card ${STATE.layout === key ? 'selected' : ''}`;
         card.innerHTML = `
+            <img src="${layout.image}" alt="${layout.name}" style="width: 100%; height: fit; object-fit: cover; border-radius: 5px; margin-bottom: 10px;">
             <div class="title">${layout.name}</div>
             <div class="price">${layout.area} sq ft</div>
         `;
