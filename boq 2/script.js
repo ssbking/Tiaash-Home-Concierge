@@ -181,16 +181,30 @@ function renderElectrical() {
         
         const itemEl = document.createElement('div');
         itemEl.className = `electrical-item ${state.selected ? 'selected' : ''}`;
-        itemEl.innerHTML = `
-            <div class="electrical-header">
-                <span class="electrical-name">${item.name}</span>
-                <span class="electrical-price">₹${item.rate}</span>
-            </div>
-            <div class="electrical-qty">
-                <input type="number" min="0" value="${state.qty}" class="qty-input" data-key="${key}" ${!state.selected ? 'disabled' : ''}>
-                <span>Qty</span>
-            </div>
-        `;
+       itemEl.innerHTML = `
+    <div class="electrical-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+            <span class="electrical-name">${item.name}</span>
+            <button class="info-btn" data-key="${key}" style="background: none; border: none; cursor: pointer; font-size: 14px; color: #667eea; padding: 0; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: #e9ecef;">
+                i
+            </button>
+        </div>
+        <span class="electrical-price">₹${item.rate}</span>
+    </div>
+    <div class="electrical-qty">
+        <input type="number" min="0" value="${state.qty}" class="qty-input" data-key="${key}" ${!state.selected ? 'disabled' : ''}>
+        <span>Qty</span>
+    </div>
+`;
+
+// Add click handler for info button - add this AFTER setting innerHTML
+const infoBtn = itemEl.querySelector('.info-btn');
+if (infoBtn) {
+    infoBtn.onclick = (e) => {
+        e.stopPropagation();
+        showInfoPopup(item.name, item.info || 'No additional information available for this item.');
+    };
+}
         
         // Make the entire header clickable for selection
         const header = itemEl.querySelector('.electrical-header');
@@ -1364,6 +1378,199 @@ function initSidebar() {
 document.getElementById('addWardrobe').onclick = window.addWardrobe;
 document.getElementById('addWall').onclick = window.addWall;
 
+
+
+// Show info popup
+function showInfoPopup(title, content) {
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0,0,0,0.5)';
+    overlay.style.zIndex = '10000';
+    overlay.style.display = 'flex';
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'center';
+    
+    // Create popup
+    const popup = document.createElement('div');
+    popup.style.backgroundColor = 'white';
+    popup.style.borderRadius = '12px';
+    popup.style.maxWidth = '90%';
+    popup.style.width = '320px';
+    popup.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
+    popup.style.overflow = 'hidden';
+    
+    // Popup header
+    const header = document.createElement('div');
+    header.style.padding = '15px 20px';
+    header.style.backgroundColor = '#667eea';
+    header.style.color = 'white';
+    header.style.fontWeight = 'bold';
+    header.style.fontSize = '18px';
+    header.style.display = 'flex';
+    header.style.justifyContent = 'space-between';
+    header.style.alignItems = 'center';
+    header.innerHTML = `
+        <span>${title}</span>
+        <button style="background: none; border: none; color: white; font-size: 24px; cursor: pointer; padding: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">×</button>
+    `;
+    
+    // Popup content
+    const contentDiv = document.createElement('div');
+    contentDiv.style.padding = '20px';
+    contentDiv.style.color = '#333';
+    contentDiv.style.lineHeight = '1.5';
+    contentDiv.style.fontSize = '14px';
+    contentDiv.innerHTML = content;
+    
+    // Popup footer with close button
+    const footer = document.createElement('div');
+    footer.style.padding = '12px 20px';
+    footer.style.borderTop = '1px solid #e9ecef';
+    footer.style.textAlign = 'right';
+    footer.innerHTML = '<button class="popup-close-btn" style="background: #667eea; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer;">Close</button>';
+    
+    popup.appendChild(header);
+    popup.appendChild(contentDiv);
+    popup.appendChild(footer);
+    overlay.appendChild(popup);
+    document.body.appendChild(overlay);
+    
+    // Close function
+    const closePopup = () => {
+        document.body.removeChild(overlay);
+    };
+    
+    // Add close handlers
+    const closeBtn = header.querySelector('button');
+    const closeFooterBtn = footer.querySelector('.popup-close-btn');
+    
+    closeBtn.onclick = closePopup;
+    closeFooterBtn.onclick = closePopup;
+    
+    // Click on overlay to close
+    overlay.onclick = (e) => {
+        if (e.target === overlay) {
+            closePopup();
+        }
+    };
+}
+
+
+// Mobile sidebar functionality - Working Version
+function initMobileMenu() {
+    console.log("Initializing mobile menu..."); // Debug log
+    
+    const sidebar = document.getElementById('sidebar');
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const overlay = document.getElementById('mobileMenuOverlay');
+    
+    if (!sidebar) {
+        console.error("Sidebar not found!");
+        return;
+    }
+    if (!menuBtn) {
+        console.error("Menu button not found!");
+        return;
+    }
+    if (!overlay) {
+        console.error("Overlay not found!");
+        return;
+    }
+    
+    // Remove any existing close button
+    const existingClose = document.querySelector('.sidebar-close');
+    if (existingClose) existingClose.remove();
+    
+    // Add close button to sidebar
+    const closeBtn = document.createElement('div');
+    closeBtn.className = 'sidebar-close';
+    closeBtn.innerHTML = '×';
+    closeBtn.style.cssText = 'display: none;'; // Initially hidden on desktop
+    closeBtn.onclick = function(e) {
+        e.stopPropagation();
+        closeSidebar();
+    };
+    sidebar.insertBefore(closeBtn, sidebar.firstChild);
+    
+    function openSidebar() {
+        console.log("Opening sidebar"); // Debug log
+        sidebar.classList.add('open');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeSidebar() {
+        console.log("Closing sidebar"); // Debug log
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    function toggleSidebar() {
+        if (sidebar.classList.contains('open')) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    }
+    
+    // Event listeners
+    menuBtn.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("Menu button clicked"); // Debug log
+        toggleSidebar();
+    };
+    
+    overlay.onclick = function(e) {
+        closeSidebar();
+    };
+    
+    // Close sidebar when clicking on step items
+    document.addEventListener('click', function(e) {
+        const stepItem = e.target.closest('.step-item');
+        if (stepItem && window.innerWidth <= 768) {
+            setTimeout(closeSidebar, 150);
+        }
+    });
+    
+    // Handle window resize
+    function handleResize() {
+        if (window.innerWidth > 768) {
+            // Desktop mode
+            sidebar.classList.remove('open');
+            if (overlay) overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            sidebar.style.display = '';
+            if (closeBtn) closeBtn.style.display = 'none';
+        } else {
+            // Mobile mode
+            if (closeBtn) closeBtn.style.display = 'block';
+            // Don't auto-open, just ensure it's closed by default
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        }
+    }
+    
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Call once on init
+    
+    console.log("Mobile menu initialized successfully");
+}
+
+// Make sure this is called after the DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Small delay to ensure everything is loaded
+    setTimeout(initMobileMenu, 100);
+});
+// Call this in your existing init() function
+
+
 // Initialize app
 function init() {
     loadState();
@@ -1372,6 +1579,7 @@ function init() {
     goToStep(1);
     recalculateTotals();
     updateButtonStates();
+     setTimeout(initMobileMenu, 200);
 }
 
 // Start the app

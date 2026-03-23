@@ -31,17 +31,25 @@
 
         <!-- Progress bar removed - using sidebar only for navigation -->
 
-        <div class="main-container">
-            <div class="sidebar">
-                <div class="steps" id="stepNav"></div>
-	 <div class="totals-preview">
-                    <h3>Total Estimate</h3>
-                    <div class="grand-total" id="grandTotal">₹0</div>
-                    <button class="btn-pdf" id="generatePDF">Download PDF</button>
-                    <button class="btn-email" id="emailEstimate">Email</button>
-                    <button class="btn-whatsapp" id="whatsappEstimate">WhatsApp</button>
-                </div>
-            </div>
+       
+<div class="main-container">
+    <!-- Mobile menu button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+    
+    <!-- Mobile menu overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="steps" id="stepNav"></div>
+        <div class="totals-preview">
+            <h3>Total Estimate</h3>
+            <div class="grand-total" id="grandTotal">₹0</div>
+            <button class="btn-pdf" id="generatePDF">Download PDF</button>
+            <button class="btn-email" id="emailEstimate">Email</button>
+            <button class="btn-whatsapp" id="whatsappEstimate">WhatsApp</button>
+        </div>
+    </div>
 
             <div class="content">
                 <!-- Step 1: Layout -->
@@ -987,5 +995,6 @@
 
     <script src="variables.js"></script>
     <script src="script.js"></script>
+    
 </body>
 </html>
